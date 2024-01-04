@@ -1,0 +1,214 @@
+import React, { useEffect, useState } from 'react'
+
+import { useDispatch, useSelector } from 'react-redux';
+import { axiosInstance, axiosInstanceFormData } from '../config/axios-admin/axiosWithoutCredential';
+import {
+    GET_DISTRICT_AREA_INFO,
+    GET_DISTRICT_INFO,
+    GET_DISTRICT_SUB_AREA_INFO,
+} from '../helpers/Constants';
+
+import { useNavigation } from '@react-navigation/native';
+import { handleUserReducer } from '../store/reducers/userReducer';
+import { handleDashboardReducer } from '../store/reducers/dashboardReducer';
+
+
+export const useAdminInformation = () => {
+    const navigation = useNavigation();
+    const { starting_slider, isLoading, isDistrictSelected } = useSelector(
+        (state) => state.dashboard
+    );
+    const dispatch = useDispatch();
+    const [error, setError] = useState(false);
+
+    let userInformation = {
+        isUserLocationAvailable: false,
+        userLatitude: '',
+        userLongitude: '',
+        isLoggedin: false,
+        phoneNo: '',
+        custName: '',
+        custAdress: '',
+        alternativeMobileNo: '',
+        deliveryAddress: '',
+    };
+
+    let districtSelected = {
+        isDistrictSelected: false,
+        districtId: '',
+        districtName: '',
+        districtInfo: [],
+        districtAreaInfo: [],
+    };
+
+    let areaSelected = {
+        districtAreaId: '',
+        districtAreaName: '',
+        districtSubAreaInfo: [],
+        districtSubAreaId: '',
+        districtSubAreaName: '',
+    };
+
+    let dashboardData = {
+        starting_slider: [],
+        business_type_banner: [],
+        medical_services_banner: [],
+    }
+
+    /// User Geolaction
+    const saveUserCurrentGeolocation = (curLoc) => {
+        userInformation.isUserLocationAvailable = true;
+        userInformation.userLatitude = curLoc.latitude;
+        userInformation.userLongitude = curLoc.longitude;
+        storeUserInfo(userInformation);
+    }
+
+    const saveConnectionStatus = (status) => {
+        dispatch(
+            handleUserReducer({
+                type: 'SAVE_CONNECTION_STATUS',
+                data: status,
+            })
+        );
+    }
+
+    const saveLoadingStatus = (status) => {
+        dispatch(
+            handleDashboardReducer({
+                type: 'SAVE_LOADING_STATUS',
+                data: status,
+            })
+        );
+    }
+
+
+
+
+
+    const changeDistrictInfo = (districtInfo) => {
+        dispatch(
+            handleUserReducer({
+                type: 'SAVE_SELECTED_DISTRICT_INFO',
+                data: districtInfo,
+            })
+        );
+    }
+
+    const getDistrictInfo = async (setFetching) => {
+        setFetching(true)
+        axiosInstance
+            .get(GET_DISTRICT_INFO)
+            .then(response => {
+                //console.log(response.data.result);
+                districtSelected = {
+                    isDistrictSelected: false,
+                    districtId: '',
+                    districtName: '',
+                    districtInfo: response?.data?.result,
+                    districtAreaInfo: [],
+                };
+                setFetching(false);
+                storeDistrictInfo(districtSelected);
+            })
+            .catch(error => {
+                setFetching(false);
+            })
+    }
+
+    const getDistrictAreaInfo = async (setFetching, districtSelected) => {
+        setFetching(true)
+        axiosInstance
+            .get(`${GET_DISTRICT_AREA_INFO}/${districtSelected.districtId}`)
+            .then(response => {
+                const AREA_INFO = response?.data?.result;
+                districtSelected.districtAreaInfo = AREA_INFO;
+                if (AREA_INFO.length < 1) {
+                    areaSelected.districtAreaId = areaSelected.districtSubAreaId = 'Not Found'
+                    saveSlectedAreaInfo(areaSelected);
+                }
+                storeDistrictInfo(districtSelected);
+                setFetching(false);
+            })
+            .catch(error => {
+                setFetching(false);
+                console.log('Error : ', error.response.status)
+            })
+    }
+
+    const saveSelectedDistrictInfo = (districtInfo) => {
+        dispatch(
+            handleUserReducer({
+                type: 'SAVE_SELECTED_DISTRICT',
+                data: districtInfo,
+            })
+        );
+    }
+
+    const filterDistrictInfo = (text) => {
+        dispatch(
+            handleUserReducer({
+                type: 'SEACH_DISTRICT_INFO',
+                data: text,
+            })
+        );
+    }
+
+    const getDistrictSubAreaInfo = async (seletedArea, setIsLoading) => {
+        setIsLoading(true)
+        axiosInstance
+            .get(`${GET_DISTRICT_SUB_AREA_INFO}/${seletedArea._id}`)
+            .then(response => {
+                const SUB_AREA_INFO = response?.data?.result;
+                //console.log(SUB_AREA_INFO.length);
+                areaSelected.districtAreaId = seletedArea._id;
+                areaSelected.districtAreaName = seletedArea.area_name;
+                areaSelected.districtSubAreaInfo = SUB_AREA_INFO;
+                if (SUB_AREA_INFO.length < 1) {
+                    areaSelected.districtSubAreaId = 'Not Found'
+                }
+                saveSlectedAreaInfo(areaSelected);
+                setIsLoading(false);
+            })
+            .catch(error => {
+                setIsLoading(false);
+            })
+    }
+
+    const saveSlectedAreaInfo = (areaSelected) => {
+        dispatch(
+            handleUserReducer({
+                type: 'SAVE_SELECTED_AREA_INFO',
+                data: areaSelected,
+            })
+        );
+    }
+
+
+
+
+    const logout = async () => {
+        try {
+
+            console.log('Logout');
+        } catch (error) {
+
+        }
+    }
+
+    useEffect(() => {
+        if (error) logout()
+    }, [error])
+
+    return {
+        saveUserCurrentGeolocation,
+        saveConnectionStatus,
+        saveLoadingStatus,
+        filterDistrictInfo,
+        getDistrictAreaInfo,
+        getDistrictSubAreaInfo,
+        saveSlectedAreaInfo,
+        saveSelectedDistrictInfo,
+        changeDistrictInfo,
+        logout,
+    }
+}
