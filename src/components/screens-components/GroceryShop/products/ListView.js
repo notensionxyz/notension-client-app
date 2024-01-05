@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { grocery_itemsImages } from '../../../../helpers/Constants';
 import { storageImageUrl } from '../../../../helpers/imageUrl';
-import PurchaseBtn from '../../Common/purchaseBtn';
+import PurchaseBtn from '../../Common/PurchaseBtn';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -32,7 +32,7 @@ function ListView({ data, addToBagPress, deccresePress, removePress, qtyIncart, 
                 //alignItems: 'center',
                 justifyContent: 'center',
             }} >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => { navigation.navigate('GroceryProductDetails', { data }) }}>
                     <View style={{
                         height: screenWidth / 3,
                         width: screenWidth / 3,
@@ -88,9 +88,11 @@ function ListView({ data, addToBagPress, deccresePress, removePress, qtyIncart, 
                     }
                 </TouchableOpacity>
                 <View style={{ flex: 1, padding: 5 }}>
-                    <Text style={{ fontSize: 18, color: '#003B95', }} numberOfLines={1} ellipsizeMode="tail">{data?.product_title_eng}</Text>
-                    <Text style={{ marginTop: 2, fontSize: 18, color: '#003B95', }} numberOfLines={1} ellipsizeMode="tail">{data?.product_title_beng}</Text>
-                    <Text style={{ fontSize: 16, color: '#006400' }} numberOfLines={1} ellipsizeMode="tail">{data?.pack_size}</Text>
+                    <TouchableOpacity onPress={() => { navigation.navigate('GroceryProductDetails', { data }) }}>
+                        <Text style={{ fontSize: 18, color: '#003B95', }} numberOfLines={1} ellipsizeMode="tail">{data?.product_title_eng}</Text>
+                        <Text style={{ marginTop: 2, fontSize: 18, color: '#003B95', }} numberOfLines={1} ellipsizeMode="tail">{data?.product_title_beng}</Text>
+                        <Text style={{ fontSize: 16, color: '#006400' }} numberOfLines={1} ellipsizeMode="tail">{data?.pack_size}</Text>
+                    </TouchableOpacity>
                     <Text style={{ marginTop: 10, }} numberOfLines={1} ellipsizeMode="tail">
                         <Text style={{ fontSize: 17, color: '#FF00FF' }} numberOfLines={1} ellipsizeMode="tail">৳ {data?.sale_price}{'      '}</Text>
                         {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
@@ -103,6 +105,7 @@ function ListView({ data, addToBagPress, deccresePress, removePress, qtyIncart, 
                             : null
                         }
                     </Text>
+
                     <View
                         style={{
                             position: 'absolute',

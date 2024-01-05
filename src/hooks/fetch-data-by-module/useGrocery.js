@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { EXPLORE_GROCERY_STORE, GROCERY_ITEMS_BY_CUSTOMTYPE, GROCERY_ITEMS_BY_SUBTYPE, NEAREST_GROCERY_STORE, SEARCH_GROCERY_ITEMS } from '../../helpers/Constants';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
+import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 
 axios.defaults.withCredentials = true;
 
@@ -81,15 +82,16 @@ export const useGrocery = () => {
         }, 10000);
     }
 
-    const exploreStore = (storeId, customStoreId) => {
+    const exploreStore = (data) => {
+
         resetReducer();
         setProgressing(true);
         Axios
             .get(EXPLORE_GROCERY_STORE,
                 {
                     params: {
-                        storeId: storeId,
-                        custom_store_id: customStoreId,
+                        storeId: data?._id,
+                        custom_store_id: data?.custom_store_id,
                     }
                 }
             )
@@ -97,10 +99,18 @@ export const useGrocery = () => {
                 //console.log(res?.data?.result);
                 dispatch(
                     handleItemsByStoreReducer({
-                        type: 'EXPLORE_GROCERY_STORE',
+                        type: 'EXPLORE_STORE_ITEMS',
                         data: res?.data?.result,
                     })
                 );
+
+                dispatch(
+                    handleDashboardReducer({
+                        type: 'EXPLORE_STORE',
+                        data: res?.data?.result,
+                    })
+                );
+
                 setProgressing(false);
             })
             .catch((error) => {
@@ -131,7 +141,7 @@ export const useGrocery = () => {
                     if (res?.data?.result.length > 0) {
                         setPageNo(pageNo + 1);
                         saveItemsToReducer(res?.data?.result);
-                        if (res?.data?.result.length < 30) {
+                        if (res?.data?.result.length < 24) {
                             setAllLoaded(true);
                         }
                     }
@@ -211,7 +221,7 @@ export const useGrocery = () => {
         resetLoadingStatus();
         setTimeout(() => {
             if (options.customType === "64f5a306baa57a4707524d6e") { // this is "64f5a306baa57a4707524d6e" Offer Items ID
-                
+
                 saveItemsToReducer(specialOfferItem);
             } else {
                 saveItemsToReducer(dealOfTheDay);

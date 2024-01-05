@@ -1,14 +1,16 @@
 import React from 'react';
 import { Dimensions, FlatList, TouchableOpacity, Text, View } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import { MemoizedScrollProductList } from './ScrollProductList';
 import { handleGroceryItems } from '../../../../hooks/cart-handler/handleGroceryItems';
 import { handleItemsByStoreReducer } from '../../../../store/reducers/items-by-shop';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function DealOfTheDay({ dealOfTheDay }) {
+export default function DealOfTheDay() {
+    const { dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
+
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -64,7 +66,7 @@ export default function DealOfTheDay({ dealOfTheDay }) {
                     contentContainerStyle={{ padding: 3 }}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    data={dealOfTheDay}
+                    data={dealOfTheDay.slice(0, 8)}
                     renderItem={({ item }) =>
                         <MemoizedScrollProductList
                             data={item}

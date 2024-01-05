@@ -1,19 +1,19 @@
 import React from 'react';
-import { Dimensions, Text, TouchableOpacity,View} from "react-native";
+import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { grocery_itemsImages } from '../../../../helpers/Constants';
 import { storageImageUrl } from '../../../../helpers/imageUrl';
-import PurchaseBtn from '../../Common/purchaseBtn';
+import PurchaseBtn from '../../Common/PurchaseBtn';
 
 const screenWidth = Dimensions.get('window').width;
 
 export const MemoizedScrollProductList = React.memo(ScrollProductList);
 
 export default function ScrollProductList({ data, addToBagPress, deccresePress, removePress, qtyIncart, isOutOfStock }) {
-    
+
     const navigation = useNavigation();
-    
+
     return (
         <React.Fragment key={data?.product_id}>
             <View style={{ padding: 4 }}>
@@ -218,38 +218,39 @@ export default function ScrollProductList({ data, addToBagPress, deccresePress, 
                         :
                         null
                     }
+                    <TouchableOpacity onPress={() => { navigation.navigate('GroceryProductDetails', { data }) }}>
+                        <View style={{ padding: 2, paddingLeft: 8, marginTop: 5, paddingRight: 8 }}>
 
-                    <View style={{ padding: 2, paddingLeft: 8, marginTop: 5, paddingRight: 8 }}>
-                        <TouchableOpacity onPress={() => { navigation.navigate('ProductDetails', { data }) }}>
                             <Text style={{ fontSize: 15, color: '#263238' }} numberOfLines={2} ellipsizeMode="tail">
                                 {data?.product_title_beng}{"\n"}
                             </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ flex: 1, padding: 2, paddingLeft: 8, paddingRight: 8 }}>
-                        <Text numberOfLines={1} ellipsizeMode="tail">
-                            <Text style={{ fontSize: 15, color: '#006400', paddingLeft: 4 }} numberOfLines={1} ellipsizeMode="tail">{data?.pack_size}    </Text>
-                        </Text>
 
-                        <View style={{ flexDirection: 'row', marginTop: 8, justifyContent: 'center', paddingTop: 4 }}>
-                            <View style={{ width: "50%" }}>
-                                <Text style={{ fontSize: 15, color: '#006400', textAlign: 'left' }} >৳ {data?.sale_price}</Text>
-                            </View>
-                            <View style={{ width: "50%" }}>
-                                {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
-                                    <Text style={{
-                                        fontSize: 14,
-                                        color: '#800000',
-                                        textDecorationLine: 'line-through',
-                                        textDecorationStyle: 'solid',
-                                        textAlign: 'right'
-                                    }}>৳ {data?.max_retail_price}</Text>
-                                    : null
-                                }
-                            </View>
                         </View>
+                        <View style={{ flex: 1, padding: 2, paddingLeft: 8, paddingRight: 8 }}>
+                            <Text numberOfLines={1} ellipsizeMode="tail">
+                                <Text style={{ fontSize: 15, color: '#006400', paddingLeft: 4 }} numberOfLines={1} ellipsizeMode="tail">{data?.pack_size}    </Text>
+                            </Text>
 
-                    </View>
+                            <View style={{ flexDirection: 'row', marginTop: 8, justifyContent: 'center', paddingTop: 4 }}>
+                                <View style={{ width: "50%" }}>
+                                    <Text style={{ fontSize: 15, color: '#006400', textAlign: 'left' }} >৳ {data?.sale_price}</Text>
+                                </View>
+                                <View style={{ width: "50%" }}>
+                                    {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
+                                        <Text style={{
+                                            fontSize: 14,
+                                            color: '#800000',
+                                            textDecorationLine: 'line-through',
+                                            textDecorationStyle: 'solid',
+                                            textAlign: 'right'
+                                        }}>৳ {data?.max_retail_price}</Text>
+                                        : null
+                                    }
+                                </View>
+                            </View>
+
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </React.Fragment>

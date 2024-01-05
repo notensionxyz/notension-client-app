@@ -7,9 +7,9 @@ import { handleGroceryItems } from '../../../../hooks/cart-handler/handleGrocery
 
 function PopularProduct({ pageNo, setPageNo }) {
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
-    const popularItem = useSelector((state) => state.itemsByStoreReducer.popularItem);
+    ///const popularItem = useSelector((state) => state.itemsByStoreReducer.popularItem);
     const { loadingMore, itemNotfound, allLoaded } = useSelector((state) => state.appState);
-    const { getPopularItems, setLoadingMore } = usePopularItem();
+    const { popularItem, getPopularItems, setLoadingMore } = usePopularItem();
 
     let parameter = {
         groceryStoreId: merchantId,

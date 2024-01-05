@@ -5,6 +5,8 @@ import NearestGroceryShop from "../screens/grocery-shop/NearestGroceryShop";
 import NearestMedicineShop from "../screens/medicine-shop/NearestMedicineShop";
 import ExploreGroceryShop from "../screens/grocery-shop/ExploreGroceryShop";
 import GroceryProductList from "../screens/grocery-shop/GroceryProductList";
+import GroceryCartItems from "../screens/grocery-shop/GroceryCartItems";
+import GroceryProductDetails from "../screens/grocery-shop/GroceryProductDetails";
 
 const Stack = createStackNavigator();
 
@@ -38,6 +40,22 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="GroceryProductList"
                 component={GroceryProductList}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="GroceryCartItems"
+                component={GroceryCartItems}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="GroceryProductDetails"
+                component={GroceryProductDetails}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

@@ -9,6 +9,8 @@ import { useGrocery } from '../../hooks/fetch-data-by-module/useGrocery';
 import SubtypeNameScroll from '../../components/screens-components/GroceryShop/subtypeNameScroll';
 import { logoColor_2 } from '../../helpers/Constants';
 import { handleGroceryItems } from '../../hooks/cart-handler/handleGroceryItems';
+import SearchField from '../../components/screens-components/Common/SearchField';
+import FooterCommon from '../../components/footer/FooterCommon';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -41,6 +43,8 @@ function GroceryProductList({ route }) {
         reloadCustomTypeData
     } = useGrocery();
 
+
+
     useEffect(() => {
         saveItemsToReducer([]);
 
@@ -59,7 +63,7 @@ function GroceryProductList({ route }) {
 
     }, []);
 
-    // const onPress = () => { handleSearch(searchText, 1, setPageNo); }
+    const onPress = () => { handleSearch(searchText, 1, setPageNo); }
 
     const loadMoreResults = async () => {
 
@@ -105,12 +109,15 @@ function GroceryProductList({ route }) {
         isInOutOfStockList
     } = handleGroceryItems();
 
+
     return (
         <>
             <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
                 <HeaderCommon title={typeName} />
-
+                {options?.searchProduct &&
+                    <SearchField searchText={searchText} setSearchText={setSearchText} onPress={onPress} />
+                }
                 {options?.fetchByoption && (
                     <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center', maxHeight: 48 }}>
                         <FlatList
@@ -174,6 +181,7 @@ function GroceryProductList({ route }) {
                             />}
                     />
                 </View>
+                <FooterCommon module='Grocery' />
             </View>
         </>
     );

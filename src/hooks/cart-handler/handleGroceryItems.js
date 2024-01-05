@@ -7,7 +7,12 @@ export const handleGroceryItems = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
-    const groceryItems = useSelector((state) => state.cartItems.groceryItems);
+    const { groceryItems,
+        totalAmountGrocery,
+        medicineItems,
+        totalAmountMedicine,
+        foodItems,
+        totalAmountFood } = useSelector((state) => state.cartItems);
 
     const getQty = (_id) => {
         let newState = [];
@@ -29,7 +34,7 @@ export const handleGroceryItems = () => {
         //         data: true,
         //     })
         // );
-        
+
         if (item?._id !== '' && item?.sale_price > -1) {
             let product = {
                 _id: item?._id,
@@ -41,6 +46,7 @@ export const handleGroceryItems = () => {
                 max_retail_price: item?.max_retail_price || 0,
                 sale_price: item?.sale_price || 0,
                 unit_symbol: item?.unit_symbol || '',
+                max_allowed: item?.max_allowed || 0,
                 quantity: 1,
                 delivered_qty: 0,
                 inc_qty: 1,
@@ -92,6 +98,12 @@ export const handleGroceryItems = () => {
     }, [error]);
 
     return {
+        groceryItems,
+        totalAmountGrocery,
+        medicineItems,
+        totalAmountMedicine,
+        foodItems,
+        totalAmountFood,
         getQty,
         addToCart,
         removeFromCart,

@@ -23,8 +23,6 @@ const itemsByStoreReducer = createSlice({
                     ...state,
                     merchantId: '',
                     customstore_id: '',
-                    typeInfoByShop: [],
-                    subtypeInfoByShop: [],
                     typeName: '',
                     subtypeByselectedType: [],
                     categoryInfo: [],
@@ -53,13 +51,10 @@ const itemsByStoreReducer = createSlice({
                     subtypeInfoByShop: payload.data.subtypeInfoByShop,
                 };
             }
-            else if (payload.type == 'EXPLORE_GROCERY_STORE') {
+            else if (payload.type == 'EXPLORE_STORE_ITEMS') {
                 return {
                     ...state,
                     isLoading: false,
-                    typeInfoByShop: payload?.data?.ProductTypeByShop,
-                    subtypeInfoByShop: payload?.data?.ProductSubTypeByShop,
-                    DashboardSlider: payload?.data?.DashboardSlider || [],
                     specialOfferItem: payload?.data?.specialOfferItem || [],
                     dealOfTheDay: payload?.data?.dealOfTheDay || [],
                     popularItem: payload?.data?.popularItem || [],

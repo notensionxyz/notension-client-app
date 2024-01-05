@@ -8,7 +8,8 @@ import { handleItemsByStoreReducer } from '../../../../store/reducers/items-by-s
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function OfferItems({ specialOfferItem }) {
+export default function OfferItems() {
+    const specialOfferItem  = useSelector((state) => state.itemsByStoreReducer.specialOfferItem);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -65,7 +66,7 @@ export default function OfferItems({ specialOfferItem }) {
                     contentContainerStyle={{ padding: 3 }}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    data={specialOfferItem}
+                    data={specialOfferItem.slice(0, 8)}
                     renderItem={({ item }) =>
                         <MemoizedScrollProductList
                             data={item}

@@ -11,7 +11,7 @@ axios.defaults.withCredentials = true;
 export const usePopularItem = () => {
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
-
+    const popularItem = useSelector((state) => state.itemsByStoreReducer.popularItem);
     const Axios = axios.create({
         baseURL: GROCERY_ADMIN_URL,
         headers: {
@@ -107,6 +107,7 @@ export const usePopularItem = () => {
     }, [error]);
 
     return {
+        popularItem,
         setLoadingMore,
         resetState,
         setLoadingMore,

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, Text, BackHandler, View, Pressable } from "react-native";
 import FastImage from 'react-native-fast-image'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import { useNavigation } from '@react-navigation/native';
 import { useGrocery } from '../../hooks/fetch-data-by-module/useGrocery';
+import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -59,8 +60,19 @@ function ListItem({ data }) {
     let cardMargin = 4;
     let cardWidth = screenWidth - (cardMargin * 4.5);
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const navigateToExploreShop = () => {
+        navigation.navigate('ExploreGroceryShop');
+        dispatch(
+            handleDashboardReducer({
+                type: 'VISITED_STORE',
+                data: data,
+            })
+        );
+    }
+
     return (
-        <Pressable onPress={() => { navigation.navigate('ExploreGroceryShop', { data }) }}>
+        <Pressable onPress={() => { navigateToExploreShop(); }}>
             <View style={{
                 backgroundColor: 'white',
                 width: cardWidth,

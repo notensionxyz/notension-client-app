@@ -20,6 +20,10 @@ const dashboardReducer = createSlice({
         districtAreaInfo: [],
         districtSubAreaInfo: [],
         ditance: [],
+        typeInfoByShop: [],
+        subtypeInfoByShop: [],
+        DashboardSlider: [],
+        visitedGroceryStore: {}
     },
     reducers: {
         handleDashboardReducer: (state = initialState, { payload }) => {
@@ -58,6 +62,22 @@ const dashboardReducer = createSlice({
                     districtAreaInfo: payload.data.districtInfo,
                     districtSubAreaInfo: payload.data.districtInfo,
                 }
+            }
+            else if (payload.type == 'EXPLORE_STORE') {
+                return {
+                    ...state,
+                    isLoading: false,
+                    visitedGroceryStore: payload?.data?.ShopDetails[0] || {},
+                    typeInfoByShop: payload?.data?.ProductTypeByShop || [],
+                    subtypeInfoByShop: payload?.data?.ProductSubTypeByShop || [],
+                    DashboardSlider: payload?.data?.DashboardSlider || [],
+                };
+            }
+            else if (payload.type == 'VISITED_STORE') {
+                return {
+                    ...state,
+                    visitedGroceryStore: payload?.data
+                };
             }
             else if (payload.type == "RESET_USER") {
                 return {

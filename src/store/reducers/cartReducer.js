@@ -1,6 +1,9 @@
 'use client';
 import { createSlice } from '@reduxjs/toolkit';
 let countTotal;
+const calculateTotal = (items) =>
+    items.reduce((total, item) => parseFloat(total) + (parseFloat(item.quantity) * parseFloat(item.sale_price)), 0);
+
 const cartReducer = createSlice({
     name: 'cartItems',
     initialState: {
@@ -40,6 +43,7 @@ const cartReducer = createSlice({
                 }
                 //console.log('newState[existingItemIndex].quantity', newState[existingItemIndex].quantity);
                 state.groceryItems = newState;
+                state.totalAmountGrocery = calculateTotal(newState);
                 // return {
                 //     ...state,
                 //     groceryItems: newState,
@@ -64,6 +68,7 @@ const cartReducer = createSlice({
                 }
 
                 state.groceryItems = newState;
+                state.totalAmountGrocery = calculateTotal(newState);
                 // return {
                 //     ...state,
                 //     groceryItems: newState,
@@ -83,6 +88,7 @@ const cartReducer = createSlice({
                 }
 
                 state.groceryItems = newState;
+                state.totalAmountGrocery = calculateTotal(newState);
                 // return {
                 //     ...state,
                 //     groceryItems: newState,
