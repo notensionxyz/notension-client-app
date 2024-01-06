@@ -40,6 +40,11 @@ function Dashboard(props) {
 
     const { getDasboardInfo, saveConnectionStatus } = useGlobal();
     //const { getStorageInfo } = useAdminInformation();
+    const [filteredInfo, setFilteredInfo] = useState([]);
+
+    useEffect(() => {
+        setFilteredInfo(districtInfo);
+    }, [districtInfo]);
 
     useEffect(() => {
         // getStorageInfo();
@@ -102,8 +107,8 @@ function Dashboard(props) {
         });
     }
 
-    const [filteredInfo, setFilteredInfo] = useState(districtInfo);
-    
+
+
     const timerRef = React.useRef(null);
     searchDistrict = text => {
         if (timerRef.current) clearTimeout(timerRef.current);

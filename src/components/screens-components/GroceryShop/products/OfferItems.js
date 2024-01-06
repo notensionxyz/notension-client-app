@@ -9,7 +9,7 @@ import { handleItemsByStoreReducer } from '../../../../store/reducers/items-by-s
 const screenWidth = Dimensions.get('window').width;
 
 export default function OfferItems() {
-    const specialOfferItem  = useSelector((state) => state.itemsByStoreReducer.specialOfferItem);
+    const specialOfferItem = useSelector((state) => state.itemsByStoreReducer.specialOfferItem);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -37,7 +37,7 @@ export default function OfferItems() {
             typeName: 'Special Offer Items',
             subtype: []
         };
-        
+
         dispatch(
             handleItemsByStoreReducer({
                 type: 'SAVE_SUBTYPE_INFO_BY_TYPE',
@@ -78,7 +78,7 @@ export default function OfferItems() {
                             isOutOfStock={isInOutOfStockList(item._id)}
                         />
                     }
-                    keyExtractor={item => item.product_id}
+                    keyExtractor={item => item._id}
                 />
             </View>
         </>

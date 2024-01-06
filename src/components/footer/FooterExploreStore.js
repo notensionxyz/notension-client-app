@@ -1,7 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { makeCall } from '../../helpers/imageUrl';
 
 let totalItem = 0;
 let totalSalePrice = 0;
@@ -15,16 +16,25 @@ export default function FooterExploreStore(props) {
         totalSalePrice = cartItems.totalAmountGrocery;
     }
 
+    if (props.module === 'Medicine') {
+        totalItem = cartItems.medicineItems.length;
+        totalSalePrice = cartItems.totalAmountMedicine;
+    }
+
     const navigateTo = () => {
         if (props.module === 'Grocery') {
             navigation.navigate('GroceryCartItems');
+        }
+
+        if (props.module === 'Medicine') {
+            navigation.navigate('MedicineCartItems');
         }
     }
 
     return (
         <View style={{ height: 48, backgroundColor: 'white', flexDirection: 'row', borderTopWidth: 0.5, borderBottomColor: '#006400' }}>
 
-            <TouchableOpacity onPress={() => null}
+            <TouchableOpacity onPress={() => makeCall(props.contact)}
                 style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Image style={{ width: 22, height: 22, tintColor: tab === 'home' ? '#ff2e93' : '#006400' }}
                     resizeMode={'contain'}

@@ -23,7 +23,10 @@ const dashboardReducer = createSlice({
         typeInfoByShop: [],
         subtypeInfoByShop: [],
         DashboardSlider: [],
-        visitedGroceryStore: {}
+        visitedGroceryStore: {},
+        visitedMedicineStore: {},
+        visitedFoodStore: {},
+        visitedDineInRestaurent: {},
     },
     reducers: {
         handleDashboardReducer: (state = initialState, { payload }) => {
@@ -79,7 +82,23 @@ const dashboardReducer = createSlice({
                     visitedGroceryStore: payload?.data
                 };
             }
-            else if (payload.type == "RESET_USER") {
+            else if (payload.type == 'EXPLORE_MED_STORE') {
+                return {
+                    ...state,
+                    isLoading: false,
+                    visitedMedicineStore: payload?.data?.ShopDetails[0] || {},
+                    typeInfoByShop: payload?.data?.ProductTypeByShop || [],
+                    subtypeInfoByShop: payload?.data?.ProductSubTypeByShop || [],
+                    DashboardSlider: payload?.data?.DashboardSlider || [],
+                };
+            }
+            else if (payload.type == 'VISITED_MED_STORE') {
+                return {
+                    ...state,
+                    visitedMedicineStore: payload?.data
+                };
+            }
+            else if (payload.type == "RESET_DASHBOARD_REDUCER") {
                 return {
                     ...state,
                     callUs: '',
@@ -99,6 +118,14 @@ const dashboardReducer = createSlice({
                     districtInfo: [],
                     districtAreaInfo: [],
                     districtSubAreaInfo: [],
+                    ditance: [],
+                    typeInfoByShop: [],
+                    subtypeInfoByShop: [],
+                    DashboardSlider: [],
+                    visitedGroceryStore: {},
+                    visitedMedicineStore: {},
+                    visitedFoodStore: {},
+                    visitedDineInRestaurent: {},
                 }
             } else {
                 return {

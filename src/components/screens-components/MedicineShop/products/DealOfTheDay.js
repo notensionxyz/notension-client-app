@@ -3,8 +3,8 @@ import { Dimensions, FlatList, TouchableOpacity, Text, View } from "react-native
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import { MemoizedScrollProductList } from './ScrollProductList';
-import { handleGroceryItems } from '../../../../hooks/cart-handler/handleGroceryItems';
 import { handleItemsByStoreReducer } from '../../../../store/reducers/items-by-shop';
+import { handleMedicineItems } from '../../../../hooks/cart-handler/handleMedicineItems';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -20,7 +20,7 @@ export default function DealOfTheDay() {
         removeFromCart,
         deccreseQty,
         isInOutOfStockList
-    } = handleGroceryItems();
+    } = handleMedicineItems();
 
     const navigateTo = () => {
         const options = {

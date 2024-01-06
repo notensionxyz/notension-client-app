@@ -15,8 +15,13 @@ export default function HeaderExploreStore({ Title, module }) {
             customType: '',
             productSubtype: '',
         };
+        
         if (module === 'Grocery') {
             navigation.navigate('GroceryProductList', { options });
+        }
+
+        if (module === 'Medicine') {
+            navigation.navigate('MedicineProductList', { options });
         }
         
         let TypeInfo = {

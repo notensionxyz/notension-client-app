@@ -3,7 +3,7 @@ import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MemoizedListView } from './ListView';
 import { usePopularItem } from '../../../../hooks/fetch-data-by-module/usePopularItem';
-import { handleGroceryItems } from '../../../../hooks/cart-handler/handleGroceryItems';
+import { handleMedicineItems } from '../../../../hooks/cart-handler/handleMedicineItems';
 
 function PopularProduct({ pageNo, setPageNo }) {
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
@@ -14,7 +14,7 @@ function PopularProduct({ pageNo, setPageNo }) {
     let parameter = {
         groceryStoreId: merchantId,
         custom_store_id: customstore_id,
-        customType: "64f5b63a256e0838327efaef",
+        customType: "651284f9330595b483e38d73",
     }
 
     const loadMoreResults = async () => {
@@ -37,7 +37,7 @@ function PopularProduct({ pageNo, setPageNo }) {
         removeFromCart,
         deccreseQty,
         isInOutOfStockList
-    } = handleGroceryItems();
+    } = handleMedicineItems();
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

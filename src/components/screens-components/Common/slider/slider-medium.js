@@ -37,7 +37,7 @@ const CustomPagination = (props: JSX.IntrinsicAttributes & PaginationProps) => {
     );
 };
 
-const SliderMedium = ({ data }) => {
+const SliderMedium = ({ data, folder_name }) => {
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <SwiperFlatList
@@ -49,7 +49,7 @@ const SliderMedium = ({ data }) => {
                 renderItem={({ item }) => (
                     <View style={{ flex: 1, backgroundColor: '#f1f5f7', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'white' }}>
                         <FastImage
-                            source={{ uri: storageImageUrl(grocery_sliderTypeSubtypeImagesFolderName, item.file_name) }}
+                            source={{ uri: storageImageUrl(folder_name, item.file_name) }}
                             resizeMode={FastImage.resizeMode.contain}
                             style={{
                                 height: (screenWidth / 2),

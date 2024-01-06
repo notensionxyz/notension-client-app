@@ -19,7 +19,7 @@ export const useGlobal = () => {
     const [error, setError] = useState(false);
 
     const getDasboardInfo = async () => {
-
+        resetDasgboardReducer();
         if (districtInfo.length < 1) {
             getDistrictInfo();
         }
@@ -37,7 +37,7 @@ export const useGlobal = () => {
                 saveLoadingStatus(false);
             })
             .catch(error => {
-                
+
                 saveLoadingStatus(false);
             })
         setTimeout(() => {
@@ -105,6 +105,15 @@ export const useGlobal = () => {
             handleDashboardReducer({
                 type: 'SAVE_CONNECTION_STATUS',
                 data: status,
+            })
+        );
+    }
+
+    const resetDasgboardReducer = () => {
+        dispatch(
+            handleDashboardReducer({
+                type: 'RESET_DASHBOARD_REDUCER',
+                data: true,
             })
         );
     }

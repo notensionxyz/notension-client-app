@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GROCERY_ADMIN_URL } from "@env"
+import { MEDICINE_ADMIN_URL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { EXPLORE_GROCERY_STORE, GROCERY_ITEMS_BY_CUSTOMTYPE, GROCERY_ITEMS_BY_SUBTYPE, NEAREST_GROCERY_STORE, SEARCH_GROCERY_ITEMS } from '../../helpers/Constants';
+import { EXPLORE_MEDICINE_STORE, MEDICINE_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY_SUBTYPE, NEAREST_MEDICINE_STORE, SEARCH_MEDICINE_ITEMS } from '../../helpers/Constants';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 
 axios.defaults.withCredentials = true;
 
-export const useGrocery = () => {
+export const useMedicine = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
@@ -24,11 +24,11 @@ export const useGrocery = () => {
     const { userLatitude, userLongitude, districtId } = useSelector((state) => state.user);
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
-    
-    //console.log('GROCERY_ADMIN_URL', GROCERY_ADMIN_URL);
-    
+
+    //console.log('MEDICINE_ADMIN_URL', MEDICINE_ADMIN_URL);
+
     const Axios = axios.create({
-        baseURL: GROCERY_ADMIN_URL,
+        baseURL: MEDICINE_ADMIN_URL,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -53,9 +53,8 @@ export const useGrocery = () => {
         );
     };
 
-
-    const getNearestGroceryStoreInfo = (setNearestInfo, distance = 1000) => {
-
+    const getNearestMedicineStoreInfo = (setNearestInfo, distance = 1000) => {
+        resetReducer();
         setProgressing(true);
         const props = {
             shop_longitude: userLongitude,
@@ -66,7 +65,7 @@ export const useGrocery = () => {
         console.log(props);
         //saveLoadingStatus(true);
         Axios
-            .post(NEAREST_GROCERY_STORE, props)
+            .post(NEAREST_MEDICINE_STORE, props)
             .then(response => {
                 //console.log(response.data);
                 setNearestInfo(response.data.result);
@@ -88,7 +87,7 @@ export const useGrocery = () => {
         resetReducer();
         setProgressing(true);
         Axios
-            .get(EXPLORE_GROCERY_STORE,
+            .get(EXPLORE_MEDICINE_STORE,
                 {
                     params: {
                         storeId: data?._id,
@@ -107,7 +106,7 @@ export const useGrocery = () => {
 
                 dispatch(
                     handleDashboardReducer({
-                        type: 'EXPLORE_STORE',
+                        type: 'EXPLORE_MED_STORE',
                         data: res?.data?.result,
                     })
                 );
@@ -128,11 +127,11 @@ export const useGrocery = () => {
             }
 
             Axios
-                .get(SEARCH_GROCERY_ITEMS,
+                .get(SEARCH_MEDICINE_ITEMS,
                     {
                         params: {
                             search: searchText,
-                            groceryStoreId: merchantId,
+                            merchantId: merchantId,
                             custom_store_id: customstore_id,
                             page: pageNo,
                         }
@@ -164,10 +163,10 @@ export const useGrocery = () => {
 
     const getItemsOnPress = (options, pageNo, setPageNo) => {
         let goForSearch = false;
-        let dataURL = GROCERY_ITEMS_BY_SUBTYPE;
+        let dataURL = MEDICINE_ITEMS_BY_SUBTYPE;
 
         let parameter = {
-            groceryStoreId: merchantId,
+            merchantId: merchantId,
             custom_store_id: customstore_id,
             page: pageNo,
         }
@@ -179,7 +178,7 @@ export const useGrocery = () => {
 
         if (options.customType !== '') {
             parameter.customType = options.customType;
-            dataURL = GROCERY_ITEMS_BY_CUSTOMTYPE;
+            dataURL = MEDICINE_ITEMS_BY_CUSTOMTYPE;
         }
 
         if (pageNo === 1) {
@@ -221,12 +220,9 @@ export const useGrocery = () => {
     const reloadCustomTypeData = (options, setPageNo) => {
         resetLoadingStatus();
         setTimeout(() => {
-            if (options.customType === "64f5a306baa57a4707524d6e") { // this is "64f5a306baa57a4707524d6e" Offer Items ID
-
+            if (options.customType === "65128cbd20db0921f13b40b3") { // this is "64f5a306baa57a4707524d6e" Offer Items ID
                 saveItemsToReducer(specialOfferItem);
-            } else {
-                saveItemsToReducer(dealOfTheDay);
-            }
+            } 
             setLoadingMore(false);
             setPageNo(2);
         }, 500);
@@ -263,7 +259,7 @@ export const useGrocery = () => {
         saveItemsToReducer,
         handleSearch,
         getItemsOnPress,
-        getNearestGroceryStoreInfo,
+        getNearestMedicineStoreInfo,
         exploreStore,
         reloadCustomTypeData
     };

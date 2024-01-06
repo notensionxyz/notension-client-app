@@ -13,7 +13,7 @@ import OfferItems from '../../components/screens-components/GroceryShop/products
 import DealOfTheDay from '../../components/screens-components/GroceryShop/products/DealOfTheDay';
 import HeaderExploreStore from '../../components/header/HeaderExploreStore';
 import FooterExploreStore from '../../components/footer/FooterExploreStore';
-import { useScrollToTop } from '@react-navigation/native';
+import { grocery_sliderTypeSubtypeImagesFolderName } from '../../helpers/Constants';
 
 let typeInfo = {};
 const screenWidth = Dimensions.get('window').width;
@@ -22,11 +22,9 @@ function ExploreGroceryShop() {
     const ref = useRef(null);
     const navigation = useNavigation();
     const { typeInfoByShop, subtypeInfoByShop, DashboardSlider, visitedGroceryStore } = useSelector((state) => state.dashboard);
-    console.log('visitedGroceryStore', visitedGroceryStore[0]?.min_delivery_charge);
     const [typeInfoGeneral, setTypeInfoGeneral] = useState([]);
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
-    const [offerInfo, setOfferInfo] = useState([]);
-    const [dealOfTheDayInfo, setDealOfTheDayInfo] = useState([]);
+
     const { exploreStore, progressing } = useGrocery();
     const { resetState } = usePopularItem();
     const [pageNo, setPageNo] = useState(2);
@@ -54,9 +52,6 @@ function ExploreGroceryShop() {
     useEffect(() => {
         console.log('Render Page3333');
         if (typeInfoByShop.length > 0) {
-            // setOfferInfo(specialOfferItem.slice(0, 8));
-            // setDealOfTheDayInfo(dealOfTheDay.slice(0, 8));
-
             let generaltypeInfo = typeInfoByShop?.filter(
                 (type) => type.statusType === 'General'
             );
@@ -87,17 +82,17 @@ function ExploreGroceryShop() {
     }, [typeInfoByShop]);
 
     console.log('main');
-    useScrollToTop(ref);
+
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <HeaderExploreStore
                 Title='Search here.... e.g milk, চিনি'
-                module='Grocery' ref={ref} />
+                module='Grocery' />
             <ProgressStyle2 visible={progressing} />
             {/* {!progressing &&
                 <FilterOptionBySubtype navigateTo={navigateTo} />
             } */}
-            <ScrollView ref={ref}>
+            <ScrollView>
                 {typeInfoGeneral?.length > 0 &&
                     <>
                         <View style={{ width: screenWidth - 8, padding: 10, backgroundColor: 'white' }}>
@@ -108,7 +103,9 @@ function ExploreGroceryShop() {
                                 <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>{visitedGroceryStore?.shop_address}</Text>
                             </View>
                         </View>
-                        <SliderMedium data={DashboardSlider[0]?.first_slider} />
+
+                        <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
+
                         {typeInfo['PT15'] && typeInfo['PT15']?.subtype?.length > 0 &&
                             <ManageListView data={typeInfo['PT15']} navigateTo={navigateTo} />
                         }
@@ -119,7 +116,7 @@ function ExploreGroceryShop() {
                             <ManageListView data={typeInfo['PT12']} navigateTo={navigateTo} />
                         }
 
-                        <SliderMedium data={DashboardSlider[0]?.second_slider} />
+                        <SliderMedium data={DashboardSlider[0]?.second_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['PT16'] && typeInfo['PT16']?.subtype?.length > 0 &&
                             <ManageListView data={typeInfo['PT16']} navigateTo={navigateTo} />
@@ -135,7 +132,7 @@ function ExploreGroceryShop() {
                             <ManageListView data={typeInfo['PT18']} navigateTo={navigateTo} />
                         }
 
-                        <SliderMedium data={DashboardSlider[0]?.third_slider} />
+                        <SliderMedium data={DashboardSlider[0]?.third_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['PT19'] && typeInfo['PT19']?.subtype?.length > 0 &&
                             <ManageListView data={typeInfo['PT19']} navigateTo={navigateTo} />
@@ -145,7 +142,7 @@ function ExploreGroceryShop() {
                             <ManageListView data={typeInfo['PT20']} navigateTo={navigateTo} />
                         }
 
-                        <SliderMedium data={DashboardSlider[0]?.fourth_slider} />
+                        <SliderMedium data={DashboardSlider[0]?.fourth_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['PT21'] && typeInfo['PT21']?.subtype?.length > 0 &&
                             <ManageListView data={typeInfo['PT21']} navigateTo={navigateTo} />
@@ -162,20 +159,7 @@ function ExploreGroceryShop() {
                     </>
                 }
             </ScrollView>
-            <FooterExploreStore
-                onScroll={() => {
-                //   Alert('hello');
-                    ref.current?.scrollTo({
-                        y : 0,
-                        animated : true
-                    });
-                    // ref?.current?.scrollTo({
-                    //     offset: 0,
-                    //     animated: true
-                    // });
-                }}
-                module='Grocery'
-            />
+            <FooterExploreStore module='Grocery' contact={visitedGroceryStore?.contact_no} />
         </View>
     );
 }

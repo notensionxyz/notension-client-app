@@ -5,6 +5,8 @@ export const logoColor_2 = '#003B95';
 export const BackgroundColor_1 = '#FFFFFF';
 export const grocery_sliderTypeSubtypeImagesFolderName = 'grocery-slider-type-subtype-images';
 export const grocery_itemsImages = 'grocery-items-images';
+export const medicine_sliderTypeSubtypeImagesFolderName = 'medicine-slider-type-subtype-images';
+export const medicine_itemsImages = 'medicine-items-images';
 
 export const GET_DASHBOARD_INFO = '/public-api/v1/admin/all-appdashboard-data';
 export const GET_DISTRICT_INFO = '/public-api/v1/admin/all-district';
@@ -19,12 +21,12 @@ export const GROCERY_ITEMS_BY_CUSTOMTYPE = '/client-app-api/v1/grocery/items-by-
 export const GROCERY_ITEM_DETAILS = '/client-app-api/v1/grocery/item-details';
 
 export const POST_NEAREST_MEDICINE_STORE = '/api/v1/medicine/public/nearest-store';
-export const NEAREST_MEDICINE_STORE = '/client-app-api/v1/grocery/get-nearest-store';
-export const EXPLORE_MEDICINE_STORE = '/client-app-api/v1/grocery/explore-store';
-export const SEARCH_MEDICINE_ITEMS = '/client-app-api/v1/grocery/search-items';
-export const MEDICINE_ITEMS_BY_SUBTYPE = '/client-app-api/v1/grocery/items-by-subtype';
-export const MEDICINE_ITEMS_BY_CUSTOMTYPE = '/client-app-api/v1/grocery/items-by-customType';
-export const MEDICINE_ITEM_DETAILS = '/client-app-api/v1/grocery/item-details';
+export const NEAREST_MEDICINE_STORE = '/client-app-api/v1/medicine/get-nearest-store';
+export const EXPLORE_MEDICINE_STORE = '/client-app-api/v1/medicine/explore-store';
+export const SEARCH_MEDICINE_ITEMS = '/client-app-api/v1/medicine/search-items';
+export const MEDICINE_ITEMS_BY_SUBTYPE = '/client-app-api/v1/medicine/items-by-subtype';
+export const MEDICINE_ITEMS_BY_CUSTOMTYPE = '/client-app-api/v1/medicine/items-by-customType';
+export const MEDICINE_ITEM_DETAILS = '/client-app-api/v1/medicine/item-details';
 
 export const MyFavouriteData = [
     { id: '1', image: require('../assets/gallery/favorite-1.jpg') },

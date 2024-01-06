@@ -1,16 +1,15 @@
 import React from 'react';
 import { Dimensions, FlatList, TouchableOpacity, Text, View } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"
 import { MemoizedScrollProductList } from './ScrollProductList';
-import { handleGroceryItems } from '../../../../hooks/cart-handler/handleGroceryItems';
 import { handleItemsByStoreReducer } from '../../../../store/reducers/items-by-shop';
+import { handleMedicineItems } from '../../../../hooks/cart-handler/handleMedicineItems';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function DealOfTheDay() {
-    const { dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
-
+export default function OfferItems() {
+    const specialOfferItem = useSelector((state) => state.itemsByStoreReducer.specialOfferItem);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -20,30 +19,31 @@ export default function DealOfTheDay() {
         removeFromCart,
         deccreseQty,
         isInOutOfStockList
-    } = handleGroceryItems();
+    } = handleMedicineItems();
 
     const navigateTo = () => {
+
         const options = {
             searchProduct: false,
             fetchByoption: false,
             fetchBycustomType: true,
-            customType: "6525306cf79d9e77f12a2a63",
+            customType: "65128cbd20db0921f13b40b3",
             productSubtype: '',
         };
 
-        navigation.navigate('GroceryProductList', { options });
+        navigation.navigate('MedicineProductList', { options });
 
         let TypeInfo = {
-            typeName: 'Deal Of the Day',
+            typeName: 'Special Offer Items',
             subtype: []
         };
+
         dispatch(
             handleItemsByStoreReducer({
                 type: 'SAVE_SUBTYPE_INFO_BY_TYPE',
                 data: TypeInfo,
             })
         );
-
     }
 
     return (
@@ -55,7 +55,7 @@ export default function DealOfTheDay() {
                 padding: 20,
                 backgroundColor: 'white',
             }}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#006400' }}>Deal Of the Day</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#006400' }}>Special Offer Items</Text>
                 <TouchableOpacity onPress={() => { navigateTo(); }}>
                     <Text style={{ fontSize: 13, color: '#ff3d00', fontWeight: 'bold' }}>VIEW ALL</Text>
                 </TouchableOpacity>
@@ -66,7 +66,7 @@ export default function DealOfTheDay() {
                     contentContainerStyle={{ padding: 3 }}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    data={dealOfTheDay.slice(0, 8)}
+                    data={specialOfferItem.slice(0, 8)}
                     renderItem={({ item }) =>
                         <MemoizedScrollProductList
                             data={item}
