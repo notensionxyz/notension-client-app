@@ -16,7 +16,7 @@ function ListView({ data, addToBagPress, deccresePress, removePress, qtyIncart, 
     const dispatch = useDispatch();
     let cardMargin = 2.5;
     let cardWidth = screenWidth - (cardMargin * 6);
-
+    let title = data?.item_title_eng + `\n`
     return (
         <React.Fragment key={data?._id}>
             <View style={{
@@ -88,8 +88,37 @@ function ListView({ data, addToBagPress, deccresePress, removePress, qtyIncart, 
                     }
                 </TouchableOpacity>
                 <View style={{ flex: 1, padding: 5 }}>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            backgroundColor: '#FFFFFF',
+                            height: 18,
+                            borderRadius: 1,
+                            right: 5,
+                            top: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                        <Text
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: "#948e7e",
+                                fontSize: 13
+                            }}>
+                            {data?.strength}
+                        </Text>
+                    </View>
                     <TouchableOpacity onPress={() => { navigation.navigate('MedicineProductDetails', { data }) }}>
-                        <Text style={{ fontSize: 18, color: '#003B95', }} numberOfLines={1} ellipsizeMode="tail">{data?.item_title_eng}</Text>
+                        <Text style={{ fontSize: 18, color: '#003B95', }} numberOfLines={2} ellipsizeMode="tail">
+                            {title.split('\n').map((line, index) => (
+                                <React.Fragment key={index}>
+                                    {line}
+                                    {index === 0 && title.includes('\n') ? '\n' : null}
+                                    {index === 1 && title.includes('\n') ? '\n' : '\n'}
+                                </React.Fragment>
+                            ))}
+                        </Text>
                         <Text style={{ fontSize: 16, color: '#006400' }} numberOfLines={1} ellipsizeMode="tail">{data?.pack_size}</Text>
                     </TouchableOpacity>
                     <Text style={{ marginTop: 10, }} numberOfLines={1} ellipsizeMode="tail">

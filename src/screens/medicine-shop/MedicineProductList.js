@@ -41,13 +41,16 @@ function MedicineProductList({ route }) {
         saveItemsToReducer,
         handleSearch,
         getItemsOnPress,
-        reloadCustomTypeData
+        reloadCustomTypeData,
+        resetLoadingStatus
     } = useMedicine();
 
-
-
     useEffect(() => {
-        saveItemsToReducer([]);
+        if (options?.searchProduct) {
+            resetLoadingStatus(true);
+        } else {
+            resetLoadingStatus();
+        }
 
         if (options?.fetchByoption) {
             const iItemIndex = subtypeByselectedType.findIndex(
@@ -95,7 +98,7 @@ function MedicineProductList({ route }) {
     }
 
     const subTypeProduct = (subtype_id, index) => {
-        saveItemsToReducer([]);
+        resetLoadingStatus();
         options.productSubtype = subtype_id;
         setPageNo(1);
         getItemsOnPress(options, 1, setPageNo)
@@ -182,7 +185,7 @@ function MedicineProductList({ route }) {
                             />}
                     />
                 </View>
-                <FooterCommon module='Grocery' />
+                <FooterCommon module='Medicine' />
             </View>
         </>
     );

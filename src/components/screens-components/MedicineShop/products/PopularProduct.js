@@ -27,7 +27,7 @@ function PopularProduct({ pageNo, setPageNo }) {
         setLoadingMore(true);
 
         setTimeout(() => {
-            getPopularItems(parameter, 'from_grocery', pageNo, setPageNo);
+            getPopularItems(parameter, 'from_medicine', pageNo, setPageNo);
         }, 500);
     }
 

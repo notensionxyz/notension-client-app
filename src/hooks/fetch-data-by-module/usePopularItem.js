@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GROCERY_ADMIN_URL } from "@env"
+import { GROCERY_ADMIN_URL, MEDICINE_ADMIN_URL } from "@env"
 import axios from 'axios';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { GROCERY_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY_CUSTOMTYPE } from '../../helpers/Constants';
@@ -12,8 +12,10 @@ export const usePopularItem = () => {
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
     const popularItem = useSelector((state) => state.itemsByStoreReducer.popularItem);
-    
-    const Axios = axios.create({
+
+    console.log(MEDICINE_ADMIN_URL);
+
+    const AxiosGrocery = axios.create({
         baseURL: GROCERY_ADMIN_URL,
         headers: {
             'Accept': 'application/json',
@@ -21,11 +23,20 @@ export const usePopularItem = () => {
         },
     });
 
-    const getPopularItems = (parameter, module, pageNo, setPageNo) => {
+    const AxiosMedicine = axios.create({
+        baseURL: MEDICINE_ADMIN_URL,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
 
+    const getPopularItems = (parameter, module, pageNo, setPageNo) => {
+        let Axios = AxiosGrocery;
         let dataURL = GROCERY_ITEMS_BY_CUSTOMTYPE;
         if (module === 'from_medicine') {
             dataURL = MEDICINE_ITEMS_BY_CUSTOMTYPE;
+            Axios = AxiosMedicine;
         }
 
         parameter.page = pageNo

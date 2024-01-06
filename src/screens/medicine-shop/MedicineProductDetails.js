@@ -11,7 +11,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 //import HomeCartFooter from "../appcomponents/footer/HomeCartFooter";
 import { handleGroceryItems } from '../../hooks/cart-handler/handleGroceryItems';
 import { storageImageUrl } from '../../helpers/imageUrl';
-import { grocery_itemsImages } from '../../helpers/Constants';
+import { grocery_itemsImages, medicine_itemsImages } from '../../helpers/Constants';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import FooterCommon from '../../components/footer/FooterCommon';
 
@@ -154,7 +154,7 @@ export default function MedicineProductDetails({ route }) {
                     <View style={{ height: screenWidth / 2, width: screenWidth, backgroundColor: 'white', alignItems: 'center', overflow: 'hidden', justifyContent: 'center' }}>
                         <FastImage style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}
                             resizeMode={FastImage.resizeMode.contain}
-                            source={{ uri: storageImageUrl(grocery_itemsImages, data?.app_image) }} />
+                            source={{ uri: storageImageUrl(medicine_itemsImages, data?.app_image) }} />
                     </View>
                     // <View style={{ height: screenWidth, backgroundColor: '#f1f5f7', alignItems: 'center', marginTop: 2 }}>
                     //     <SwiperFlatList
@@ -199,10 +199,33 @@ export default function MedicineProductDetails({ route }) {
                         }}>
 
                             <View style={{ flex: 1, padding: 10 }}>
-
-                                <Text style={{ fontSize: 18, color: '#263238', fontWeight: 'bold' }}>{data?.product_title_eng}</Text>
-                                <Text style={{ fontSize: 18, color: '#263238', fontWeight: 'bold' }}>{data?.product_title_beng}</Text>
-
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        backgroundColor: '#FFFFFF',
+                                        height: 22,
+                                        borderRadius: 1,
+                                        right: 5,
+                                        top: 1,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}>
+                                    <Text
+                                        style={{
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: "#948e7e",
+                                            fontSize: 15
+                                        }}>
+                                        {data?.strength}
+                                    </Text>
+                                </View>
+                                <Text style={{ fontSize: 18, color: '#263238', fontWeight: 'bold' }}>{data?.item_title_eng}</Text>
+                                {data?.item_title_beng &&
+                                    <Text style={{ fontSize: 18, color: '#263238', fontWeight: 'bold' }}>{data?.item_title_beng}</Text>
+                                }
+                                <Text style={{ fontSize: 14, color: '#8c417e' }} numberOfLines={1} ellipsizeMode="tail">{data?.generic_name}</Text>
+                                <Text style={{ fontSize: 14, color: '#263238' }} numberOfLines={1} ellipsizeMode="tail">{data?.company_name}</Text>
                                 <Text>
                                     <Text style={{ fontSize: 18, color: '#616161', fontWeight: 'bold' }}>{data?.pack_size}    </Text>
                                     {data?.max_retail_price > 0 ?
@@ -312,7 +335,7 @@ export default function MedicineProductDetails({ route }) {
                     </View>
                 }
             />
-            <FooterCommon module='Grocery' />
+            <FooterCommon module='Medicine' />
         </View>
     );
 }

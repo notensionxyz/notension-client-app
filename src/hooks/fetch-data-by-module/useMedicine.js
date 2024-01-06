@@ -25,7 +25,7 @@ export const useMedicine = () => {
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
 
-    //console.log('MEDICINE_ADMIN_URL', MEDICINE_ADMIN_URL);
+    console.log('MEDICINE_ADMIN_URL', MEDICINE_ADMIN_URL);
 
     const Axios = axios.create({
         baseURL: MEDICINE_ADMIN_URL,
@@ -181,9 +181,9 @@ export const useMedicine = () => {
             dataURL = MEDICINE_ITEMS_BY_CUSTOMTYPE;
         }
 
-        if (pageNo === 1) {
-            resetLoadingStatus();
-        }
+        // if (pageNo === 1) {
+        //     resetLoadingStatus();
+        // }
 
         Axios
             .get(dataURL,
@@ -218,22 +218,24 @@ export const useMedicine = () => {
     };
 
     const reloadCustomTypeData = (options, setPageNo) => {
-        resetLoadingStatus();
         setTimeout(() => {
             if (options.customType === "65128cbd20db0921f13b40b3") { // this is "64f5a306baa57a4707524d6e" Offer Items ID
+                if (specialOfferItem.length < 24) {
+                    setAllLoaded(true);
+                }
                 saveItemsToReducer(specialOfferItem);
-            } 
+            }
             setLoadingMore(false);
             setPageNo(2);
         }, 500);
     }
 
-    const resetLoadingStatus = () => {
+    const resetLoadingStatus = (status = false) => {
+        saveItemsToReducer([]);
         setShowActivityIndicator(true);
         setItemNotfound(false);
-        setAllLoaded(false);
+        setAllLoaded(status);
         setLoadingMore(true);
-        saveItemsToReducer([]);
     }
 
     useEffect(() => {
@@ -261,6 +263,7 @@ export const useMedicine = () => {
         getItemsOnPress,
         getNearestMedicineStoreInfo,
         exploreStore,
-        reloadCustomTypeData
+        reloadCustomTypeData,
+        resetLoadingStatus,
     };
 };

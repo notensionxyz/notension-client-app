@@ -24,9 +24,9 @@ export const useGrocery = () => {
     const { userLatitude, userLongitude, districtId } = useSelector((state) => state.user);
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
-    
+
     //console.log('GROCERY_ADMIN_URL', GROCERY_ADMIN_URL);
-    
+
     const Axios = axios.create({
         baseURL: GROCERY_ADMIN_URL,
         headers: {
@@ -52,7 +52,6 @@ export const useGrocery = () => {
             })
         );
     };
-
 
     const getNearestGroceryStoreInfo = (setNearestInfo, distance = 1000) => {
 
@@ -182,9 +181,9 @@ export const useGrocery = () => {
             dataURL = GROCERY_ITEMS_BY_CUSTOMTYPE;
         }
 
-        if (pageNo === 1) {
-            resetLoadingStatus();
-        }
+        // if (pageNo === 1) {
+        //     resetLoadingStatus();
+        // }
 
         Axios
             .get(dataURL,
@@ -219,12 +218,18 @@ export const useGrocery = () => {
     };
 
     const reloadCustomTypeData = (options, setPageNo) => {
-        resetLoadingStatus();
         setTimeout(() => {
             if (options.customType === "64f5a306baa57a4707524d6e") { // this is "64f5a306baa57a4707524d6e" Offer Items ID
 
+                if (specialOfferItem.length < 24) {
+                    setAllLoaded(true);
+                }
                 saveItemsToReducer(specialOfferItem);
+
             } else {
+                if (dealOfTheDay.length < 24) {
+                    setAllLoaded(true);
+                }
                 saveItemsToReducer(dealOfTheDay);
             }
             setLoadingMore(false);
@@ -232,12 +237,12 @@ export const useGrocery = () => {
         }, 500);
     }
 
-    const resetLoadingStatus = () => {
+    const resetLoadingStatus = (status = false) => {
+        saveItemsToReducer([]);
         setShowActivityIndicator(true);
         setItemNotfound(false);
-        setAllLoaded(false);
+        setAllLoaded(status);
         setLoadingMore(true);
-        saveItemsToReducer([]);
     }
 
     useEffect(() => {
@@ -265,6 +270,7 @@ export const useGrocery = () => {
         getItemsOnPress,
         getNearestGroceryStoreInfo,
         exploreStore,
-        reloadCustomTypeData
+        reloadCustomTypeData,
+        resetLoadingStatus
     };
 };

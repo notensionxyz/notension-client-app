@@ -37,16 +37,20 @@ function GroceryProductList({ route }) {
         setShowSuccessMessage,
         setShowErrorMessage,
         setLoadingMore,
-        saveItemsToReducer,
         handleSearch,
         getItemsOnPress,
-        reloadCustomTypeData
+        reloadCustomTypeData,
+        resetLoadingStatus
     } = useGrocery();
 
 
 
     useEffect(() => {
-        saveItemsToReducer([]);
+        if (options?.searchProduct) {
+            resetLoadingStatus(true);
+        } else {
+            resetLoadingStatus();
+        }
 
         if (options?.fetchByoption) {
             const iItemIndex = subtypeByselectedType.findIndex(
@@ -94,7 +98,7 @@ function GroceryProductList({ route }) {
     }
 
     const subTypeProduct = (subtype_id, index) => {
-        saveItemsToReducer([]);
+        resetLoadingStatus();
         options.productSubtype = subtype_id;
         setPageNo(1);
         getItemsOnPress(options, 1, setPageNo)
