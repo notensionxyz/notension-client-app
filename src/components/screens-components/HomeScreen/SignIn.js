@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StatusBar, ImageBackground, Text, TouchableOpacity, View, TextInput, StyleSheet } from "react-native";
 import { internetConnectionStatus } from '../../../helper/urlLinking';
-import { useAdminInformation } from '../../../hooks/user';
+import { useAdminInformation } from '../../../hooks/useUser';
 
 let margin = 10;
 

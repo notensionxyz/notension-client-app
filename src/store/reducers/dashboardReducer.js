@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const dashboardReducer = createSlice({
     name: "dashboard",
     initialState: {
+        currentModule: 'dashboard',
         callUs: '',
         internetConnectionAvailable: true,
         isLoading: false,
@@ -22,6 +23,7 @@ const dashboardReducer = createSlice({
         ditance: [],
         typeInfoByShop: [],
         subtypeInfoByShop: [],
+        shopCategory: [],
         DashboardSlider: [],
         visitedGroceryStore: {},
         visitedMedicineStore: {},
@@ -98,9 +100,44 @@ const dashboardReducer = createSlice({
                     visitedMedicineStore: payload?.data
                 };
             }
+            else if (payload.type == 'EXPLORE_FOOD_MODULE') {
+                return {
+                    ...state,
+                    isLoading: false,
+                    shopCategory: payload?.data?.shopCategory || [],
+                    DashboardSlider: payload?.data?.DashboardSlider || [],
+                };
+            }
+            else if (payload.type == 'EXPLORE_FOOD_STORE') {
+                return {
+                    ...state,
+                    isLoading: false,
+                    visitedMedicineStore: payload?.data?.ShopDetails[0] || {},
+                    typeInfoByShop: payload?.data?.ProductTypeByShop || [],
+                    subtypeInfoByShop: payload?.data?.ProductSubTypeByShop || [],
+                    DashboardSlider: payload?.data?.DashboardSlider || [],
+                };
+            }
+            else if (payload.type == 'VISITED_FOOD_STORE') {
+                return {
+                    ...state,
+                    visitedFoodStore: payload?.data
+                };
+            }
+            else if (payload.type == 'SET_CURRENT_MODULE') {
+                return {
+                    ...state,
+                    currentModule: payload?.data,
+                    typeInfoByShop: [],
+                    subtypeInfoByShop: [],
+                    shopCategory: [],
+                    DashboardSlider: [],
+                };
+            }
             else if (payload.type == "RESET_DASHBOARD_REDUCER") {
                 return {
                     ...state,
+                    currentModule: 'dashboard',
                     callUs: '',
                     internetConnectionAvailable: true,
                     isLoading: false,
@@ -121,6 +158,7 @@ const dashboardReducer = createSlice({
                     ditance: [],
                     typeInfoByShop: [],
                     subtypeInfoByShop: [],
+                    shopCategory: [],
                     DashboardSlider: [],
                     visitedGroceryStore: {},
                     visitedMedicineStore: {},

@@ -181,6 +181,18 @@ const cartReducer = createSlice({
                 state.totalAmountFood = calculateTotal(newState);
 
             }
+            else if (payload.type == 'GROCERY_ORDER_PLACED') {
+                state.groceryItems = [];
+                state.totalAmountGrocery = 0;
+            }
+            else if (payload.type == 'MEDICINE_ORDER_PLACED') {
+                state.medicineItems = [];
+                state.totalAmountMedicine = 0;
+            }
+            else if (payload.type == 'FOOD_ORDER_PLACED') {
+                state.foodItems = [];
+                state.totalAmountFood = 0;
+            }
         },
     },
 });

@@ -13,10 +13,7 @@ const userReducer = createSlice({
         districtSubAreaId: '00',
         districtSubAreaName: '',
         isLoggedin: false,
-        phoneNo: '',
-        custName: '',
-        custAdress: '',
-        alternativeMobileNo: '',
+        userInfo: {},
         deliveryAddress: '',
         allAddress: [],
         fireBaseToken: '',
@@ -40,17 +37,7 @@ const userReducer = createSlice({
                     setManually: false,
                     userLatitude: payload.data.userLatitude,
                     userLongitude: payload.data.userLongitude,
-                    districtId: payload.data.districtId,
-                    districtName: payload.data.districtName,
-                    districtAreaId: payload.data.districtAreaId,
-                    districtAreaName: payload.data.districtAreaName,
-                    districtSubAreaId: payload.data.districtSubAreaId,
-                    districtSubAreaName: payload.data.districtSubAreaName,
                     isLoggedin: payload.data.isLoggedin,
-                    phoneNo: payload.data.phoneNo,
-                    custName: payload.data.custName,
-                    custAdress: payload.data.custAdress,
-                    alternativeMobileNo: payload.data.alternativeMobileNo,
                     deliveryAddress: payload.data.deliveryAddress,
                     allAddress: payload.data.allAddress,
                     fireBaseToken: payload.data.fireBaseToken,
@@ -91,6 +78,20 @@ const userReducer = createSlice({
                     outlet_address: payload.data.outlet_address,
                 }
             }
+            else if (payload.type == "SAVE_LOGGEDIN_INFO") {
+                return {
+                    ...state,
+                    isLoggedin: true,
+                    userInfo: payload.data,
+                }
+            }
+            else if (payload.type == "LOGOUT_USER") {
+                return {
+                    ...state,
+                    isLoggedin: false,
+                    userInfo: payload.data,
+                }
+            }
             else if (payload.type == "RESET_USER") {
                 return {
                     ...state,
@@ -104,10 +105,6 @@ const userReducer = createSlice({
                     districtSubAreaId: '00',
                     districtSubAreaName: '',
                     isLoggedin: false,
-                    phoneNo: '',
-                    custName: '',
-                    custAdress: '',
-                    alternativeMobileNo: '',
                     deliveryAddress: '',
                     allAddress: [],
                     fireBaseToken: '',
@@ -120,6 +117,7 @@ const userReducer = createSlice({
                     default_outlet_id: '00',
                     default_outlet_name: '',
                     default_outlet_address: '',
+                    districtInfo: [],
                 }
             } else {
                 return {

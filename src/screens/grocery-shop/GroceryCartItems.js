@@ -15,6 +15,8 @@ let isReachable = 'true';
 let loading = true;
 const GroceryCartItems = (props) => {
     const navigation = useNavigation();
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [message, setMessage] = useState('');
     const visitedGroceryStore = useSelector((state) => state.dashboard.visitedGroceryStore);
     const minOrderAmount = visitedGroceryStore?.min_purchage_amount || 0;
     const deliveryCharge = visitedGroceryStore?.max_delivery_charge || 0;
@@ -103,15 +105,7 @@ const GroceryCartItems = (props) => {
                     }
                 </View>
 
-                {/* <PlaceOrderFooter totalSalePrice={
-                    parseFloat(totalAmountGrocery) > 0 && parseFloat(totalAmountGrocery) < parseFloat(minOrderAmount) ? (
-                        parseFloat(totalAmountGrocery) + parseFloat(deliveryCharge)
-                    ) : parseFloat(totalAmountGrocery) > 0 && parseFloat(totalAmountGrocery) >= parseFloat(minOrderAmount) ? (
-                        parseFloat(totalAmountGrocery) + parseFloat(minDeliveryCharge)
-                    )
-                        : 0
-                }
-                /> */}
+                <FooterPlaceOrder module='Grocery' grandTotal={grandTotal} setShowErrorMessage={setShowErrorMessage} setMessage={setMessage} />
             </View >
         </SafeAreaView>
     );

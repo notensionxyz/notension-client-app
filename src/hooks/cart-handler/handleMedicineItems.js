@@ -7,12 +7,8 @@ export const handleMedicineItems = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
-    const { groceryItems,
-        totalAmountGrocery,
-        medicineItems,
-        totalAmountMedicine,
-        foodItems,
-        totalAmountFood } = useSelector((state) => state.cartItems);
+
+    const medicineItems = useSelector((state) => state.cartItems.medicineItems);
 
     const getQty = (_id) => {
         let newState = [];
@@ -97,12 +93,6 @@ export const handleMedicineItems = () => {
     }, [error]);
 
     return {
-        groceryItems,
-        totalAmountGrocery,
-        medicineItems,
-        totalAmountMedicine,
-        foodItems,
-        totalAmountFood,
         getQty,
         addToCart,
         removeFromCart,

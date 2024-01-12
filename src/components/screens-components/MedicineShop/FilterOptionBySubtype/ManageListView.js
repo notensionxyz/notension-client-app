@@ -4,16 +4,14 @@ import FlatListThreeColumns from './FlatListThreeColumns';
 import FlatListTwoColumns from './FlatListTwoColumns';
 import FlatListSingleColumns from './FlatListSingleColumns';
 import { logoColor_2 } from '../../../../helpers/Constants';
-import { handleItemsByStoreReducer } from '../../../../store/reducers/items-by-shop';
-import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 let remainder = 0;
 
-function ManageListView({ data, navigateTo }) {
+function ManageListView({ data }) {
+    const navigation = useNavigation();
     const [reamainingInfo, setReamainingInfo] = useState([]);
     const [lastInfo, setLastInfo] = useState([]);
-    const dispatch = useDispatch();
-    const [subtype, setSubtype] = useState([]);
-    
+
     useEffect(() => {
 
         if (data?.subtype.length > 6) {
@@ -43,18 +41,21 @@ function ManageListView({ data, navigateTo }) {
             setReamainingInfo(data?.subtype);
             setLastInfo([]);
         }
-        setSubtype(data?.subtype);
+        //setSubtype(data?.subtype);
     }, []);
 
-
     const subtypeByselectedType = (selectedSubtype) => {
-        dispatch(
-            handleItemsByStoreReducer({
-                type: 'SAVE_SUBTYPE_INFO_BY_TYPE',
-                data: data,
-            })
-        );
-        navigateTo(selectedSubtype);
+        const options = {
+            searchProduct: false,
+            fetchByoption: true,
+            fetchBycustomType: false,
+            customType: '',
+            Title: data.typeName,
+            subtypeByselectedType: data.subtype,
+            productSubtype: selectedSubtype?.subtypeInfo?._id || '303030303030303030303030',
+        };
+
+        navigation.navigate('MedicineProductList', { options });
     }
 
     return (

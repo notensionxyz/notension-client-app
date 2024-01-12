@@ -21,7 +21,7 @@ function GroceryProductList({ route }) {
     const ref = useRef(null);
     const options = route.params.options;
     const dispatch = useDispatch();
-    const { productInfoByShop, typeName, subtypeByselectedType } = useSelector((state) => state.itemsByStoreReducer);
+    const { productInfoByShop} = useSelector((state) => state.itemsByStoreReducer);
     const [searchText, setSearchText] = useState('');
     const [pageNo, setPageNo] = useState(1);
 
@@ -53,7 +53,7 @@ function GroceryProductList({ route }) {
         }
 
         if (options?.fetchByoption) {
-            const iItemIndex = subtypeByselectedType.findIndex(
+            const iItemIndex = options.subtypeByselectedType.findIndex(
                 (subtype) => subtype?.subtypeInfo?._id === options.productSubtype
             );
             setPageNo(1);
@@ -118,7 +118,7 @@ function GroceryProductList({ route }) {
         <>
             <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
-                <HeaderCommon title={typeName} />
+                <HeaderCommon title={options.Title} />
                 {options?.searchProduct &&
                     <SearchField searchText={searchText} setSearchText={setSearchText} onPress={onPress} />
                 }
@@ -130,7 +130,7 @@ function GroceryProductList({ route }) {
                             contentContainerStyle={{ padding: 3 }}
                             horizontal
                             showsHorizontalScrollIndicator={false}
-                            data={subtypeByselectedType}
+                            data={options.subtypeByselectedType}
                             keyExtractor={item => item._id}
                             renderItem={({ item, index }) =>
                                 <SubtypeNameScroll

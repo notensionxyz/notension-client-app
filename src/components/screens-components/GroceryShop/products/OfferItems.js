@@ -1,17 +1,15 @@
 import React from 'react';
-import { Dimensions, FlatList, TouchableOpacity, Text, View } from "react-native";
+import { Dimensions, FlatList, TouchableOpacity, Text, View, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { MemoizedScrollProductList } from './ScrollProductList';
 import { handleGroceryItems } from '../../../../hooks/cart-handler/handleGroceryItems';
-import { handleItemsByStoreReducer } from '../../../../store/reducers/items-by-shop';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function OfferItems() {
     const specialOfferItem = useSelector((state) => state.itemsByStoreReducer.specialOfferItem);
     const navigation = useNavigation();
-    const dispatch = useDispatch();
 
     const {
         getQty,
@@ -28,38 +26,27 @@ export default function OfferItems() {
             fetchByoption: false,
             fetchBycustomType: true,
             customType: "64f5a306baa57a4707524d6e",
+            Title: 'Special Offer Items',
             productSubtype: '',
         };
 
         navigation.navigate('GroceryProductList', { options });
-
-        let TypeInfo = {
-            typeName: 'Special Offer Items',
-            subtype: []
-        };
-
-        dispatch(
-            handleItemsByStoreReducer({
-                type: 'SAVE_SUBTYPE_INFO_BY_TYPE',
-                data: TypeInfo,
-            })
-        );
     }
 
     return (
         <>
-            <View style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: 20,
-                backgroundColor: 'white',
-            }}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#006400' }}>Special Offer Items</Text>
-                <TouchableOpacity onPress={() => { navigateTo(); }}>
+            <Pressable onPress={() => { navigateTo(); }}>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: 20,
+                    backgroundColor: 'white',
+                }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#006400' }}>Special Offer Items</Text>
                     <Text style={{ fontSize: 13, color: '#ff3d00', fontWeight: 'bold' }}>VIEW ALL</Text>
-                </TouchableOpacity>
-            </View>
+                </View>
+            </Pressable>
 
             <View style={{ paddingLeft: 0, paddingRight: 3 }}>
                 <FlatList

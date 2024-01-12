@@ -5,7 +5,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 const screenWidth = Dimensions.get('window').width;
 import { StyleSheet } from 'react-native';
 import { Pagination, PaginationProps } from 'react-native-swiper-flatlist';
-import { storageImageUrl } from '../../../helpers/imageUrl';
+import { storageImageUrl } from '../../../../helpers/imageUrl';
 
 const styles = StyleSheet.create({
     paginationContainer: {
@@ -35,22 +35,22 @@ const CustomPagination = (props: JSX.IntrinsicAttributes & PaginationProps) => {
     );
 };
 
-const SliderLarge = ({ data }) => {
+const SliderLarge = ({ data, folder_name }) => {
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <SwiperFlatList
                 autoplay
-                autoplayDelay={3}
+                autoplayDelay={4}
                 autoplayLoop
                 index={0}
                 data={data}
                 renderItem={({ item }) => (
                     <View style={{ flex: 1, backgroundColor: '#f1f5f7', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'white' }}>
                         <FastImage
-                            source={{ uri: storageImageUrl('app-dashboard', item.file_name) }}
+                            source={{ uri: storageImageUrl(folder_name, item.file_name) }}
                             resizeMode={FastImage.resizeMode.contain}
                             style={{
-                                height: (screenWidth / 2),
+                                height: ((screenWidth / 3) * 2),
                                 width: screenWidth,
                                 justifyContent: 'space-between',
                                 //padding: 5,                                

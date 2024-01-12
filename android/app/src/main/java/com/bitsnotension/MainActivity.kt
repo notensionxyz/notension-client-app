@@ -1,5 +1,5 @@
 package com.bitsnotension
-
+import com.faizal.OtpVerify.OtpVerifyPackage
 import android.os.Bundle;
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

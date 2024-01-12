@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Dimensions, Text, Image, Alert } from "react-native";
+import { View, Dimensions, Text, Image, Alert, Pressable } from "react-native";
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
@@ -11,6 +11,7 @@ import { usePopularItem } from '../../hooks/fetch-data-by-module/usePopularItem'
 import OfferItems from '../../components/screens-components/MedicineShop/products/OfferItems';
 import HeaderExploreStore from '../../components/header/HeaderExploreStore';
 import FooterExploreStore from '../../components/footer/FooterExploreStore';
+import FastImage from 'react-native-fast-image';
 import { useMedicine } from '../../hooks/fetch-data-by-module/useMedicine';
 import { medicine_sliderTypeSubtypeImagesFolderName } from '../../helpers/Constants';
 
@@ -20,6 +21,7 @@ const screenWidth = Dimensions.get('window').width;
 function ExploreMedicineShop() {
     const ref = useRef(null);
     const navigation = useNavigation();
+    const isLoggedin = useSelector((state) => state.user.isLoggedin);
     const { typeInfoByShop, subtypeInfoByShop, DashboardSlider, visitedMedicineStore } = useSelector((state) => state.dashboard);
     const [typeInfoGeneral, setTypeInfoGeneral] = useState([]);
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
@@ -27,20 +29,8 @@ function ExploreMedicineShop() {
     const { exploreStore, progressing } = useMedicine();
     const { resetState } = usePopularItem();
     const [pageNo, setPageNo] = useState(2);
-    const navigateTo = (data) => {
-        const options = {
-            searchProduct: false,
-            fetchByoption: true,
-            fetchBycustomType: false,
-            customType: '',
-            productSubtype: data?.subtypeInfo?._id || '303030303030303030303030',
-        };
-
-        navigation.navigate('MedicineProductList', { options });
-    }
 
     useEffect(() => {
-        console.log('Render Page');
         resetState();
         setPageNo(2);
         if (visitedMedicineStore?._id && visitedMedicineStore?.custom_store_id) {
@@ -81,14 +71,21 @@ function ExploreMedicineShop() {
 
     }, [typeInfoByShop]);
 
-    console.log('main');
+    const processToPlaceOrder = () => {
+        if (isLoggedin) {
+            navigation.navigate('PlaceOrderMedicine');
+        } else {
+            navigation.navigate('Login')
+        }
+
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <HeaderExploreStore Title='Search here.... e.g Napa, Maxpro' module='Medicine' />
             <ProgressStyle2 visible={progressing} />
             {/* {!progressing &&
-                <FilterOptionBySubtype navigateTo={navigateTo} />
+                <FilterOptionBySubtype  />
             } */}
             <ScrollView>
                 {typeInfoGeneral?.length > 0 &&
@@ -104,41 +101,100 @@ function ExploreMedicineShop() {
 
                         <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={medicine_sliderTypeSubtypeImagesFolderName} />
 
+                        <Pressable onPress={() => { processToPlaceOrder() }}>
+                            <View style={{ height: (((screenWidth / 8) * 3) - 3), width: screenWidth - 10, borderRadius: 10, margin: 5 }}>
+                                <View style={{
+                                    borderRadius: 10,
+                                    shadowRadius: 10,
+                                    elevation: 3,
+                                    shadowOffset: { width: 0, height: 2 },
+                                    shadowOpacity: 0.3,
+                                    backgroundColor: 'white'
+                                }}>
+                                    <FastImage
+                                        source={require('../../assets/banner/medicine-order.webp')}
+                                        resizeMode={FastImage.resizeMode.contain}
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            //padding: 10,
+                                            borderRadius: 10,
+                                            shadowRadius: 10,
+                                            shadowOffset: { width: 0, height: 2 },
+                                            shadowOpacity: 0.3,
+                                            overflow: 'hidden'
+                                        }} />
+
+                                </View>
+                            </View>
+                        </Pressable>
                         {typeInfo['MPT14'] && typeInfo['MPT14']?.subtype.length > 0 &&
-                            <ManageListView data={typeInfo['MPT14']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['MPT14']} />
                         }
 
                         <OfferItems />
 
                         {typeInfo['MPT15'] && typeInfo['MPT15']?.subtype.length > 0 &&
-                            <ManageListView data={typeInfo['MPT15']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['MPT15']} />
                         }
 
-                        <SliderMedium data={DashboardSlider[0]?.second_slider} folder_name={medicine_sliderTypeSubtypeImagesFolderName}/>
+                        <SliderMedium data={DashboardSlider[0]?.second_slider} folder_name={medicine_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['MPT16'] && typeInfo['MPT16']?.subtype.length > 0 &&
-                            <ManageListView data={typeInfo['MPT16']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['MPT16']} />
                         }
 
                         {typeInfo['MPT17'] && typeInfo['MPT17']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['MPT17']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['MPT17']} />
                         }
 
-                        <SliderMedium data={DashboardSlider[0]?.third_slider} folder_name={medicine_sliderTypeSubtypeImagesFolderName}/>
+                        <SliderMedium data={DashboardSlider[0]?.third_slider} folder_name={medicine_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['MPT18'] && typeInfo['MPT18']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['MPT18']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['MPT18']} />
                         }
 
                         {typeInfo['MPT19'] && typeInfo['MPT19']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['MPT19']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['MPT19']} />
                         }
 
-                        <SliderMedium data={DashboardSlider[0]?.fourth_slider} folder_name={medicine_sliderTypeSubtypeImagesFolderName}/>
+                        <SliderMedium data={DashboardSlider[0]?.fourth_slider} folder_name={medicine_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['MPT20'] && typeInfo['MPT20']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['MPT20']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['MPT20']} />
                         }
+
+                        <Pressable onPress={() => { processToPlaceOrder() }}>
+                            <View style={{ height: (((screenWidth / 8) * 3) - 4), width: screenWidth - 10, borderRadius: 10, margin: 5 }}>
+                                <View style={{
+                                    borderRadius: 10,
+                                    shadowRadius: 10,
+                                    elevation: 3,
+                                    shadowOffset: { width: 0, height: 2 },
+                                    shadowOpacity: 0.3,
+                                    backgroundColor: 'white'
+                                }}>
+                                    <FastImage
+                                        source={require('../../assets/banner/medicine-order.webp')}
+                                        resizeMode={FastImage.resizeMode.contain}
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            //padding: 10,
+                                            borderRadius: 10,
+                                            shadowRadius: 10,
+                                            shadowOffset: { width: 0, height: 2 },
+                                            shadowOpacity: 0.3,
+                                            overflow: 'hidden'
+                                        }} />
+
+                                </View>
+                            </View>
+                        </Pressable>
 
                         <PopularProduct pageNo={pageNo} setPageNo={setPageNo} />
                     </>

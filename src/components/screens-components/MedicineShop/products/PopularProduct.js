@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { MemoizedListView } from './ListView';
 import { usePopularItem } from '../../../../hooks/fetch-data-by-module/usePopularItem';
 import { handleMedicineItems } from '../../../../hooks/cart-handler/handleMedicineItems';
+import { logoColor_2 } from '../../../../helpers/Constants';
 
 function PopularProduct({ pageNo, setPageNo }) {
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
@@ -41,6 +42,10 @@ function PopularProduct({ pageNo, setPageNo }) {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', backgroundColor: '#FFFFFF' }}>
+                <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
+                    Popular Items</Text>
+            </View>
             <FlatList
                 ListHeaderComponent={
                     null

@@ -1,25 +1,51 @@
 import React, { useEffect, useState } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux';
-import { axiosInstance, axiosInstanceFormData } from '../config/axios-admin/axiosWithoutCredential';
+import { axiosInstance } from '../config/axios-admin/axiosWithoutCredential';
 import {
     GET_DISTRICT_AREA_INFO,
     GET_DISTRICT_INFO,
     GET_DISTRICT_SUB_AREA_INFO,
+    OTP_FOR_REGISTARTION,
+    USER_REGISTARTION,
 } from '../helpers/Constants';
 
 import { useNavigation } from '@react-navigation/native';
 import { handleUserReducer } from '../store/reducers/userReducer';
 import { handleDashboardReducer } from '../store/reducers/dashboardReducer';
+import { USER_ADMIN_URL } from "@env"
+import axios from 'axios';
+import { Alert } from 'react-native';
+axios.defaults.withCredentials = true;
+console.log(USER_ADMIN_URL);
+const Axios = axios.create({
+    baseURL: USER_ADMIN_URL,
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    },
+});
 
-
-export const useAdminInformation = () => {
+export const useUser = () => {
     const navigation = useNavigation();
-    const { starting_slider, isLoading, isDistrictSelected } = useSelector(
-        (state) => state.dashboard
-    );
+    const currentModule = useSelector((state) => state.dashboard.currentModule);
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
+    const [progressing, setProgressing] = React.useState(false);
+    const [userInfo, setUserInfo] = useState({
+        _id: '',
+        custom_id: '',
+        customer_name: '',
+        customer_address: '',
+        email: '',
+        contact_no: '',
+        alternative_contact_no: '',
+        longitude: '',
+        latitude: '',
+        district_name_by_location: '',
+        district_id: '303030303030303030303030',
+        district_area_id: '303030303030303030303030',
+        district_subarea_id: '303030303030303030303030',
+    });
 
     let userInformation = {
         isUserLocationAvailable: false,
@@ -60,7 +86,6 @@ export const useAdminInformation = () => {
         userInformation.isUserLocationAvailable = true;
         userInformation.userLatitude = curLoc.latitude;
         userInformation.userLongitude = curLoc.longitude;
-        storeUserInfo(userInformation);
     }
 
     const saveConnectionStatus = (status) => {
@@ -81,10 +106,6 @@ export const useAdminInformation = () => {
         );
     }
 
-
-
-
-
     const changeDistrictInfo = (districtInfo) => {
         dispatch(
             handleUserReducer({
@@ -92,27 +113,6 @@ export const useAdminInformation = () => {
                 data: districtInfo,
             })
         );
-    }
-
-    const getDistrictInfo = async (setFetching) => {
-        setFetching(true)
-        axiosInstance
-            .get(GET_DISTRICT_INFO)
-            .then(response => {
-                //console.log(response.data.result);
-                districtSelected = {
-                    isDistrictSelected: false,
-                    districtId: '',
-                    districtName: '',
-                    districtInfo: response?.data?.result,
-                    districtAreaInfo: [],
-                };
-                setFetching(false);
-                storeDistrictInfo(districtSelected);
-            })
-            .catch(error => {
-                setFetching(false);
-            })
     }
 
     const getDistrictAreaInfo = async (setFetching, districtSelected) => {
@@ -183,12 +183,117 @@ export const useAdminInformation = () => {
         );
     }
 
+    const getOtp = (props) => {
+        console.log('props : ', props);
+        handleDataChange(props.contact_no, 'contact_no');
+        setProgressing(true);
 
+        Axios
+            .post(OTP_FOR_REGISTARTION, props)
+            .then((res) => {
+                //console.log('res?.result?.data', res?.data);
+                if (res?.data?.user_exist) {
+                    setUserData(res?.data?.result);
+                }
+                setProgressing(false);
+            })
+            .catch((error) => {
+                setProgressing(false);
+                console.log('error.errors', error);
+                console.log('result =', error?.response?.data?.errors);
 
+                console.log('result =', error?.response);
+                Alert.alert("Hold on!", "Something went wrong. Please Try Again!", [
+                    {
+                        text: "OK",
+                        onPress: () => null,
+                        style: "OK"
+                    },
+                ]);
+                navigation.navigate('Login');
+            });
+        setTimeout(() => {
+            isConnectionLost();
+        }, 20000);
+    }
+
+    const handleDataChange = (value, name) => {
+        setUserInfo((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    }
+
+    const setUserData = (user) => {
+        setUserInfo((prev) => ({
+            ...prev,
+            _id: user._id,
+            custom_id: user?.custom_id,
+            customer_name: user?.customer_name || '',
+            customer_address: user?.customer_address || '',
+            email: user?.email || '',
+            contact_no: user?.contact_no,
+            alternative_contact_no: user?.alternative_contact_no || '',
+        }));
+    }
+
+    const registerUser = () => {
+        setProgressing(true);
+        Axios
+            .post(USER_REGISTARTION, userInfo)
+            .then((res) => {
+                saveLoggedInUserInfo(res?.data?.result);
+                goBackTo();
+                setProgressing(false);
+            })
+            .catch((error) => {
+                setProgressing(false);
+                navigation.navigate('Login');
+                console.log('result =', error?.response?.data?.errors);
+                // const errorMsg = formatServerError(error?.response?.data?.errors);
+            });
+        setTimeout(() => {
+            isConnectionLost();
+        }, 20000);
+    };
+
+    const saveLoggedInUserInfo = (user) => {
+        dispatch(
+            handleUserReducer({
+                type: 'SAVE_LOGGEDIN_INFO',
+                data: user,
+            })
+        );
+    }
+
+    const isConnectionLost = () => {
+        if (progressing) {
+            setProgressing(false);
+            Alert.alert("Hold on!", "Internet Connection Lost, Please Try again.", [
+                {
+                    text: "OK",
+                    onPress: () => null,
+                    style: "OK"
+                },
+            ]);
+            navigation.navigate('Login');
+        }
+    }
+
+    const goBackTo = () => {
+        if (currentModule === 'Grocery') {
+            navigation.navigate('ExploreGroceryShop');
+        } else if (currentModule === 'Food') {
+            navigation.navigate('ExploreFoodModule');
+        } else if (currentModule === 'Medicine') {
+            navigation.navigate('ExploreMedicineShop');
+        } else {
+            navigation.navigate('Dashboard');
+        }
+    }
 
     const logout = async () => {
         try {
-
             console.log('Logout');
         } catch (error) {
 
@@ -200,6 +305,8 @@ export const useAdminInformation = () => {
     }, [error])
 
     return {
+        progressing,
+        setProgressing,
         saveUserCurrentGeolocation,
         saveConnectionStatus,
         saveLoadingStatus,
@@ -210,5 +317,9 @@ export const useAdminInformation = () => {
         saveSelectedDistrictInfo,
         changeDistrictInfo,
         logout,
+        handleDataChange,
+        getOtp,
+        userInfo,
+        registerUser
     }
 }

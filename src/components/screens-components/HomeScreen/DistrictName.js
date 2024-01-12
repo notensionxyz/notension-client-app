@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import FastImage from 'react-native-fast-image'
 import { useSelector } from 'react-redux';
-import { useAdminInformation } from '../../../hooks/user';
-import ProgressStyle2 from '../../progress-animation/ProgressStyle2';
+import { useUser } from '../../../hooks/useUser';
 import { storageImageUrl } from '../../../helpers/imageUrl';
 
 const screenWidth = Dimensions.get('window').width;
@@ -11,7 +10,7 @@ const screenWidth = Dimensions.get('window').width;
 function DistrictName({ filteredInfo }) {
     const districtInfo = useSelector((state) => state.user.districtInfo);
     const [fetching, setFetching] = useState(false);
-    const { saveSelectedDistrictInfo } = useAdminInformation();
+    const { saveSelectedDistrictInfo } = useUser();
 
     useEffect(() => {
         if (districtInfo.length < 1) {
@@ -31,7 +30,6 @@ function DistrictName({ filteredInfo }) {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-            <ProgressStyle2 visible={fetching} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
                 <View style={{ flexDirection: 'row', backgroundColor: '#ff9800', width: '100%' }}>
                     <Text style={{ flex: 1, color: 'white', paddingVertical: 10, fontSize: 18, textAlign: 'center' }}>Select District</Text>

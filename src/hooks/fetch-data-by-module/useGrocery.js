@@ -45,16 +45,24 @@ export const useGrocery = () => {
     };
 
     const resetReducer = () => {
+
         dispatch(
             handleItemsByStoreReducer({
                 type: 'CLEAR_ALL',
                 data: true,
             })
         );
+
+        dispatch(
+            handleDashboardReducer({
+                type: 'SET_CURRENT_MODULE',
+                data: 'Grocery',
+            })
+        );
     };
 
-    const getNearestGroceryStoreInfo = (setNearestInfo, distance = 1000) => {
-
+    const getNearestGroceryStoreInfo = (setNearestInfo, distance = 1000000) => {
+        resetReducer();
         setProgressing(true);
         const props = {
             shop_longitude: userLongitude,
@@ -184,6 +192,8 @@ export const useGrocery = () => {
         // if (pageNo === 1) {
         //     resetLoadingStatus();
         // }
+
+        console.log('parameter', parameter);
 
         Axios
             .get(dataURL,

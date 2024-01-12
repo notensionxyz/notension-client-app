@@ -11,6 +11,11 @@ import ExploreMedicineShop from "../screens/medicine-shop/ExploreMedicineShop";
 import MedicineProductList from "../screens/medicine-shop/MedicineProductList";
 import MedicineCartItems from "../screens/medicine-shop/MedicineCartItems";
 import MedicineProductDetails from "../screens/medicine-shop/MedicineProductDetails";
+import ExploreFoodModule from "../screens/food-shop/ExploreFoodModule";
+import Login from "../screens/user/Login";
+import SignUp from "../screens/user/SignUp";
+import NearestFoodShop from "../screens/food-shop/NearestFoodShop";
+import PlaceOrderMedicine from "../screens/medicine-shop/PlaceOrderMedicine";
 
 const Stack = createStackNavigator();
 
@@ -104,7 +109,47 @@ const MainStackNavigator = () => {
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false
                 }}
-            />           
+            />
+            <Stack.Screen
+                name="PlaceOrderMedicine"
+                component={PlaceOrderMedicine}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ExploreFoodModule"
+                component={ExploreFoodModule}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="NearestFoodShop"
+                component={NearestFoodShop}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="SignUp"
+                component={SignUp}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
         </Stack.Navigator>
     );
 }

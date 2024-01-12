@@ -7,14 +7,13 @@ import {
   useDrawerStatus
 } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { handleUserReducer } from '../store/reducers/userReducer';
 
 export default function DrawerContent({ navigation }) {
-  //const callUs = useSelector((state) => state.app.callUs);
-  const [isLogin, setIsLogin] = useState(0);
-  const [userName, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [key, setKey] = useState('');
+  const dispatch = useDispatch();
+  const { isLoggedin, userInfo } = useSelector((state) => state.user);
+
 
   const isDrawerOpen = useDrawerStatus();
 
@@ -50,13 +49,13 @@ export default function DrawerContent({ navigation }) {
   //   }
   // };
 
-  const logoutUser = async () => {
-    try {
-      //await AsyncStorage.removeItem('user');
-      getCustomerInfo();
-    } catch (e) {
-      // clear error
-    }
+  const logoutUser = () => {
+    dispatch(
+      handleUserReducer({
+        type: 'LOGOUT_USER',
+        data: {},
+      })
+    );
   };
 
   const processToLogin = async () => {
@@ -107,13 +106,13 @@ export default function DrawerContent({ navigation }) {
             shadowOpacity: 0.3
           }}>
 
-            {isLogin > 0 ?
+            {isLoggedin ?
               <>
                 <Image source={require('../assets/icon/logo_profile.png')}
                   style={{ height: 40, width: 40, resizeMode: 'contain', marginRight: 5, marginLeft: 5 }} />
                 <View style={{ flex: 1, padding: 5 }}>
-                  <Text style={{ fontSize: 16, color: '#616161', fontWeight: 'bold' }}>{userName}</Text>
-                  <Text style={{ fontSize: 16, color: '#616161' }}>{phone}</Text>
+                  <Text style={{ fontSize: 16, color: '#616161', fontWeight: 'bold' }}>{userInfo?.customer_name}</Text>
+                  <Text style={{ fontSize: 16, color: '#616161' }}>{userInfo?.contact_no}</Text>
                 </View>
               </>
               :
@@ -183,7 +182,7 @@ export default function DrawerContent({ navigation }) {
           }}>Popular Items</Text>
         </TouchableOpacity> */}
 
-        {isLogin > 0 ?
+        {isLoggedin ?
           <>
             <TouchableOpacity
               style={{
@@ -192,7 +191,7 @@ export default function DrawerContent({ navigation }) {
                 paddingVertical: 10,
                 paddingHorizontal: 20,
                 backgroundColor: 'transparent'
-              }} onPress={() => { processOnMyOrder(); }}>
+              }}>
               <Image source={require('../assets/icon/My-Order.png')}
                 style={{ height: 34, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
               <Text style={{
@@ -232,7 +231,7 @@ export default function DrawerContent({ navigation }) {
                 paddingVertical: 10,
                 paddingHorizontal: 20,
                 backgroundColor: 'transparent'
-              }} onPress={() => { processOnMyOrder(); }}>
+              }}>
               <Image source={require('../assets/icon/My-Order.png')}
                 style={{ height: 34, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
               <Text style={{
@@ -250,7 +249,7 @@ export default function DrawerContent({ navigation }) {
                 paddingVertical: 10,
                 paddingHorizontal: 20,
                 backgroundColor: 'transparent'
-              }} onPress={() => { processToLogin(); }}>
+              }} onPress={() => { navigation.navigate('Login'); }}>
               <Image source={require('../assets/icon/logo_login.png')}
                 style={{ height: 30, width: 30, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
               <Text style={{

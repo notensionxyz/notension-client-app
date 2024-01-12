@@ -74,33 +74,35 @@ export default function BusinessModules({ data }) {
                     </Pressable>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <View style={{ height: (screenWidth / 3) - 7, width: ((screenWidth / 3) * 2) - 8, padding: 5, borderRadius: 10 }}>
-                        <View style={{
-                            justifyContent: 'space-between',
-                            borderRadius: 10,
-                            shadowRadius: 10,
-                            elevation: 3,
-                            shadowOffset: { width: 0, height: 2 },
-                            shadowOpacity: 0.3,
-                            backgroundColor: 'white'
-                        }}>
-                            <FastImage
-                                source={{ uri: storageImageUrl('app-dashboard', data[2]?.file_name) }}
-                                resizeMode={FastImage.resizeMode.contain}
-                                style={{
-                                    height: (screenWidth / 3) - 9,
-                                    width: ((screenWidth / 3) * 2) - 18,
-                                    justifyContent: 'flex-end',
-                                    //padding: 10,
-                                    borderRadius: 10,
-                                    shadowRadius: 10,
-                                    shadowOffset: { width: 0, height: 2 },
-                                    shadowOpacity: 0.3,
-                                    overflow: 'hidden'
-                                }} />
+                    <Pressable onPress={() => { navigation.navigate('ExploreFoodModule') }}>
+                        <View style={{ height: (screenWidth / 3) - 7, width: ((screenWidth / 3) * 2) - 8, padding: 5, borderRadius: 10 }}>
+                            <View style={{
+                                justifyContent: 'space-between',
+                                borderRadius: 10,
+                                shadowRadius: 10,
+                                elevation: 3,
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.3,
+                                backgroundColor: 'white'
+                            }}>
+                                <FastImage
+                                    source={{ uri: storageImageUrl('app-dashboard', data[2]?.file_name) }}
+                                    resizeMode={FastImage.resizeMode.contain}
+                                    style={{
+                                        height: (screenWidth / 3) - 9,
+                                        width: ((screenWidth / 3) * 2) - 18,
+                                        justifyContent: 'flex-end',
+                                        //padding: 10,
+                                        borderRadius: 10,
+                                        shadowRadius: 10,
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.3,
+                                        overflow: 'hidden'
+                                    }} />
 
+                            </View>
                         </View>
-                    </View>
+                    </Pressable>
                     <View style={{ height: (screenWidth / 3) - 7, width: (screenWidth / 3) - 2, padding: 5, borderRadius: 10 }}>
                         <View style={{
                             justifyContent: 'space-between',

@@ -28,17 +28,6 @@ function ExploreGroceryShop() {
     const { exploreStore, progressing } = useGrocery();
     const { resetState } = usePopularItem();
     const [pageNo, setPageNo] = useState(2);
-    const navigateTo = (data) => {
-        const options = {
-            searchProduct: false,
-            fetchByoption: true,
-            fetchBycustomType: false,
-            customType: '',
-            productSubtype: data?.subtypeInfo?._id || '303030303030303030303030',
-        };
-
-        navigation.navigate('GroceryProductList', { options });
-    }
 
     useEffect(() => {
         console.log('Render Page');
@@ -107,55 +96,52 @@ function ExploreGroceryShop() {
                         <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['PT15'] && typeInfo['PT15']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['PT15']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['PT15']} />
                         }
 
                         <OfferItems />
 
                         {typeInfo['PT12'] && typeInfo['PT12']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['PT12']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['PT12']} />
                         }
 
                         <SliderMedium data={DashboardSlider[0]?.second_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['PT16'] && typeInfo['PT16']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['PT16']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['PT16']} />
                         }
 
                         {typeInfo['PT17'] && typeInfo['PT17']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['PT17']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['PT17']} />
                         }
 
                         <DealOfTheDay />
 
                         {typeInfo['PT18'] && typeInfo['PT18']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['PT18']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['PT18']} />
                         }
 
                         <SliderMedium data={DashboardSlider[0]?.third_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['PT19'] && typeInfo['PT19']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['PT19']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['PT19']} />
                         }
 
                         {typeInfo['PT20'] && typeInfo['PT20']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['PT20']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['PT20']} />
                         }
 
                         <SliderMedium data={DashboardSlider[0]?.fourth_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
 
                         {typeInfo['PT21'] && typeInfo['PT21']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['PT21']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['PT21']} />
                         }
 
                         {typeInfo['PT22'] && typeInfo['PT22']?.subtype?.length > 0 &&
-                            <ManageListView data={typeInfo['PT22']} navigateTo={navigateTo} />
+                            <ManageListView data={typeInfo['PT22']} />
                         }
 
-                        <PopularProduct
-                            pageNo={pageNo}
-                            setPageNo={setPageNo}
-                        />
+                        <PopularProduct pageNo={pageNo} setPageNo={setPageNo} />
                     </>
                 }
             </ScrollView>

@@ -24,6 +24,10 @@ export default function FooterCommon(props) {
         if (props.module === 'Grocery') {
             navigation.navigate('GroceryCartItems');
         }
+
+        if (props.module === 'Medicine') {
+            navigation.navigate('MedicineCartItems');
+        }
     }
 
     const navigateToHome = () => {
@@ -32,7 +36,7 @@ export default function FooterCommon(props) {
         }
 
         if (props.module === 'Medicine') {
-            navigation.navigate('MedicineCartItems');
+            navigation.navigate('ExploreMedicineShop');
         }
     }
 
@@ -101,6 +105,5 @@ export default function FooterCommon(props) {
                 }}>Tk {parseFloat(totalSalePrice).toFixed(2)}</Text>
             </TouchableOpacity>
         </View>
-
     );
 }

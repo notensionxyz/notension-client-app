@@ -7,11 +7,22 @@ export const grocery_sliderTypeSubtypeImagesFolderName = 'grocery-slider-type-su
 export const grocery_itemsImages = 'grocery-items-images';
 export const medicine_sliderTypeSubtypeImagesFolderName = 'medicine-slider-type-subtype-images';
 export const medicine_itemsImages = 'medicine-items-images';
+export const food_sliderTypeSubtypeImagesFolderName = 'food-slider-type-subtype-images';
+export const food_itemsImages = 'food-items-images';
 
 export const GET_DASHBOARD_INFO = '/public-api/v1/admin/all-appdashboard-data';
 export const GET_DISTRICT_INFO = '/public-api/v1/admin/all-district';
 export const GET_DISTRICT_AREA_INFO = '/public-api/v1/admin/all-districtarea/:id';
 export const GET_DISTRICT_SUB_AREA_INFO = '/public-api/v1/admin/all-districtsubarea/:id';
+
+export const OTP_FOR_REGISTARTION = '/api/v1/customer/send-otp';
+export const USER_REGISTARTION = '/api/v1/customer/register';
+export const FAVORITE_STORE_ADD = '/client-app-api/v1/food/explore-store';
+export const FAVORITE_STORE_REMOVE = '/client-app-api/v1/food/explore-store';
+export const FAVORITE_STORE_INFO = '/client-app-api/v1/food/explore-store';
+export const FAVORITE_PRODUCT_ADD = '/client-app-api/v1/food/explore-store';
+export const FAVORITE_PRODUCT_REMOVE = '/client-app-api/v1/food/explore-store';
+export const FAVORITE_PRODUCT_INFO = '/client-app-api/v1/food/explore-store';
 
 export const NEAREST_GROCERY_STORE = '/client-app-api/v1/grocery/get-nearest-store';
 export const EXPLORE_GROCERY_STORE = '/client-app-api/v1/grocery/explore-store';
@@ -27,6 +38,11 @@ export const SEARCH_MEDICINE_ITEMS = '/client-app-api/v1/medicine/search-items';
 export const MEDICINE_ITEMS_BY_SUBTYPE = '/client-app-api/v1/medicine/items-by-subtype';
 export const MEDICINE_ITEMS_BY_CUSTOMTYPE = '/client-app-api/v1/medicine/items-by-customType';
 export const MEDICINE_ITEM_DETAILS = '/client-app-api/v1/medicine/item-details';
+export const MEDICINE_PLACE_ORDER = '/client-app-api/v1/medicine/order';
+
+export const EXPLORE_FOOD_MODULE = '/client-app-api/v1/food/explore-module';
+export const NEAREST_FOOD_STORE = '/client-app-api/v1/food/get-nearest-store';
+export const EXPLORE_FOOD_STORE = '/client-app-api/v1/food/explore-store';
 
 export const MyFavouriteData = [
     { id: '1', image: require('../assets/gallery/favorite-1.jpg') },
