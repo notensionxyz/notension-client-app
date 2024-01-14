@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Dimensions, Text, Image, Alert } from "react-native";
+import { View, Dimensions, Text, Image, Pressable } from "react-native";
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useGrocery } from '../../hooks/fetch-data-by-module/useGrocery';
+import FastImage from 'react-native-fast-image';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
 import ManageListView from '../../components/screens-components/GroceryShop/FilterOptionBySubtype/ManageListView';
@@ -21,6 +22,7 @@ const screenWidth = Dimensions.get('window').width;
 function ExploreGroceryShop() {
     const ref = useRef(null);
     const navigation = useNavigation();
+    const isLoggedin = useSelector((state) => state.user.isLoggedin);
     const { typeInfoByShop, subtypeInfoByShop, DashboardSlider, visitedGroceryStore } = useSelector((state) => state.dashboard);
     const [typeInfoGeneral, setTypeInfoGeneral] = useState([]);
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
@@ -70,7 +72,13 @@ function ExploreGroceryShop() {
 
     }, [typeInfoByShop]);
 
-    console.log('main');
+    const processToPlaceOrder = () => {
+        if (isLoggedin) {
+            navigation.navigate('PlaceOrderGrocery');
+        } else {
+            navigation.navigate('Login')
+        }
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
@@ -94,6 +102,36 @@ function ExploreGroceryShop() {
                         </View>
 
                         <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
+
+                        <Pressable onPress={() => { processToPlaceOrder() }}>
+                            <View style={{ height: (((screenWidth / 8) * 3) - 3), width: screenWidth - 10, borderRadius: 10, margin: 5 }}>
+                                <View style={{
+                                    borderRadius: 10,
+                                    shadowRadius: 10,
+                                    elevation: 3,
+                                    shadowOffset: { width: 0, height: 2 },
+                                    shadowOpacity: 0.3,
+                                    backgroundColor: 'white'
+                                }}>
+                                    <FastImage
+                                        source={require('../../assets/banner/grocery-order.webp')}
+                                        resizeMode={FastImage.resizeMode.contain}
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            //padding: 10,
+                                            borderRadius: 10,
+                                            shadowRadius: 10,
+                                            shadowOffset: { width: 0, height: 2 },
+                                            shadowOpacity: 0.3,
+                                            overflow: 'hidden'
+                                        }} />
+
+                                </View>
+                            </View>
+                        </Pressable>
 
                         {typeInfo['PT15'] && typeInfo['PT15']?.subtype?.length > 0 &&
                             <ManageListView data={typeInfo['PT15']} />

@@ -20,7 +20,7 @@ const paymentData = [
     { id: '3', image: require('../../assets/icon/mobile_banking.png'), detail: 'Mobile Banking' },
 ];
 
-export default function PlaceOrderMedicine() {
+export default function PlaceOrderGrocery() {
     const navigation = useNavigation();
     const [discount, setDiscount] = useState(0);
     const [grandTotal, setGrandTotal] = useState(0);
@@ -28,21 +28,21 @@ export default function PlaceOrderMedicine() {
     const [images, setImages] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
     const {
-        medicineItems,
-        totalAmountMedicine,
+        groceryItems,
+        totalAmountGrocery,
     } = useSelector((state) => state.cartItems);
 
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { isLoggedin, userInfo } = useSelector((state) => state.user);
-    
-    const visitedMedicineStore = useSelector((state) => state.dashboard.visitedMedicineStore);
-    const minOrderAmount = visitedMedicineStore?.min_purchage_amount || 0;
-    const deliveryCharge = visitedMedicineStore?.max_delivery_charge || 0;
-    const minDeliveryCharge = visitedMedicineStore?.min_delivery_charge || 0;
-    const less = visitedMedicineStore?.less || 0;
-    const less_type = visitedMedicineStore?.less_type || 'Percent'
-    const maximum_less = visitedMedicineStore?.maximum_less || 0;
-    const minimum_order_for_less = visitedMedicineStore?.minimum_order_for_less || 0;
+
+    const visitedGroceryStore = useSelector((state) => state.dashboard.visitedGroceryStore);
+    const minOrderAmount = visitedGroceryStore?.min_purchage_amount || 0;
+    const deliveryCharge = visitedGroceryStore?.max_delivery_charge || 0;
+    const minDeliveryCharge = visitedGroceryStore?.min_delivery_charge || 0;
+    const less = visitedGroceryStore?.less || 0;
+    const less_type = visitedGroceryStore?.less_type || 'Percent'
+    const maximum_less = visitedGroceryStore?.maximum_less || 0;
+    const minimum_order_for_less = visitedGroceryStore?.minimum_order_for_less || 0;
 
     const [paymentOption, setPaymentOption] = useState(paymentData[0]);
     const [remarks, setRemarks] = useState('');
@@ -74,14 +74,14 @@ export default function PlaceOrderMedicine() {
 
     const getGrandTotal = () => {
         let shippingCost = deliveryCharge;
-        if (parseFloat(totalAmountMedicine) >= parseFloat(minOrderAmount)) {
+        if (parseFloat(totalAmountGrocery) >= parseFloat(minOrderAmount)) {
             shippingCost = minDeliveryCharge;
         }
         let total = 0;
         let Discount = 0;
-        if (parseFloat(less) > 0 && parseFloat(maximum_less) > 0 && parseFloat(totalAmountMedicine) >= parseFloat(minimum_order_for_less)) {
+        if (parseFloat(less) > 0 && parseFloat(maximum_less) > 0 && parseFloat(totalAmountGrocery) >= parseFloat(minimum_order_for_less)) {
             if (less_type === 'Percent') {
-                Discount = ((parseFloat(less) / 100) * parseFloat(totalAmountMedicine)).toFixed(2);
+                Discount = ((parseFloat(less) / 100) * parseFloat(totalAmountGrocery)).toFixed(2);
                 if (parseFloat(Discount) > parseFloat(maximum_less)) {
                     Discount = parseFloat(maximum_less).toFixed(2);
                 }
@@ -91,7 +91,7 @@ export default function PlaceOrderMedicine() {
         }
         setShippingCharge(shippingCost);
         setDiscount(Discount);
-        total = ((parseFloat(totalAmountMedicine) + parseFloat(shippingCost)) - parseFloat(Discount)).toFixed(2);
+        total = ((parseFloat(totalAmountGrocery) + parseFloat(shippingCost)) - parseFloat(Discount)).toFixed(2);
         setGrandTotal(total);
     };
 
@@ -109,7 +109,7 @@ export default function PlaceOrderMedicine() {
     };
 
     const handleCustomerOrder = () => {
-        if (medicineItems.length > 0 || images.length > 0) {
+        if (groceryItems.length > 0 || images.length > 0) {
             const itemOrderObj = {
                 customer_id: userInfo?._id,
                 custom_customer_id: userInfo?.custom_id,
@@ -124,14 +124,14 @@ export default function PlaceOrderMedicine() {
                 merchant_id: merchantId,
                 custom_merchant_id: customstore_id,
                 merchantInfo: {
-                    shop_name: visitedMedicineStore?.shop_name,
-                    shop_address: visitedMedicineStore?.shop_address,
-                    contact_no: visitedMedicineStore?.contact_no,
-                    alternative_contact_no: visitedMedicineStore?.alternative_contact_no,
+                    shop_name: visitedGroceryStore?.shop_name,
+                    shop_address: visitedGroceryStore?.shop_address,
+                    contact_no: visitedGroceryStore?.contact_no,
+                    alternative_contact_no: visitedGroceryStore?.alternative_contact_no,
                 },
                 order_list_image: [],
-                orderItems: medicineItems,
-                subTotal: totalAmountMedicine,
+                orderItems: groceryItems,
+                subTotal: totalAmountGrocery,
                 less_amount: discount,
                 vatAmount: 0,
                 deliveryCharge: shippingCharge,
@@ -142,6 +142,7 @@ export default function PlaceOrderMedicine() {
             };
 
             const formData = new FormData();
+
             formData.append('orderObj', JSON.stringify(itemOrderObj));
 
             images?.forEach((image, i) => {
@@ -149,11 +150,11 @@ export default function PlaceOrderMedicine() {
                     formData.append('order_list_image', image);
                 }
             });
-            
+
             placceOrder(formData);
         } else {
             setShowErrorMessage(true);
-            setMessage('Please Pick Prescription !!');
+            setMessage('Please Pick Bazar List !!');
         }
     };
 
@@ -172,7 +173,7 @@ export default function PlaceOrderMedicine() {
                         alignItems: 'center',
                     }}>
                         <View style={{ flex: 1, paddingTop: 5, paddingBottom: 5 }}>
-                            <Text style={{ color: '#FFF', fontSize: 15 }}>{visitedMedicineStore?.shop_notice}</Text>
+                            <Text style={{ color: '#FFF', fontSize: 15 }}>{visitedGroceryStore?.shop_notice}</Text>
                         </View>
                     </View>
                     <View style={{ marginHorizontal: 20 }}>
@@ -230,7 +231,7 @@ export default function PlaceOrderMedicine() {
                                 color: '#2c2c2c'
                             }} />
                         <MultipleImageUploader
-                            title={'Pick Prescription'}
+                            title={'Pick Bazar List'}
                             selectedImages={selectedImages}
                             setSelectedImages={setSelectedImages}
                             handleImage={handleImagesDetailProduct}
@@ -326,5 +327,3 @@ function ItemPayment({ data, onItemPress, selected }) {
         </TouchableOpacity>
     );
 }
-
-

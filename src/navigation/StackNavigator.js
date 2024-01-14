@@ -16,6 +16,10 @@ import Login from "../screens/user/Login";
 import SignUp from "../screens/user/SignUp";
 import NearestFoodShop from "../screens/food-shop/NearestFoodShop";
 import PlaceOrderMedicine from "../screens/medicine-shop/PlaceOrderMedicine";
+import OrderInfo from "../screens/user/OrderInfo";
+import OrderDetails from "../screens/user/OrderDetails";
+import OrderSuccessful from "../screens/user/OrderSuccessful";
+import PlaceOrderGrocery from "../screens/grocery-shop/PlaceOrderGrocery";
 
 const Stack = createStackNavigator();
 
@@ -71,6 +75,14 @@ const MainStackNavigator = () => {
                 }}
             />
             <Stack.Screen
+                name="PlaceOrderGrocery"
+                component={PlaceOrderGrocery}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
                 name="NearestMedicineShop"
                 component={NearestMedicineShop}
                 options={{
@@ -119,6 +131,22 @@ const MainStackNavigator = () => {
                 }}
             />
             <Stack.Screen
+                name="OrderInfo"
+                component={OrderInfo}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="OrderDetails"
+                component={OrderDetails}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
                 name="ExploreFoodModule"
                 component={ExploreFoodModule}
                 options={{
@@ -145,6 +173,14 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="SignUp"
                 component={SignUp}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="OrderSuccessful"
+                component={OrderSuccessful}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

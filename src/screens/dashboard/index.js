@@ -107,7 +107,7 @@ function Dashboard(props) {
         });
     }
 
-
+    console.log('userLatitude', userLatitude);
 
     const timerRef = React.useRef(null);
     searchDistrict = text => {

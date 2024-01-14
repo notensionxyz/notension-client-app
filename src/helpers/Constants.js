@@ -30,6 +30,8 @@ export const SEARCH_GROCERY_ITEMS = '/client-app-api/v1/grocery/search-items';
 export const GROCERY_ITEMS_BY_SUBTYPE = '/client-app-api/v1/grocery/items-by-subtype';
 export const GROCERY_ITEMS_BY_CUSTOMTYPE = '/client-app-api/v1/grocery/items-by-customType';
 export const GROCERY_ITEM_DETAILS = '/client-app-api/v1/grocery/item-details';
+export const GROCERY_PLACE_ORDER = '/client-app-api/v1/grocery/order';
+export const GROCERY_ORDER_INFO = '/client-app-api/v1/grocery/order-info';
 
 export const POST_NEAREST_MEDICINE_STORE = '/api/v1/medicine/public/nearest-store';
 export const NEAREST_MEDICINE_STORE = '/client-app-api/v1/medicine/get-nearest-store';
@@ -39,6 +41,7 @@ export const MEDICINE_ITEMS_BY_SUBTYPE = '/client-app-api/v1/medicine/items-by-s
 export const MEDICINE_ITEMS_BY_CUSTOMTYPE = '/client-app-api/v1/medicine/items-by-customType';
 export const MEDICINE_ITEM_DETAILS = '/client-app-api/v1/medicine/item-details';
 export const MEDICINE_PLACE_ORDER = '/client-app-api/v1/medicine/order';
+export const MEDICINE_ORDER_INFO = '/client-app-api/v1/medicine/order-info';
 
 export const EXPLORE_FOOD_MODULE = '/client-app-api/v1/food/explore-module';
 export const NEAREST_FOOD_STORE = '/client-app-api/v1/food/get-nearest-store';

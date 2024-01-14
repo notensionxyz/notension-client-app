@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Dimensions, TextInput, Text, TouchableOpacity, View, Alert, BackHandler } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { useNavigation } from '@react-navigation/native';
+import HeaderCommon from '../../components/header/HeaderCommon';
 
 
 export default function Login() {
@@ -37,6 +38,7 @@ export default function Login() {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
+            <HeaderCommon title="Login" toggleDrawer={null} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                 <View style={{ margin: 10 }}>
                     <Text style={{ marginTop: 80, fontSize: 20, alignSelf: 'center', color: '#006400' }}>Please enter your phone number</Text>

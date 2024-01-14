@@ -27,6 +27,9 @@ const userReducer = createSlice({
         default_outlet_name: '',
         default_outlet_address: '',
         districtInfo: [],
+        groceryOrderInfo: [],
+        medicineOrderInfo: [],
+        foodOrderInfo: [],
     },
     reducers: {
         handleUserReducer: (state = initialState, { payload }) => {
@@ -92,6 +95,15 @@ const userReducer = createSlice({
                     userInfo: payload.data,
                 }
             }
+            else if (payload.type == "SAVE_GROCERY_ORDER_INFO") {
+                state.groceryOrderInfo = payload.data;
+            }
+            else if (payload.type == "SAVE_MEDICINE_ORDER_INFO") {
+                state.medicineOrderInfo = payload.data;
+            }
+            else if (payload.type == "SAVE_FOOD_ORDER_INFO") {
+                state.foodOrderInfo = payload.data;
+            }
             else if (payload.type == "RESET_USER") {
                 return {
                     ...state,
@@ -105,6 +117,7 @@ const userReducer = createSlice({
                     districtSubAreaId: '00',
                     districtSubAreaName: '',
                     isLoggedin: false,
+                    userInfo: {},
                     deliveryAddress: '',
                     allAddress: [],
                     fireBaseToken: '',
@@ -118,6 +131,9 @@ const userReducer = createSlice({
                     default_outlet_name: '',
                     default_outlet_address: '',
                     districtInfo: [],
+                    groceryOrderInfo: [],
+                    medicineOrderInfo: [],
+                    foodOrderInfo: [],
                 }
             } else {
                 return {

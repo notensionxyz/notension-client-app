@@ -3,11 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MEDICINE_ADMIN_URL, MEDICINE_ADMIN_URL_LOCAL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { EXPLORE_MEDICINE_STORE, MEDICINE_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY_SUBTYPE, MEDICINE_PLACE_ORDER, NEAREST_MEDICINE_STORE, SEARCH_MEDICINE_ITEMS } from '../../helpers/Constants';
+import { EXPLORE_MEDICINE_STORE, MEDICINE_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY_SUBTYPE, MEDICINE_ORDER_INFO, MEDICINE_PLACE_ORDER, NEAREST_MEDICINE_STORE, SEARCH_MEDICINE_ITEMS } from '../../helpers/Constants';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { Alert } from 'react-native';
-import { handleCartReducer } from '../../store/reducers/cartReducer';
 
 axios.defaults.withCredentials = true;
 
@@ -23,7 +22,7 @@ export const useMedicine = () => {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [message, setMessage] = useState('');
-    const { userLatitude, userLongitude, districtId } = useSelector((state) => state.user);
+    const { userLatitude, userLongitude, districtId, userInfo } = useSelector((state) => state.user);
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
 
@@ -42,6 +41,14 @@ export const useMedicine = () => {
         headers: {
             'Accept': '*/*',
             'Content-Type': 'multipart/form-data',
+        },
+    });
+
+    const AxiosTest = axios.create({
+        baseURL: MEDICINE_ADMIN_URL_LOCAL,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
         },
     });
 
@@ -71,38 +78,6 @@ export const useMedicine = () => {
         );
     };
 
-    const placceOrder = (formData) => {
-        setProgressing(true);
-        AxiosWithFormData
-            .post(MEDICINE_PLACE_ORDER, formData)
-            .then(response => {
-                //console.log(response?.data);
-                setProgressing(false);
-                Alert.alert("Hello!", "Order Placed Successfully.", [
-                    {
-                        text: "OK",
-                        onPress: () => null,
-                        style: "OK"
-                    },
-                ]);
-                dispatch(
-                    handleCartReducer({
-                        type: 'MEDICINE_ORDER_PLACED',
-                        data: [],
-                    })
-                );
-                navigation.navigate('ExploreMedicineShop');
-            })
-            .catch(error => {
-                console.log('Error : ', error.response)
-                setProgressing(false);
-            })
-        // setTimeout(() => {
-        //     if (progressing) {
-        //         setProgressing(false);
-        //     }
-        // }, 10000);
-    }
 
     const getNearestMedicineStoreInfo = (setNearestInfo, distance = 1000000) => {
         resetReducer();
@@ -268,6 +243,33 @@ export const useMedicine = () => {
 
     };
 
+    // const placceOrder = (formData) => {
+    //     setProgressing(true);
+    //     AxiosWithFormData
+    //         .post(MEDICINE_PLACE_ORDER, formData)
+    //         .then(response => {
+    //             console.log('response?.data', response?.data);
+    //             setProgressing(false);
+
+    //             dispatch(
+    //                 handleCartReducer({
+    //                     type: 'MEDICINE_ORDER_PLACED',
+    //                     data: [],
+    //                 })
+    //             );
+    //             navigation.navigate('OrderSuccessful');
+    //         })
+    //         .catch(error => {
+    //             console.log('Error : ', error.response)
+    //             setProgressing(false);
+    //         })
+    //     setTimeout(() => {
+    //         if (progressing) {
+    //             setProgressing(false);
+    //         }
+    //     }, 10000);
+    // }
+
     const reloadCustomTypeData = (options, setPageNo) => {
         setTimeout(() => {
             if (options.customType === "65128cbd20db0921f13b40b3") { // this is "64f5a306baa57a4707524d6e" Offer Items ID
@@ -317,6 +319,5 @@ export const useMedicine = () => {
         exploreStore,
         reloadCustomTypeData,
         resetLoadingStatus,
-        placceOrder
     };
 };

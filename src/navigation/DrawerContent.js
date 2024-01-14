@@ -13,7 +13,7 @@ import { handleUserReducer } from '../store/reducers/userReducer';
 export default function DrawerContent({ navigation }) {
   const dispatch = useDispatch();
   const { isLoggedin, userInfo } = useSelector((state) => state.user);
-
+  const currentModule = useSelector((state) => state.dashboard.currentModule);
 
   const isDrawerOpen = useDrawerStatus();
 
@@ -74,20 +74,12 @@ export default function DrawerContent({ navigation }) {
 
   };
 
-  const processOnMyOrder = async () => {
-    try {
-      // let user = await AsyncStorage.getItem('user');
-      // let parsed = JSON.parse(user);
-      // if (parsed !== null) {
-      //   navigation.navigate('MyOrder', { contact: phone, accesskey: key })
-      // } else {
-      //   navigation.navigate('Login', { fromDrawer: 1 })
-      // }
+  const showMyOrder = () => {
+    if (isLoggedin) {
+      navigation.navigate('OrderInfo');
+    } else {
+      navigation.navigate('Login');
     }
-    catch (error) {
-      alert(error)
-    }
-
   };
 
   return (
@@ -181,88 +173,26 @@ export default function DrawerContent({ navigation }) {
             marginLeft: 15
           }}>Popular Items</Text>
         </TouchableOpacity> */}
-
-        {isLoggedin ?
-          <>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                backgroundColor: 'transparent'
-              }}>
-              <Image source={require('../assets/icon/My-Order.png')}
-                style={{ height: 34, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 18,
-                color: '#212121',
-                fontWeight: 'bold',
-                marginLeft: 11
-              }}>My Order</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                backgroundColor: 'transparent'
-              }} onPress={() => { logoutUser(); }}>
-              <Image source={require('../assets/icon/ic_menu4_logout.png')}
-                style={{ height: 27, width: 27, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 18,
-                color: '#212121',
-                fontWeight: 'bold',
-                marginLeft: 18
-              }}>Logout</Text>
-            </TouchableOpacity>
-          </>
-          :
-          <>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                backgroundColor: 'transparent'
-              }}>
-              <Image source={require('../assets/icon/My-Order.png')}
-                style={{ height: 34, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 18,
-                color: '#212121',
-                fontWeight: 'bold',
-                marginLeft: 11
-              }}>My Order</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                backgroundColor: 'transparent'
-              }} onPress={() => { navigation.navigate('Login'); }}>
-              <Image source={require('../assets/icon/logo_login.png')}
-                style={{ height: 30, width: 30, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-              <Text style={{
-
-                fontSize: 18,
-                color: '#212121',
-                fontWeight: 'bold',
-                marginLeft: 15
-              }}>Login</Text>
-            </TouchableOpacity>
-          </>
+        {currentModule !== 'dashboard' &&
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              backgroundColor: 'transparent'
+            }} onPress={() => { showMyOrder(); }}>
+            <Image source={require('../assets/icon/My-Order.png')}
+              style={{ height: 34, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 18,
+              color: '#212121',
+              fontWeight: 'bold',
+              marginLeft: 11
+            }}>My Order</Text>
+          </TouchableOpacity>
         }
-
         <TouchableOpacity
           style={{
             flexDirection: 'row',
@@ -281,7 +211,6 @@ export default function DrawerContent({ navigation }) {
             marginLeft: 17
           }}>Privacy Policy</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={{
             flexDirection: 'row',
@@ -300,6 +229,46 @@ export default function DrawerContent({ navigation }) {
             marginLeft: 17
           }}>Call Us</Text>
         </TouchableOpacity>
+        {isLoggedin ?
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              backgroundColor: 'transparent'
+            }} onPress={() => { logoutUser(); }}>
+            <Image source={require('../assets/icon/ic_menu4_logout.png')}
+              style={{ height: 27, width: 27, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 18,
+              color: '#212121',
+              fontWeight: 'bold',
+              marginLeft: 18
+            }}>Logout</Text>
+          </TouchableOpacity>
+          :
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              backgroundColor: 'transparent'
+            }} onPress={() => { navigation.navigate('Login'); }}>
+            <Image source={require('../assets/icon/logo_login.png')}
+              style={{ height: 30, width: 30, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+            <Text style={{
+
+              fontSize: 18,
+              color: '#212121',
+              fontWeight: 'bold',
+              marginLeft: 15
+            }}>Login</Text>
+          </TouchableOpacity>
+
+        }
       </DrawerContentScrollView>
     </View >
   );

@@ -80,7 +80,7 @@ export const useGrocery = () => {
                 setProgressing(false);
             })
             .catch(error => {
-                //console.log('Error : ', error.response)
+                console.log('Error : ', error.response.data)
                 setProgressing(false);
             })
         setTimeout(() => {

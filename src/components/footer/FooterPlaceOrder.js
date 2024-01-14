@@ -14,7 +14,7 @@ export default function FooterPlaceOrder(props) {
 
     if (props.module === 'Grocery') {
         totalItem = cartItems.groceryItems.length;
-        totalSalePrice = cartItems.totalAmountGrocery;
+        totalSalePrice = props.grandTotal;
     }
 
     if (props.module === 'Medicine') {

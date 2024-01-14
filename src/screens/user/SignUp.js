@@ -10,6 +10,7 @@ import {
 import useValidation from '../../helpers/useValidation';
 import { useUser } from '../../hooks/useUser';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
+import HeaderCommon from '../../components/header/HeaderCommon';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 2) - 7;
@@ -44,7 +45,7 @@ export default function SignUp({ route }) {
             hashKey = hash[0];
             setTimeout(() => { sendSms(); }, 200);
         }).catch(console.log);
-        
+
         startOtpListener(message => {
             // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
             const otp = /(\d{4})/g.exec(message)[1];
@@ -59,7 +60,7 @@ export default function SignUp({ route }) {
         return () => removeListener();
     }, []);
 
-    
+
 
     const removeOtpListener = () => {
         RNOtpVerify.removeListener();
@@ -153,6 +154,7 @@ export default function SignUp({ route }) {
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
             <ProgressStyle2 visible={progressing} />
+            <HeaderCommon title="Sign Up" toggleDrawer={null} />
             <ScrollView>
                 <View style={{ flex: 1, justifyContent: 'space-around' }}>
                     <View style={{

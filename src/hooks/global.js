@@ -17,13 +17,22 @@ export const useGlobal = () => {
     const { userLatitude, userLongitude, districtInfo } = useSelector((state) => state.user);
     const user = useSelector((state) => state.user);
     const [error, setError] = useState(false);
+    const [progressing, setProgressing] = useState(false);
 
     const getDasboardInfo = async () => {
+        saveLoadingStatus(true);
+        if (userLatitude === undefined) {
+            dispatch(
+                handleUserReducer({
+                    type: 'RESET_USER',
+                    data: [],
+                })
+            );
+        }
         resetDasgboardReducer();
-        if (districtInfo.length < 1) {
+        if (districtInfo?.length < 1) {
             getDistrictInfo();
         }
-        saveLoadingStatus(true);
         axiosInstance
             .get(GET_DASHBOARD_INFO)
             .then(response => {
@@ -48,11 +57,11 @@ export const useGlobal = () => {
     }
 
     const getDistrictInfo = async () => {
-        //console.log('districtInfo', districtInfo);
+        setProgressing(true);
         axiosInstance
             .get(GET_DISTRICT_INFO)
             .then(res => {
-                //console.log(res?.data?.result);
+                setProgressing(false);
                 dispatch(
                     handleUserReducer({
                         type: 'SAVE_DISTRICT_INFO',
@@ -61,7 +70,7 @@ export const useGlobal = () => {
                 );
             })
             .catch(error => {
-
+                setProgressing(false);
             })
     }
 
@@ -137,6 +146,7 @@ export const useGlobal = () => {
     }, [error])
 
     return {
+        progressing,
         getDasboardInfo,
         getDistrictInfo,
         getMedicineStoreInfo,
