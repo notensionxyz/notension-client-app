@@ -17,6 +17,13 @@ export const openUrl = (url) => {
     });
 };
 
+export const COLORS = {
+    primary: "#FF5678",
+    black: "#171717",
+    white: "#FFFFFF",
+    background: "#FFFFFF"
+}
+
 export const makeCall = (phoneNumber) => {
     console.log(phoneNumber);
     const args = {

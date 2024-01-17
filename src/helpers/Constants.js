@@ -1,3 +1,4 @@
+export const PRIVACY_URL='https://www.notension.com.bd/privacy'
 export const STORAGE_URL = 'https://we-care-base.sgp1.cdn.digitaloceanspaces.com';
 export const ACCESS_KEY = 'ba8dd74c-5844-4d83-8523b4a5f50d-a128-4190';
 export const logoColor_1 = '#F68F1E';

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
-//import { PRIVACY_URL } from "../assets/icon";
-// import { openUrl, makeCall } from "../appurl/Helpers";
 import {
   DrawerContentScrollView,
   useDrawerStatus
 } from '@react-navigation/drawer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from "react-redux";
 import { handleUserReducer } from '../store/reducers/userReducer';
+import { PRIVACY_URL } from '../helpers/Constants';
+import { openUrl } from '../helpers/imageUrl';
 
 export default function DrawerContent({ navigation }) {
   const dispatch = useDispatch();
@@ -200,7 +199,7 @@ export default function DrawerContent({ navigation }) {
             paddingVertical: 10,
             paddingHorizontal: 20,
             backgroundColor: 'transparent'
-          }}>
+          }}onPress={() => { openUrl(PRIVACY_URL); }}>
           <Image source={require('../assets/icon/eye.png')}
             style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
           <Text style={{
@@ -260,7 +259,6 @@ export default function DrawerContent({ navigation }) {
             <Image source={require('../assets/icon/logo_login.png')}
               style={{ height: 30, width: 30, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
             <Text style={{
-
               fontSize: 18,
               color: '#212121',
               fontWeight: 'bold',
@@ -275,7 +273,7 @@ export default function DrawerContent({ navigation }) {
 }
 
 //export default DrawerContent;
-
+//
 const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
