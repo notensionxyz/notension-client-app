@@ -4,14 +4,13 @@ const userReducer = createSlice({
     name: "user",
     initialState: {
         setManually: false,
+        setCurrentLocation: false,
+        setDefaultLocation: false,
+        defaultUserLocation: {},
+        currentUserLocation: {},
         userLatitude: '00',
         userLongitude: '00',
         districtId: '00',
-        districtName: '',
-        districtAreaId: '00',
-        districtAreaName: '',
-        districtSubAreaId: '00',
-        districtSubAreaName: '',
         isLoggedin: false,
         userInfo: {},
         deliveryAddress: '',
@@ -19,13 +18,7 @@ const userReducer = createSlice({
         fireBaseToken: '',
         apiKey: '',
         userPin: '',
-        existing_outlet_id: '00',
-        outlet_id: '00',
-        outlet_name: '',
-        outlet_address: '',
-        default_outlet_id: '00',
-        default_outlet_name: '',
-        default_outlet_address: '',
+        deliveryLocations: [],
         districtInfo: [],
         groceryOrderInfo: [],
         medicineOrderInfo: [],
@@ -65,12 +58,11 @@ const userReducer = createSlice({
                     districtInfo: payload?.data || [],
                 }
             }
-            else if (payload.type == "SAVE_SELECTED_DISTRICT") {
-                return {
-                    ...state,
-                    districtId: payload?.data?.districtId || '00',
-                    districtName: payload?.data?.districtName || '',
-                }
+            else if (payload.type == "SAVE_DEFAULT_LOCATION") {
+                state.groceryOrderInfo = payload.data;
+            }
+            else if (payload.type == "SAVE_CURRENT_LOCATION") {
+                state.currentUserLocation = payload.data;
             }
             else if (payload.type == "SAVE_API_KEY") {
                 return {
@@ -95,6 +87,15 @@ const userReducer = createSlice({
                     userInfo: payload.data,
                 }
             }
+            else if (payload.type == "SAVE_USER_CURRENT_LOCATION") {
+                state.currentUserLocation = payload.data;
+                state.userLatitude = payload.data.userLatitude || '00';
+                state.userLongitude = payload.data.userLongitude || '00';
+                state.districtId = payload.data.districtId || '00';
+            }
+            else if (payload.type == "SAVE_USER_DEFAULT_LOCATION") {
+                state.defaultUserLocation = payload.data;
+            }
             else if (payload.type == "SAVE_GROCERY_ORDER_INFO") {
                 state.groceryOrderInfo = payload.data;
             }
@@ -108,14 +109,9 @@ const userReducer = createSlice({
                 return {
                     ...state,
                     setManually: false,
-                    userLatitude: '00',
-                    userLongitude: '00',
-                    districtId: '00',
-                    districtName: '',
-                    districtAreaId: '00',
-                    districtAreaName: '',
-                    districtSubAreaId: '00',
-                    districtSubAreaName: '',
+                    setLocation: false,
+                    defaultUserLocation: {},
+                    currentUserLocation: {},
                     isLoggedin: false,
                     userInfo: {},
                     deliveryAddress: '',
@@ -123,13 +119,7 @@ const userReducer = createSlice({
                     fireBaseToken: '',
                     apiKey: '',
                     userPin: '',
-                    existing_outlet_id: '00',
-                    outlet_id: '00',
-                    outlet_name: '',
-                    outlet_address: '',
-                    default_outlet_id: '00',
-                    default_outlet_name: '',
-                    default_outlet_address: '',
+                    deliveryLocations: [],
                     districtInfo: [],
                     groceryOrderInfo: [],
                     medicineOrderInfo: [],

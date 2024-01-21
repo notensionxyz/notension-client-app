@@ -34,7 +34,7 @@ export default function PlaceOrderMedicine() {
 
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { isLoggedin, userInfo } = useSelector((state) => state.user);
-    
+
     const visitedMedicineStore = useSelector((state) => state.dashboard.visitedMedicineStore);
     const minOrderAmount = visitedMedicineStore?.min_purchage_amount || 0;
     const deliveryCharge = visitedMedicineStore?.max_delivery_charge || 0;
@@ -149,7 +149,7 @@ export default function PlaceOrderMedicine() {
                     formData.append('order_list_image', image);
                 }
             });
-            
+
             placceOrder(formData);
         } else {
             setShowErrorMessage(true);
@@ -194,7 +194,7 @@ export default function PlaceOrderMedicine() {
                         }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={{ fontSize: 14, color: '#263238', lineHeight: 23, fontWeight: 'bold' }}>{userInfo?.customer_name}</Text>
-                                <TouchableOpacity onPress={() => { null }}>
+                                <TouchableOpacity onPress={() => { navigation.navigate('ChangeDefaultLocation'); }}>
                                     <Image source={require('../../assets/icon/ic_edit2.png')}
                                         style={{ height: 16, width: 16, tintColor: '#757575', resizeMode: 'contain' }} />
                                 </TouchableOpacity>

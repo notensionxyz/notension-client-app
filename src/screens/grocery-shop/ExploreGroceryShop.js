@@ -92,13 +92,27 @@ function ExploreGroceryShop() {
             <ScrollView>
                 {typeInfoGeneral?.length > 0 &&
                     <>
-                        <View style={{ width: screenWidth - 8, padding: 10, backgroundColor: 'white' }}>
-                            <Text style={{ fontSize: 18, color: '#006400', fontWeight: 'bold', paddingLeft: 5 }}>{visitedGroceryStore?.shop_name}</Text>
+                        <View style={{ width: screenWidth, padding: 10, backgroundColor: 'white' }}>
+                            <Text style={{ fontSize: 18, color: '#006400', fontWeight: 'bold', paddingLeft: 5 }} numberOfLines={1} ellipsizeMode="tail">
+                                {visitedGroceryStore?.shop_name}
+                            </Text>
                             <View style={{ flexDirection: 'row', marginTop: 5 }}>
                                 <Image source={require('../../assets/icon/ic_place_blue.png')}
                                     style={{ width: 25, height: 25, tintColor: 'blue', resizeMode: 'contain' }} />
                                 <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>{visitedGroceryStore?.shop_address}</Text>
                             </View>
+                        </View>
+
+                        <View
+                            style={{
+                                position: 'absolute',
+                                right: screenWidth / 30,
+                                top: screenWidth / 30,
+                            }}>
+                            <Pressable onPress={() => { null }}>
+                                <Image source={require('../../assets/icon/add_favourite.png')}
+                                    style={{ width: 100, height: 50, resizeMode: 'contain', backgroundColor: 'white' }} />
+                            </Pressable>
                         </View>
 
                         <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />

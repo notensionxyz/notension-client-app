@@ -36,7 +36,7 @@ function Dashboard(props) {
         free_services_slider
     } = useSelector((state) => state.dashboard);
 
-    const { userLatitude, userLongitude, districtId, districtInfo } = useSelector((state) => state.user);
+    const { defaultUserLocation, districtInfo } = useSelector((state) => state.user);
 
     const { getDasboardInfo, saveConnectionStatus } = useGlobal();
     //const { getStorageInfo } = useAdminInformation();
@@ -107,7 +107,7 @@ function Dashboard(props) {
         });
     }
 
-    console.log('userLatitude', userLatitude);
+    console.log('userLatitude', defaultUserLocation?.userLatitude);
 
     const timerRef = React.useRef(null);
     searchDistrict = text => {
@@ -141,14 +141,14 @@ function Dashboard(props) {
                         <SplashScreen />
                         :
                         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                            {districtId === '00' ?
+                            {!defaultUserLocation?.districtId ?
                                 <>
                                     <HeaderCommon title="search" onInputText={searchDistrict} toggleDrawer={props.navigation} />
                                     <DistrictName filteredInfo={filteredInfo} />
                                 </>
                                 :
                                 <>
-                                    {userLatitude === '00' ?
+                                    {defaultUserLocation?.userLatitude && defaultUserLocation?.userLatitude === '00' ?
                                         <ConfirmLocation />
                                         :
                                         <>
@@ -159,8 +159,8 @@ function Dashboard(props) {
                                                 <BusinessModules data={business_type_banner} />
                                                 <AddSlider data={advertisement_slider} />
                                                 <MedicalServices data={medical_services_banner} />
-                                                <FreeServicesSlider data={free_services_slider} />
-                                                <FreeServices />
+                                                {/* <FreeServicesSlider data={free_services_slider} />
+                                                <FreeServices /> */}
                                             </ScrollView>
                                         </>
                                     }

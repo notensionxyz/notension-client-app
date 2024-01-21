@@ -35,6 +35,7 @@ const dashboardReducer = createSlice({
             if (payload.type == "SAVE_DASHBOARD_INFO") {
                 return {
                     ...state,
+                    isLoading: false,
                     isFetchingFromStorage: false,
                     favourite_banner: payload?.data[0]?.favourite_banner,
                     starting_slider: payload?.data[0]?.starting_slider,
@@ -140,7 +141,7 @@ const dashboardReducer = createSlice({
                     currentModule: 'dashboard',
                     callUs: '',
                     internetConnectionAvailable: true,
-                    isLoading: false,
+                    isLoading: true,
                     isFetchingFromStorage: true,
                     favourite_banner: [],
                     starting_slider: [],

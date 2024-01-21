@@ -179,7 +179,7 @@ export default function PlaceOrderGrocery() {
                     <View style={{ marginHorizontal: 20 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#006400', marginBottom: 5, marginTop: 7 }}>Contact Details</Text>
-                            <TouchableOpacity onPress={() => { navigation.navigate('EditContactDetails') }}>
+                            <TouchableOpacity onPress={() => { navigation.navigate('ChangeDefaultLocation'); }}>
                                 <Text style={{ fontSize: 15, color: 'blue', lineHeight: 20, marginTop: 15 }}>Edit</Text>
                             </TouchableOpacity>
                         </View>

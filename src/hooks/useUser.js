@@ -27,22 +27,24 @@ const Axios = axios.create({
 
 export const useUser = () => {
     const navigation = useNavigation();
+    const loggedinUserInfo = useSelector((state) => state.user.userInfo);
+    const { userLatitude, userLongitude, districtId } = useSelector((state) => state.user);
     const currentModule = useSelector((state) => state.dashboard.currentModule);
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
     const [progressing, setProgressing] = React.useState(false);
     const [userInfo, setUserInfo] = useState({
-        _id: '',
-        custom_id: '',
-        customer_name: '',
-        customer_address: '',
-        email: '',
-        contact_no: '',
-        alternative_contact_no: '',
-        longitude: '',
-        latitude: '',
+        _id: loggedinUserInfo?._id || '',
+        custom_id: loggedinUserInfo?.custom_id || '',
+        customer_name: loggedinUserInfo?.customer_name || '',
+        customer_address: loggedinUserInfo?.customer_address || '',
+        email: loggedinUserInfo?.email || '',
+        contact_no: loggedinUserInfo?.contact_no || '',
+        alternative_contact_no: loggedinUserInfo?.alternative_contact_no || '',
+        longitude: userLatitude,
+        latitude: userLongitude,
         district_name_by_location: '',
-        district_id: '303030303030303030303030',
+        district_id: districtId,
         district_area_id: '303030303030303030303030',
         district_subarea_id: '303030303030303030303030',
     });
@@ -59,12 +61,16 @@ export const useUser = () => {
         deliveryAddress: '',
     };
 
-    let districtSelected = {
-        isDistrictSelected: false,
-        districtId: '',
+    let userLocation = {
+        isSetManually: false,
+        userLatitude: '00',
+        userLongitude: '00',
+        districtId: '00',
         districtName: '',
-        districtInfo: [],
-        districtAreaInfo: [],
+        districtAreaId: '00',
+        districtAreaName: '',
+        districtSubAreaId: '00',
+        districtSubAreaName: '',
     };
 
     let areaSelected = {
@@ -135,11 +141,21 @@ export const useUser = () => {
             })
     }
 
-    const saveSelectedDistrictInfo = (districtInfo) => {
+    const saveSelectedInfo = (userLocation) => {
         dispatch(
             handleUserReducer({
-                type: 'SAVE_SELECTED_DISTRICT',
-                data: districtInfo,
+                type: 'SAVE_USER_DEFAULT_LOCATION',
+                data: userLocation,
+            })
+        );
+        saveCurrentInfo(userLocation);
+    }
+
+    const saveCurrentInfo = (userLocation) => {
+        dispatch(
+            handleUserReducer({
+                type: 'SAVE_USER_CURRENT_LOCATION',
+                data: userLocation,
             })
         );
     }
@@ -227,12 +243,12 @@ export const useUser = () => {
     const setUserData = (user) => {
         setUserInfo((prev) => ({
             ...prev,
-            _id: user._id,
-            custom_id: user?.custom_id,
+            _id: user?._id || '',
+            custom_id: user?.custom_id || '',
             customer_name: user?.customer_name || '',
             customer_address: user?.customer_address || '',
             email: user?.email || '',
-            contact_no: user?.contact_no,
+            contact_no: user?.contact_no || '',
             alternative_contact_no: user?.alternative_contact_no || '',
         }));
     }
@@ -314,7 +330,8 @@ export const useUser = () => {
         getDistrictAreaInfo,
         getDistrictSubAreaInfo,
         saveSlectedAreaInfo,
-        saveSelectedDistrictInfo,
+        saveCurrentInfo,
+        saveSelectedInfo,
         changeDistrictInfo,
         logout,
         handleDataChange,

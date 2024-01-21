@@ -13,40 +13,7 @@ export default function DrawerContent({ navigation }) {
   const dispatch = useDispatch();
   const { isLoggedin, userInfo } = useSelector((state) => state.user);
   const currentModule = useSelector((state) => state.dashboard.currentModule);
-
-  const isDrawerOpen = useDrawerStatus();
-
-  useEffect(() => {
-    return () => {
-      if (isDrawerOpen === 'open') {
-        //getCustomerInfo();
-      }
-    }
-  }, [isDrawerOpen]);
-
-
   const [selected, setSelected] = useState(0);
-
-  // const getCustomerInfo = async () => {
-  //   try {
-  //     let user = await AsyncStorage.getItem('user');
-  //     let parsed = JSON.parse(user);
-  //     if (parsed !== null) {
-  //       setIsLogin(1);
-  //       setName(parsed.name);
-  //       setPhone(parsed.mobile);
-  //       setKey(parsed.accessKey);
-  //     } else {
-  //       setIsLogin(0);
-  //       setName('');
-  //       setPhone('');
-  //       setKey('');
-  //     }
-  //   }
-  //   catch (error) {
-  //     alert(error)
-  //   }
-  // };
 
   const logoutUser = () => {
     dispatch(
@@ -57,25 +24,13 @@ export default function DrawerContent({ navigation }) {
     );
   };
 
-  const processToLogin = async () => {
-    try {
-      // let user = await AsyncStorage.getItem('user');
-      // let parsed = JSON.parse(user);
-      // if (parsed !== null) {
-      //   navigation.navigate('Home');
-      // } else {
-      //   navigation.navigate('Login', { fromDrawer: 1 })
-      // }
-    }
-    catch (error) {
-      alert(error)
-    }
-
-  };
-
-  const showMyOrder = () => {
+  const navogateTo = (to) => {
     if (isLoggedin) {
-      navigation.navigate('OrderInfo');
+      if (to === 'OrderInfoScreen') {
+        navigation.navigate('OrderInfo');
+      } else {
+        navigation.navigate('ChangeDefaultLocation', { from: 'fromDrawer' });
+      }
     } else {
       navigation.navigate('Login');
     }
@@ -144,7 +99,7 @@ export default function DrawerContent({ navigation }) {
             paddingVertical: 10,
             paddingHorizontal: 20,
             backgroundColor: 'transparent'
-          }} onPress={() => { navigation.navigate('SpecialOffer') }}>
+          }} onPress={() => { navigation.navigate('ChangeDefaultLocation') }}>
           <Image source={require('../assets/bottom/Offer-Icon.png')}
             style={{ height: 32, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
           <Text style={{
@@ -180,7 +135,7 @@ export default function DrawerContent({ navigation }) {
               paddingVertical: 10,
               paddingHorizontal: 20,
               backgroundColor: 'transparent'
-            }} onPress={() => { showMyOrder(); }}>
+            }} onPress={() => { navogateTo('OrderInfoScreen'); }}>
             <Image source={require('../assets/icon/My-Order.png')}
               style={{ height: 34, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
             <Text style={{
@@ -199,7 +154,7 @@ export default function DrawerContent({ navigation }) {
             paddingVertical: 10,
             paddingHorizontal: 20,
             backgroundColor: 'transparent'
-          }}onPress={() => { openUrl(PRIVACY_URL); }}>
+          }} onPress={() => { openUrl(PRIVACY_URL); }}>
           <Image source={require('../assets/icon/eye.png')}
             style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
           <Text style={{
@@ -217,36 +172,56 @@ export default function DrawerContent({ navigation }) {
             paddingVertical: 10,
             paddingHorizontal: 20,
             backgroundColor: 'transparent'
-          }}>
-          <Image source={require('../assets/icon/map5_ic_call.png')}
-            style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+          }} onPress={() => { navogateTo('location'); }}>
+          <Image source={require('../assets/icon/ic_place_blue.png')}
+            style={{ height: 32, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
           <Text style={{
-            fontWeight: 'bold',
             fontSize: 18,
             color: '#212121',
             fontWeight: 'bold',
-            marginLeft: 17
-          }}>Call Us</Text>
+            marginLeft: 11
+          }}>Update Location</Text>
         </TouchableOpacity>
         {isLoggedin ?
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingVertical: 10,
-              paddingHorizontal: 20,
-              backgroundColor: 'transparent'
-            }} onPress={() => { logoutUser(); }}>
-            <Image source={require('../assets/icon/ic_menu4_logout.png')}
-              style={{ height: 27, width: 27, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-            <Text style={{
-              fontWeight: 'bold',
-              fontSize: 18,
-              color: '#212121',
-              fontWeight: 'bold',
-              marginLeft: 18
-            }}>Logout</Text>
-          </TouchableOpacity>
+          <>
+
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                backgroundColor: 'transparent'
+              }}>
+              <Image source={require('../assets/icon/map5_ic_call.png')}
+                style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 18,
+                color: '#212121',
+                fontWeight: 'bold',
+                marginLeft: 17
+              }}>Call Us</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                backgroundColor: 'transparent'
+              }} onPress={() => { logoutUser(); }}>
+              <Image source={require('../assets/icon/ic_menu4_logout.png')}
+                style={{ height: 27, width: 27, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 18,
+                color: '#212121',
+                fontWeight: 'bold',
+                marginLeft: 18
+              }}>Logout</Text>
+            </TouchableOpacity>
+          </>
           :
           <TouchableOpacity
             style={{

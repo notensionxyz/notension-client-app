@@ -6,16 +6,19 @@ import { useUser } from '../../../hooks/useUser';
 import { storageImageUrl } from '../../../helpers/imageUrl';
 import { useGlobal } from '../../../hooks/global';
 import ProgressStyle2 from '../../progress-animation/ProgressStyle2';
+import { useGeoLocation } from '../../../hooks/findGeoLocation';
 
 const screenWidth = Dimensions.get('window').width;
 
 function DistrictName({ filteredInfo }) {
-    const districtInfo = useSelector((state) => state.user.districtInfo);
+    const { defaultUserLocation, districtInfo } = useSelector((state) => state.user);
+    const { curLoc, isLocationFound, isPanding, setState, getGeoLocation } = useGeoLocation();
     const [fetching, setFetching] = useState(false);
-    const { saveSelectedDistrictInfo } = useUser();
+    const { saveSelectedInfo, saveCurrentInfo } = useUser();
     const { getDistrictInfo, progressing } = useGlobal();
 
     useEffect(() => {
+        getGeoLocation();
         if (districtInfo.length < 1) {
             getDistrictInfo();
         }
@@ -23,12 +26,34 @@ function DistrictName({ filteredInfo }) {
 
     const saveSlectedDistrict = (slectedDistrict) => {
 
-        let districtSelected = {
+        let userLocation = {
+            isSetManually: false,
+            userLatitude: '00',
+            userLongitude: '00',
             districtId: slectedDistrict._id,
             districtName: slectedDistrict.district_name,
+            districtAreaId: '00',
+            districtAreaName: '',
+            districtSubAreaId: '00',
+            districtSubAreaName: '',
         };
 
-        saveSelectedDistrictInfo(districtSelected);
+        if (defaultUserLocation?.districtId) {
+            userLocation = {
+                isSetManually: false,
+                userLatitude: curLoc?.latitude,
+                userLongitude: curLoc?.longitude,
+                districtId: slectedDistrict._id,
+                districtName: slectedDistrict.district_name,
+                districtAreaId: defaultUserLocation?.districtAreaId || '00',
+                districtAreaName: defaultUserLocation?.districtAreaName || '',
+                districtSubAreaId: defaultUserLocation?.districtSubAreaId || '00',
+                districtSubAreaName: defaultUserLocation?.districtSubAreaName || '',
+            };
+            saveCurrentInfo(userLocation);
+        } else {
+            saveSelectedInfo(userLocation);
+        }
     }
 
     return (

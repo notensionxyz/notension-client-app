@@ -6,9 +6,9 @@ import { debounce } from 'lodash';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import LinearGradient from 'react-native-linear-gradient';
 import { useSelector } from 'react-redux';
-//import Geocoder from 'react-native-geocoding';
 import HeaderForLocation from '../../header/HeaderForLocation';
-import { useUserProfile } from '../../../hooks/user/profile';
+import { useGeoLocation } from '../../../hooks/findGeoLocation';
+import { useUser } from '../../../hooks/useUser';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
 const screenWidth = Dimensions.get('window').width;
@@ -18,13 +18,9 @@ const screenHeight = Dimensions.get('window').height;
 const LATITUDE = 23.7624709;
 const LONGITUDE = 90.3760062;
 const LATITUDE_DELTA = 0.006;
-// Initialize the module (needs to be done only once)
-//Geocoder.init("AIzaSyA-hijY9IojfmjrHp643zqc0v2XfKA3Nt4"); // use a valid API key
 
-function ConfirmLocation({ setInformation, setLocality, setSubAdminArea }) {
-    const { districtName, userLatitude, userLongitude, isUserLocationAvailable } = useSelector(
-        (state) => state.user
-    );
+function ConfirmLocation() {
+    const defaultUserLocation = useSelector((state) => state.user.defaultUserLocation);
     const mapRef = useRef();
     const [viewWidth, setViewWidth] = useState(screenWidth);
     const [viewHeight, setViewHeight] = useState(screenHeight);
@@ -34,195 +30,24 @@ function ConfirmLocation({ setInformation, setLocality, setSubAdminArea }) {
     const MAP_HEIGHT = viewHeight - 56;
     const ASPECT_RATIO = MAP_WIDTH / MAP_HEIGHT;
     const LONGITUDE_DELTA = latDelta * ASPECT_RATIO;
-    const [visibleUserLocation, setVisibleUserLocation] = useState(true);
-    const [state, setState] = useState({
-        curLoc: {
-            latitude: userLatitude,
-            longitude: userLongitude,
-        },
-        isLocationFound: false,
-        isPanding: false,
-    })
 
-    const { curLoc, isLocationFound, isPanding } = state;
+    const { saveSelectedInfo, saveCurrentInfo } = useUser();
+
+    const { curLoc, isLocationFound, isPanding, setState, getGeoLocation } = useGeoLocation();
 
     const updateState = (data) => setState((state) => ({ ...state, ...data }));
 
     useEffect(() => {
         getGeoLocation();
-        // if (!isUserLocationAvailable) {
-        //     getGeoLocation();
-        // } else {
-        //     updateState({
-        //         isLocationFound: true,
-        //     });
-        // }
     }, []);
-
-    const getGeoLocation = async () => {
-
-        const hasPermission = await hasLocationPermission();
-        //console.log(hasPermission);
-        if (!hasPermission) {
-            // then goto selec mannually
-            return;
-        }
-
-        Geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords
-                //console.log('current position', position.coords);
-                updateState({
-                    curLoc: { latitude, longitude },
-                    isLocationFound: true,
-                });
-                //getAddress(latitude, longitude);
-            },
-            (error) => {
-                // then goto selec mannually
-
-                // See error code charts below.
-                console.log(error.code, error.message);
-            },
-            {
-                accuracy: {
-                    android: 'high',
-                    ios: 'best',
-                },
-                enableHighAccuracy: true,
-                timeout: 15000,
-                maximumAge: 0,
-                distanceFilter: 0,
-                interval: 5000,
-                fastestInterval: 2000,
-                forceRequestLocation: true,
-                forceLocationManager: false,
-                showLocationDialog: true,
-                useSignificantChanges: false,
-            },
-        );
-    }
-
-    const hasLocationPermission = async () => {
-        if (Platform.OS === 'ios') {
-            const hasPermission = await hasPermissionIOS();
-            return hasPermission;
-        }
-
-        if (Platform.OS === 'android' && Platform.Version < 23) {
-            return true;
-        }
-
-        const hasPermission = await PermissionsAndroid.check(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        );
-
-        if (hasPermission) {
-            return true;
-        }
-
-        const status = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        );
-
-        if (status === PermissionsAndroid.RESULTS.GRANTED) {
-            return true;
-        }
-
-        if (status === PermissionsAndroid.RESULTS.DENIED) {
-            ToastAndroid.show(
-                'Location permission denied by user.',
-                ToastAndroid.LONG,
-            );
-        } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-            ToastAndroid.show(
-                'Location permission revoked by user.',
-                ToastAndroid.LONG,
-            );
-        }
-
-        return false;
-    };
-
-    const hasPermissionIOS = async () => {
-        const openSetting = () => {
-            Linking.openSettings().catch(() => {
-                Alert.alert('Unable to open settings');
-            });
-        };
-        const status = await Geolocation.requestAuthorization('whenInUse');
-
-        if (status === 'granted') {
-            return true;
-        }
-
-        if (status === 'denied') {
-            Alert.alert('Location permission denied');
-        }
-
-        if (status === 'disabled') {
-            Alert.alert(
-                `Turn on Location Services to allow carePlus to determine your location.`,
-                '',
-                [
-                    { text: 'Go to Settings', onPress: openSetting },
-                    { text: "Don't Use Location", onPress: () => { } },
-                ],
-            );
-        }
-
-        return false;
-    };
 
     const onChangeComplete = async (initialRegion) => {
         const { latitude, longitude } = initialRegion;
-        setVisibleUserLocation(false);
 
         updateState({
             isPanding: false,
             curLoc: { latitude, longitude }
         })
-
-        //getAddress(latitude, longitude);
-    };
-
-    const getAddress = (latitude, longitude) => {
-
-        mapRef?.current?.addressForCoordinate({ latitude, longitude })
-            .then((address) => {
-
-                // Search by geo-location (reverse geo-code)
-                // Geocoder.from(latitude, longitude)
-                //     .then(json => {
-                //         var addressComponent = json.results[0].address_components[0];
-                //         console.log(addressComponent);
-                //     })
-                //     .catch(error => console.warn(error));
-
-                const district = address.locality;
-
-                if (districtName.toLowerCase().includes(district.toLowerCase())) {
-                    console.log("str1 contains str2 (case-insensitive)");
-                }
-                else {
-                    console.log("str1 not contains str2 (case-insensitive)");
-                }
-                setLocality(address.locality);
-                setSubAdminArea(address.subAdministrativeArea);
-                //console.log("address", address);
-                //console.log("Country : ", address.country);
-                //console.log("Country Code : ", address.countryCode);
-                //console.log("District : ", address.locality);
-                //console.log("District : ", address.subAdministrativeArea);
-
-                //console.log("SubLocality : ", address.subLocality); /// Area Name or word Name
-                //console.log("Like Name : ", address.subThoroughfare); /// Like House No
-                //console.log("Road : ", address.thoroughfare); /// Road Name
-                //console.log("Name : ", address.name); /// Like House No
-            })
-            .catch((err) => {
-                console.log("Error From Get Address : ", err);
-            });
     };
 
     const onPanDrag = debounce(() => {
@@ -234,19 +59,38 @@ function ConfirmLocation({ setInformation, setLocality, setSubAdminArea }) {
         })
     }, 10000, { leading: true, trailing: false });
 
-    const [visible, setVisible] = useState(false);
-    const [avatarVisible, setAvatarVisible] = useState(false);
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setVisible(true)
-    //     }, 2000)
-    // }, []);
 
-    const { saveUserCurrentGeolocation } = useUserProfile();
+    const [avatarVisible, setAvatarVisible] = useState(false);
 
     const confirmRetailerLocation = () => {
-        //console.log('pressed');
-        saveUserCurrentGeolocation(curLoc);
+        let userLocation = {
+            isSetManually: false,
+            userLatitude: curLoc?.latitude || '00',
+            userLongitude: curLoc?.longitude || '00',
+            districtId: defaultUserLocation?.districtId || '00',
+            districtName: defaultUserLocation?.districtName || '',
+            districtAreaId: '00',
+            districtAreaName: '',
+            districtSubAreaId: '00',
+            districtSubAreaName: '',
+        };
+
+        if (defaultUserLocation?.userLatitude !== '00') {
+            userLocation = {
+                isSetManually: false,
+                userLatitude: curLoc?.latitude,
+                userLongitude: curLoc?.longitude,
+                districtId: defaultUserLocation?.districtId,
+                districtName: defaultUserLocation?.districtName,
+                districtAreaId: defaultUserLocation?.districtAreaId || '00',
+                districtAreaName: defaultUserLocation?.districtAreaName || '',
+                districtSubAreaId: defaultUserLocation?.districtSubAreaId || '00',
+                districtSubAreaName: defaultUserLocation?.districtSubAreaName || '',
+            };
+            saveCurrentInfo(userLocation);
+        } else {
+            saveSelectedInfo(userLocation);
+        }
     };
 
     return (
@@ -318,8 +162,6 @@ function ConfirmLocation({ setInformation, setLocality, setSubAdminArea }) {
                     </Pressable>
                 </>
             }
-
-
         </>
     );
 }

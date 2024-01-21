@@ -11,10 +11,10 @@ import { handleUserReducer } from '../store/reducers/userReducer';
 
 export const useGlobal = () => {
     const dispatch = useDispatch();
-    const { isFetchingFromStorage, isLoading, districtAreaInfo, districtSubAreaInfo } = useSelector(
+    const { isFetchingFromStorage, isLoading } = useSelector(
         (state) => state.dashboard
     );
-    const { userLatitude, userLongitude, districtInfo } = useSelector((state) => state.user);
+    const { userLatitude, userLongitude, districtInfo, defaultUserLocation } = useSelector((state) => state.user);
     const user = useSelector((state) => state.user);
     const [error, setError] = useState(false);
     const [progressing, setProgressing] = useState(false);
@@ -29,7 +29,7 @@ export const useGlobal = () => {
                 })
             );
         }
-        resetDasgboardReducer();
+        resetDashboardReducer();
         if (districtInfo?.length < 1) {
             getDistrictInfo();
         }
@@ -118,11 +118,18 @@ export const useGlobal = () => {
         );
     }
 
-    const resetDasgboardReducer = () => {
+    const resetDashboardReducer = () => {
         dispatch(
             handleDashboardReducer({
                 type: 'RESET_DASHBOARD_REDUCER',
                 data: true,
+            })
+        );
+
+        dispatch(
+            handleUserReducer({
+                type: 'SAVE_USER_CURRENT_LOCATION',
+                data: defaultUserLocation,
             })
         );
     }

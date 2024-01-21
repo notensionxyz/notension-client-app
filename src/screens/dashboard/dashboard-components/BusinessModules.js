@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions, StyleSheet, Pressable, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { storageImageUrl } from "../../../helpers/imageUrl";
+import NotificationSuccess from '../../../components/popup-notification/NotificationSuccess';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function BusinessModules({ data }) {
     const navigation = useNavigation();
-
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [message, setMessage] = useState('Coming soon');
+    const navigate = () => {
+        setShowSuccessMessage(true);
+    }
     return (
         <>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', marginBottom: 7 }}>
@@ -103,35 +108,38 @@ export default function BusinessModules({ data }) {
                             </View>
                         </View>
                     </Pressable>
-                    <View style={{ height: (screenWidth / 3) - 7, width: (screenWidth / 3) - 2, padding: 5, borderRadius: 10 }}>
-                        <View style={{
-                            justifyContent: 'space-between',
-                            borderRadius: 10,
-                            shadowRadius: 10,
-                            elevation: 3,
-                            shadowOffset: { width: 0, height: 2 },
-                            shadowOpacity: 0.3,
-                            backgroundColor: 'white'
-                        }}>
-                            <FastImage
-                                source={{ uri: storageImageUrl('app-dashboard', data[3]?.file_name) }}
-                                resizeMode={FastImage.resizeMode.contain}
-                                style={{
-                                    height: (screenWidth / 3) - 9,
-                                    width: (screenWidth / 3) - 9,
-                                    justifyContent: 'flex-end',
-                                    //padding: 10,
-                                    borderRadius: 10,
-                                    shadowRadius: 10,
-                                    shadowOffset: { width: 0, height: 2 },
-                                    shadowOpacity: 0.3,
-                                    overflow: 'hidden'
-                                }} />
+                    <Pressable onPress={() => { navigate() }}>
+                        <View style={{ height: (screenWidth / 3) - 7, width: (screenWidth / 3) - 2, padding: 5, borderRadius: 10 }}>
+                            <View style={{
+                                justifyContent: 'space-between',
+                                borderRadius: 10,
+                                shadowRadius: 10,
+                                elevation: 3,
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.3,
+                                backgroundColor: 'white'
+                            }}>
+                                <FastImage
+                                    source={{ uri: storageImageUrl('app-dashboard', data[3]?.file_name) }}
+                                    resizeMode={FastImage.resizeMode.contain}
+                                    style={{
+                                        height: (screenWidth / 3) - 9,
+                                        width: (screenWidth / 3) - 9,
+                                        justifyContent: 'flex-end',
+                                        //padding: 10,
+                                        borderRadius: 10,
+                                        shadowRadius: 10,
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.3,
+                                        overflow: 'hidden'
+                                    }} />
 
+                            </View>
                         </View>
-                    </View>
+                    </Pressable>
                 </View>
             </View >
+            <NotificationSuccess visible={showSuccessMessage} setVisible={setShowSuccessMessage} message={message} />
         </>
     );
 }

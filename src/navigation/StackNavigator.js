@@ -20,6 +20,7 @@ import OrderInfo from "../screens/user/OrderInfo";
 import OrderDetails from "../screens/user/OrderDetails";
 import OrderSuccessful from "../screens/user/OrderSuccessful";
 import PlaceOrderGrocery from "../screens/grocery-shop/PlaceOrderGrocery";
+import ChangeDefaultLocation from "../screens/user/ChangeDefaultLocation";
 
 const Stack = createStackNavigator();
 
@@ -173,6 +174,14 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="SignUp"
                 component={SignUp}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ChangeDefaultLocation"
+                component={ChangeDefaultLocation}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false
