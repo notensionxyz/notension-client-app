@@ -8,12 +8,14 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import FastImage from 'react-native-fast-image';
 import { useDispatch, useSelector } from "react-redux"
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-//import HomeCartFooter from "../appcomponents/footer/HomeCartFooter";
 import { handleGroceryItems } from '../../hooks/cart-handler/handleGroceryItems';
 import { storageImageUrl } from '../../helpers/imageUrl';
-import { grocery_itemsImages } from '../../helpers/Constants';
+import { grocery_itemsImages, logoColor_1, logoColor_2 } from '../../helpers/Constants';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import FooterCommon from '../../components/footer/FooterCommon';
+import { startMapper } from 'react-native-reanimated';
+import { useFavouriteItem } from '../../hooks/user/favorite-item';
+import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = Dimensions.get('window').hight;
@@ -27,11 +29,13 @@ let images = [];
 //     ? Dimensions.get("window").height
 //     : require("react-native-extra-dimensions-android").get("REAL_WINDOW_HEIGHT");
 
+let merchantType = 0;
+
 export default function GroceryProductDetails({ route }) {
     const navigation = useNavigation();
 
     const data = route.params.data;
-
+    const isLoggedin = useSelector((state) => state.user.isLoggedin);
     const deviceWidth = useWindowDimensions().width;
     const deviceHeight = useWindowDimensions().height;
 
@@ -49,6 +53,13 @@ export default function GroceryProductDetails({ route }) {
         deccreseQty,
         isInOutOfStockList
     } = handleGroceryItems();
+
+    const {
+        visible,
+        isAddedToFavouriteItems,
+        addToFavouriteItems,
+        removeFromfavoriteItems
+    } = useFavouriteItem();
 
     useEffect(() => {
 
@@ -75,6 +86,11 @@ export default function GroceryProductDetails({ route }) {
 
     if (quantity < 1 && isAvailable > 0) {
         isInStock = 0;
+    }
+
+    let productId = data?.productInfoTable;
+    if (data?.productInfoTable?._id) {
+        productId = data?.productInfoTable?._id;
     }
 
     const handleClick = () => {
@@ -128,10 +144,19 @@ export default function GroceryProductDetails({ route }) {
         }
     }
 
+    const checkIsLoggedinAndProcess = () => {
+        if (isLoggedin) {
+            addToFavouriteItems(data, merchantType);
+        } else {
+            navigation.navigate('Login')
+        }
+    }
+
     return (
 
         <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
             <HeaderCommon toggleDrawer={navigation} title="Product Details" connectionStatus={connectionStatus} isReachable={isReachable} />
+            <ProgressStyle2 visible={visible} />
             <Modal style={{ margin: 0 }}
                 animationType="fade"
                 isVisible={isVisible}
@@ -218,7 +243,6 @@ export default function GroceryProductDetails({ route }) {
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 3 }}>
                                     <View style={{ width: "40%" }}>
                                         <Text style={{ fontSize: 18, color: '#ff9800', marginTop: 5, fontWeight: 'bold' }}>৳ {data?.sale_price}</Text>
-
                                     </View>
                                     {isInStock > 0 ?
                                         <View style={{ width: "60%", paddingRight: 5, alignItems: 'flex-end' }}>
@@ -232,7 +256,7 @@ export default function GroceryProductDetails({ route }) {
                                                     justifyContent: 'center',
                                                     paddingHorizontal: 11,
                                                     borderWidth: 2,
-                                                    borderColor: '#006400',
+                                                    borderColor: logoColor_2,
                                                     borderRadius: 4,
                                                     paddingLeft: 8,
 
@@ -242,7 +266,7 @@ export default function GroceryProductDetails({ route }) {
                                                         addToCart(data);
                                                     }}
                                                 >
-                                                    <Image style={{ width: 100, height: 33, tintColor: '#006400' }}
+                                                    <Image style={{ width: 100, height: 33, tintColor: logoColor_2 }}
                                                         resizeMode={'contain'}
                                                         source={require('../../assets/icon/Add-to-Bag.png')} />
                                                     {/* <Text style={{ color: '#111d5e', fontSize: 18, }}>Add to Bag</Text> */}
@@ -252,7 +276,7 @@ export default function GroceryProductDetails({ route }) {
                                                     {quantity > 1 ?
                                                         <FloatingButton size={34} style={{ position: 'relative' }}
                                                             image={require('../../assets/icon/ic_minus.png')}
-                                                            imageStyle={{ tintColor: '#006400', width: 28, height: 28 }}
+                                                            imageStyle={{ tintColor: logoColor_2, width: 28, height: 28 }}
                                                             onPress={() => {
                                                                 setQuantity(quantity - 1);
                                                                 deccreseQty(data?._id);
@@ -260,7 +284,7 @@ export default function GroceryProductDetails({ route }) {
                                                         />
                                                         : <FloatingButton size={34} style={{ position: 'relative' }}
                                                             image={require('../../assets/icon/ic_minus.png')}
-                                                            imageStyle={{ tintColor: '#006400', width: 28, height: 28 }}
+                                                            imageStyle={{ tintColor: logoColor_2, width: 28, height: 28 }}
                                                             onPress={() => {
                                                                 setQuantity(quantity - 1);
                                                                 removeFromCart(data?._id);
@@ -271,7 +295,7 @@ export default function GroceryProductDetails({ route }) {
                                                     {data?.max_allowed < 1 || data?.max_allowed > currentQty ?
                                                         <FloatingButton size={34} style={{ position: 'relative' }}
                                                             image={require('../../assets/icon/ic_plus.png')}
-                                                            imageStyle={{ tintColor: '#006400', width: 28, height: 28 }}
+                                                            imageStyle={{ tintColor: logoColor_2, width: 28, height: 28 }}
                                                             onPress={() => {
                                                                 setQuantity(quantity + 1);
                                                                 addToCart(data);
@@ -306,6 +330,29 @@ export default function GroceryProductDetails({ route }) {
                                         </>
                                     }
                                 </View>
+                                {!isAddedToFavouriteItems(productId, merchantType) &&
+                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 3 }}>
+                                        <TouchableOpacity style={{
+                                            height: 35,
+                                            width: '50%',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            paddingHorizontal: 11,
+                                            borderWidth: 1,
+                                            borderColor: logoColor_1,
+                                            borderRadius: 4,
+                                            paddingLeft: 8,
+                                            marginTop: 20
+                                        }} onPress={() => {
+                                            checkIsLoggedinAndProcess();
+                                        }}>
+                                            <Image style={{ width: 130, height: 35, tintColor: logoColor_2 }}
+                                                resizeMode={'contain'}
+                                                source={require('../../assets/icon/favorite_item.png')} />
+                                        </TouchableOpacity>
+                                    </View>
+                                }
                                 {/* <HTML source={{ html: "<p style='text-align:justify; text-justify: inter-word'; >" + data?.product_desc_eng || null + "<br><br>" + data?.product_desc_beng || null + "<p>" }} contentWidth={deviceWidth} /> */}
                             </View>
                         </View >
@@ -342,7 +389,7 @@ function FloatingButton({ onPress, size = 40, style = { position: 'absolute' }, 
             height: size,
             width: size,
             borderWidth: 2,
-            borderColor: '#006400',
+            borderColor: logoColor_2,
             bottom: style.position === 'relative' ? undefined : 20,
             right: style.position === 'relative' ? undefined : 20,
             borderRadius: size / 2,

@@ -15,7 +15,9 @@ import DealOfTheDay from '../../components/screens-components/GroceryShop/produc
 import HeaderExploreStore from '../../components/header/HeaderExploreStore';
 import FooterExploreStore from '../../components/footer/FooterExploreStore';
 import { grocery_sliderTypeSubtypeImagesFolderName } from '../../helpers/Constants';
+import { useFavouriteStore } from '../../hooks/user/favorite-shop';
 
+let merchantType = 0;
 let typeInfo = {};
 const screenWidth = Dimensions.get('window').width;
 
@@ -28,6 +30,12 @@ function ExploreGroceryShop() {
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
 
     const { exploreStore, progressing } = useGrocery();
+    const {
+        isAddedToFavouriteList,
+        addToFavouriteList,
+        visible
+    } = useFavouriteStore();
+
     const { resetState } = usePopularItem();
     const [pageNo, setPageNo] = useState(2);
 
@@ -72,9 +80,14 @@ function ExploreGroceryShop() {
 
     }, [typeInfoByShop]);
 
-    const processToPlaceOrder = () => {
+
+    const checkIsLoggedinAndProcess = (action) => {
         if (isLoggedin) {
-            navigation.navigate('PlaceOrderGrocery');
+            if (action === 'placerOrder') {
+                navigation.navigate('PlaceOrderGrocery');
+            } else {
+                addToFavouriteList(visitedGroceryStore, merchantType);
+            }
         } else {
             navigation.navigate('Login')
         }
@@ -85,7 +98,8 @@ function ExploreGroceryShop() {
             <HeaderExploreStore
                 Title='Search here.... e.g milk, চিনি'
                 module='Grocery' />
-            <ProgressStyle2 visible={progressing} />
+            <ProgressStyle2 visible={progressing || visible} />
+
             {/* {!progressing &&
                 <FilterOptionBySubtype navigateTo={navigateTo} />
             } */}
@@ -103,22 +117,24 @@ function ExploreGroceryShop() {
                             </View>
                         </View>
 
-                        <View
-                            style={{
-                                position: 'absolute',
-                                right: screenWidth / 30,
-                                top: screenWidth / 30,
-                            }}>
-                            <Pressable onPress={() => { null }}>
-                                <Image source={require('../../assets/icon/add_favourite.png')}
-                                    style={{ width: 100, height: 50, resizeMode: 'contain', backgroundColor: 'white' }} />
-                            </Pressable>
-                        </View>
+                        {!isAddedToFavouriteList(visitedGroceryStore?._id, merchantType) &&
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    right: screenWidth / 30,
+                                    top: screenWidth / 30,
+                                }}>
+                                <Pressable onPress={() => { checkIsLoggedinAndProcess('addToFavourite'); }}>
+                                    <Image source={require('../../assets/icon/add_favourite.png')}
+                                        style={{ width: 100, height: 50, resizeMode: 'contain', backgroundColor: 'white' }} />
+                                </Pressable>
+                            </View>
+                        }
 
                         <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={grocery_sliderTypeSubtypeImagesFolderName} />
 
-                        <Pressable onPress={() => { processToPlaceOrder() }}>
-                            <View style={{ height: (((screenWidth / 8) * 3) - 3), width: screenWidth - 10, borderRadius: 10, margin: 5 }}>
+                        <Pressable onPress={() => { checkIsLoggedinAndProcess('placerOrder'); }}>
+                            <View style={{ height: (((screenWidth / 8) * 3) - 4), width: screenWidth - 10, borderRadius: 10, margin: 5 }}>
                                 <View style={{
                                     borderRadius: 10,
                                     shadowRadius: 10,
@@ -142,7 +158,6 @@ function ExploreGroceryShop() {
                                             shadowOpacity: 0.3,
                                             overflow: 'hidden'
                                         }} />
-
                                 </View>
                             </View>
                         </Pressable>
@@ -192,6 +207,35 @@ function ExploreGroceryShop() {
                         {typeInfo['PT22'] && typeInfo['PT22']?.subtype?.length > 0 &&
                             <ManageListView data={typeInfo['PT22']} />
                         }
+
+                        <Pressable onPress={() => { navigation.navigate('FavouriteItems', { merchantType: 0 }); }}>
+                            <View style={{ height: (((screenWidth / 8) * 3) - 4), width: screenWidth - 10, borderRadius: 10, margin: 5, justifyContent: 'center' }}>
+                                <View style={{
+                                    borderRadius: 10,
+                                    shadowRadius: 10,
+                                    elevation: 3,
+                                    shadowOffset: { width: 0, height: 2 },
+                                    shadowOpacity: 0.3,
+                                    backgroundColor: 'white'
+                                }}>
+                                    <FastImage
+                                        source={require('../../assets/banner/grocery-list.webp')}
+                                        resizeMode={FastImage.resizeMode.contain}
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            //padding: 10,
+                                            borderRadius: 10,
+                                            shadowRadius: 10,
+                                            shadowOffset: { width: 0, height: 2 },
+                                            shadowOpacity: 0.3,
+                                            overflow: 'hidden'
+                                        }} />
+                                </View>
+                            </View>
+                        </Pressable>
 
                         <PopularProduct pageNo={pageNo} setPageNo={setPageNo} />
                     </>

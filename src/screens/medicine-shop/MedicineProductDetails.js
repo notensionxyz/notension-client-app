@@ -11,13 +11,16 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 //import HomeCartFooter from "../appcomponents/footer/HomeCartFooter";
 import { handleGroceryItems } from '../../hooks/cart-handler/handleGroceryItems';
 import { storageImageUrl } from '../../helpers/imageUrl';
-import { grocery_itemsImages, medicine_itemsImages } from '../../helpers/Constants';
+import { grocery_itemsImages, logoColor_1, logoColor_2, medicine_itemsImages } from '../../helpers/Constants';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import FooterCommon from '../../components/footer/FooterCommon';
+import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
+import { useFavouriteItem } from '../../hooks/user/favorite-item';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = Dimensions.get('window').hight;
 
+let merchantType = 1;
 let connectionStatus = 'true';
 let isReachable = 'true';
 let images = [];
@@ -29,7 +32,7 @@ let images = [];
 
 export default function MedicineProductDetails({ route }) {
     const navigation = useNavigation();
-
+    const isLoggedin = useSelector((state) => state.user.isLoggedin);
     const data = route.params.data;
 
     const deviceWidth = useWindowDimensions().width;
@@ -49,6 +52,13 @@ export default function MedicineProductDetails({ route }) {
         deccreseQty,
         isInOutOfStockList
     } = handleGroceryItems();
+
+    const {
+        visible,
+        isAddedToFavouriteItems,
+        addToFavouriteItems,
+        removeFromfavoriteItems
+    } = useFavouriteItem();
 
     useEffect(() => {
 
@@ -128,10 +138,19 @@ export default function MedicineProductDetails({ route }) {
         }
     }
 
+    const checkIsLoggedinAndProcess = () => {
+        if (isLoggedin) {
+            addToFavouriteItems(data, merchantType);
+        } else {
+            navigation.navigate('Login')
+        }
+    }
+
     return (
 
         <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
             <HeaderCommon toggleDrawer={navigation} title="Product Details" connectionStatus={connectionStatus} isReachable={isReachable} />
+            <ProgressStyle2 visible={visible} />
             <Modal style={{ margin: 0 }}
                 animationType="fade"
                 isVisible={isVisible}
@@ -329,6 +348,29 @@ export default function MedicineProductDetails({ route }) {
                                         </>
                                     }
                                 </View>
+                                {!isAddedToFavouriteItems(data?.medStoreProductInfo, merchantType) &&
+                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 3 }}>
+                                        <TouchableOpacity style={{
+                                            height: 35,
+                                            width: '50%',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            paddingHorizontal: 11,
+                                            borderWidth: 1,
+                                            borderColor: logoColor_1,
+                                            borderRadius: 4,
+                                            paddingLeft: 8,
+                                            marginTop: 20
+                                        }} onPress={() => {
+                                            checkIsLoggedinAndProcess();
+                                        }}>
+                                            <Image style={{ width: 130, height: 35, tintColor: logoColor_2 }}
+                                                resizeMode={'contain'}
+                                                source={require('../../assets/icon/favorite_item.png')} />
+                                        </TouchableOpacity>
+                                    </View>
+                                }
                                 {/* <HTML source={{ html: "<p style='text-align:justify; text-justify: inter-word'; >" + data?.product_desc_eng || null + "<br><br>" + data?.product_desc_beng || null + "<p>" }} contentWidth={deviceWidth} /> */}
                             </View>
                         </View >

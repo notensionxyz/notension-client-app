@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, TextInput, Dimensions, FlatList, Pressable, ActivityIndicator } from 'react-native';
 
-function SearchField({ searchText, setSearchText, onPress }) {
+function SearchField({ searchText, setSearchText, onPress, placeholderText, falseFocus }) {
     return (
         <View style={{ flexDirection: 'row', backgroundColor: '#f1f5f7' }}>
             <View style={{ flex: 1, paddingHorizontal: 15, marginTop: 5 }}>
@@ -20,8 +20,8 @@ function SearchField({ searchText, setSearchText, onPress }) {
                     <View style={{ flexDirection: 'row', backgroundColor: '#FFF', borderRadius: 2 }}>
                         <View style={{ flex: 1 }}>
                             <TextInput
-                                autoFocus={true}
-                                placeholder={'Search here'}
+                                autoFocus={falseFocus ? false : true}
+                                placeholder={placeholderText ? placeholderText : 'Search here'}
                                 placeholderTextColor={'#000'}
                                 style={{ paddingLeft: 15, height: 48, color: '#000', fontSize: 16 }}
                                 onChangeText={(text) => { setSearchText(text) }}

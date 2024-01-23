@@ -14,7 +14,9 @@ import FooterExploreStore from '../../components/footer/FooterExploreStore';
 import FastImage from 'react-native-fast-image';
 import { useMedicine } from '../../hooks/fetch-data-by-module/useMedicine';
 import { medicine_sliderTypeSubtypeImagesFolderName } from '../../helpers/Constants';
+import { useFavouriteStore } from '../../hooks/user/favorite-shop';
 
+let merchantType = 1;
 let typeInfo = {};
 const screenWidth = Dimensions.get('window').width;
 
@@ -25,7 +27,11 @@ function ExploreMedicineShop() {
     const { typeInfoByShop, subtypeInfoByShop, DashboardSlider, visitedMedicineStore } = useSelector((state) => state.dashboard);
     const [typeInfoGeneral, setTypeInfoGeneral] = useState([]);
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
-
+    const {
+        isAddedToFavouriteList,
+        addToFavouriteList,
+        visible
+    } = useFavouriteStore();
     const { exploreStore, progressing } = useMedicine();
     const { resetState } = usePopularItem();
     const [pageNo, setPageNo] = useState(2);
@@ -71,19 +77,22 @@ function ExploreMedicineShop() {
 
     }, [typeInfoByShop]);
 
-    const processToPlaceOrder = () => {
+    const checkIsLoggedinAndProcess = (action) => {
         if (isLoggedin) {
-            navigation.navigate('PlaceOrderMedicine');
+            if (action === 'placerOrder') {
+                navigation.navigate('PlaceOrderGrocery');
+            } else {
+                addToFavouriteList(visitedMedicineStore, merchantType);
+            }
         } else {
             navigation.navigate('Login')
         }
-
     }
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <HeaderExploreStore Title='Search here.... e.g Napa, Maxpro' module='Medicine' />
-            <ProgressStyle2 visible={progressing} />
+            <ProgressStyle2 visible={progressing || visible} />
             {/* {!progressing &&
                 <FilterOptionBySubtype  />
             } */}
@@ -99,10 +108,24 @@ function ExploreMedicineShop() {
                             </View>
                         </View>
 
+                        {!isAddedToFavouriteList(visitedMedicineStore?._id, merchantType) &&
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    right: screenWidth / 30,
+                                    top: screenWidth / 30,
+                                }}>
+                                <Pressable onPress={() => { checkIsLoggedinAndProcess('addToFavourite'); }}>
+                                    <Image source={require('../../assets/icon/add_favourite.png')}
+                                        style={{ width: 100, height: 50, resizeMode: 'contain', backgroundColor: 'white' }} />
+                                </Pressable>
+                            </View>
+                        }
+
                         <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={medicine_sliderTypeSubtypeImagesFolderName} />
 
-                        <Pressable onPress={() => { processToPlaceOrder() }}>
-                            <View style={{ height: (((screenWidth / 8) * 3) - 3), width: screenWidth - 10, borderRadius: 10, margin: 5 }}>
+                        <Pressable onPress={() => { checkIsLoggedinAndProcess('placerOrder'); }}>
+                            <View style={{ height: (((screenWidth / 8) * 3) - 4), width: screenWidth - 10, borderRadius: 10, margin: 5 }}>
                                 <View style={{
                                     borderRadius: 10,
                                     shadowRadius: 10,
@@ -166,8 +189,8 @@ function ExploreMedicineShop() {
                             <ManageListView data={typeInfo['MPT20']} />
                         }
 
-                        <Pressable onPress={() => { processToPlaceOrder() }}>
-                            <View style={{ height: (((screenWidth / 8) * 3) - 4), width: screenWidth - 10, borderRadius: 10, margin: 5 }}>
+                        <Pressable onPress={() => { navigation.navigate('FavouriteItems', { merchantType: 1 }) }}>
+                            <View style={{ height: (((screenWidth / 8) * 3) - 4), width: screenWidth - 10, borderRadius: 10, margin: 5, justifyContent: 'center' }}>
                                 <View style={{
                                     borderRadius: 10,
                                     shadowRadius: 10,
@@ -177,7 +200,7 @@ function ExploreMedicineShop() {
                                     backgroundColor: 'white'
                                 }}>
                                     <FastImage
-                                        source={require('../../assets/banner/medicine-order.webp')}
+                                        source={require('../../assets/banner/medicine-list.webp')}
                                         resizeMode={FastImage.resizeMode.contain}
                                         style={{
                                             height: '100%',

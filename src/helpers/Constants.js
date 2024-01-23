@@ -1,4 +1,4 @@
-export const PRIVACY_URL='https://www.notension.com.bd/privacy'
+export const PRIVACY_URL = 'https://www.notension.com.bd/privacy'
 export const STORAGE_URL = 'https://we-care-base.sgp1.cdn.digitaloceanspaces.com';
 export const ACCESS_KEY = 'ba8dd74c-5844-4d83-8523b4a5f50d-a128-4190';
 export const logoColor_1 = '#F68F1E';
@@ -18,14 +18,17 @@ export const GET_DISTRICT_SUB_AREA_INFO = '/public-api/v1/admin/all-districtsuba
 
 export const OTP_FOR_REGISTARTION = '/api/v1/customer/send-otp';
 export const USER_REGISTARTION = '/api/v1/customer/register';
-export const FAVORITE_STORE_ADD = '/client-app-api/v1/food/explore-store';
-export const FAVORITE_STORE_REMOVE = '/client-app-api/v1/food/explore-store';
-export const FAVORITE_STORE_INFO = '/client-app-api/v1/food/explore-store';
-export const FAVORITE_PRODUCT_ADD = '/client-app-api/v1/food/explore-store';
-export const FAVORITE_PRODUCT_REMOVE = '/client-app-api/v1/food/explore-store';
-export const FAVORITE_PRODUCT_INFO = '/client-app-api/v1/food/explore-store';
+export const FAVORITE_STORE_ADD = '/api/v1/customer/add-favourite-store';
+export const FAVORITE_STORE_PUSH = '/api/v1/customer/push-store';
+export const FAVORITE_STORE_REMOVE = '/api/v1/customer/remove-store';
+export const FAVORITE_STORE_INFO = '/api/v1/customer/get-favourite-store-info';
+export const FAVORITE_PRODUCT_ADD = '/api/v1/customer/add-favourite-item';
+export const FAVORITE_PRODUCT_PUSH = '/api/v1/customer/push-item';
+export const FAVORITE_PRODUCT_REMOVE = '/api/v1/customer/remove-item';
+export const FAVORITE_PRODUCT_INFO = '/api/v1/customer/get-favourite-item-info';
 
 export const NEAREST_GROCERY_STORE = '/client-app-api/v1/grocery/get-nearest-store';
+export const SEARCH_GROCERY_STORE = '/client-app-api/v1/grocery/find-store';
 export const EXPLORE_GROCERY_STORE = '/client-app-api/v1/grocery/explore-store';
 export const SEARCH_GROCERY_ITEMS = '/client-app-api/v1/grocery/search-items';
 export const GROCERY_ITEMS_BY_SUBTYPE = '/client-app-api/v1/grocery/items-by-subtype';
@@ -36,6 +39,7 @@ export const GROCERY_ORDER_INFO = '/client-app-api/v1/grocery/order-info';
 
 export const POST_NEAREST_MEDICINE_STORE = '/api/v1/medicine/public/nearest-store';
 export const NEAREST_MEDICINE_STORE = '/client-app-api/v1/medicine/get-nearest-store';
+export const SEARCH_MEDICINE_STORE = '/client-app-api/v1/medicine/find-store';
 export const EXPLORE_MEDICINE_STORE = '/client-app-api/v1/medicine/explore-store';
 export const SEARCH_MEDICINE_ITEMS = '/client-app-api/v1/medicine/search-items';
 export const MEDICINE_ITEMS_BY_SUBTYPE = '/client-app-api/v1/medicine/items-by-subtype';

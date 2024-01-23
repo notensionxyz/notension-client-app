@@ -29,79 +29,64 @@ const userChoiceReducer = createSlice({
                 state.defaultMedicineStore = payload.data;
             }
             else if (payload.type == "ADD_TO_FAVOURITE_MERCHANT_LIST") {
-                let newState = [];
 
                 if (payload?.data?.merchantType === 0) {
 
-                    const existingIndex = state.favouriteGroceryStore.findIndex((info) => info.storeId === payload.data.storeId);
-                    if (existingIndex > -1) {
-                        newState = [...state.favouriteGroceryStore];
-                    } else {
-                        newState = [...state.favouriteGroceryStore, payload.data];
-                    }
-                    state.favouriteGroceryStore = newState;
+                    state.favouriteGroceryStore = [...state.favouriteGroceryStore, ...payload.data.storeInfo];
 
                 } else if (payload?.data?.merchantType === 1) {
 
-                    const existingIndex = state.favouriteMedicineItems.findIndex((info) => info.storeId === payload.data.storeId);
-                    if (existingIndex > -1) {
-                        newState = [...state.favouriteMedicineItems];
-                    } else {
-                        newState = [...state.favouriteMedicineItems, payload.data];
-                    }
-                    state.favouriteMedicineItems = newState;
+                    state.favouriteMedicineStore = [...state.favouriteMedicineStore, ...payload.data.storeInfo];
 
                 } else {
 
-                    const existingIndex = state.favouriteFoodShop.findIndex((info) => info.storeId === payload.data.storeId);
-                    if (existingIndex > -1) {
-                        newState = [...state.favouriteFoodShop];
-                    } else {
-                        newState = [...state.favouriteFoodShop, payload.data];
-                    }
-                    state.favouriteFoodShop = newState;
+                    state.favouriteFoodShop = [...state.favouriteFoodShop, ...payload.data.storeInfo];
 
                 }
             }
             else if (payload.type == "REMOVE_FROM_FAVOURITE_MERCHANT_LIST") {
                 let newState = [];
+
                 if (payload?.data?.merchantType === 0) {
 
-                    newState = [...state.favouriteGroceryStore];
-                    newState = state.favouriteGroceryStore.filter((info) => info.storeId !== payload.data.storeId);
+                    newState = state.favouriteGroceryStore.filter((info) => info?.storeId !== payload?.data?.storeId);
                     state.favouriteGroceryStore = newState;
 
                 } else if (payload?.data?.merchantType === 1) {
 
-                    newState = [...state.favouriteMedicineItems];
-                    newState = state.favouriteMedicineItems.filter((info) => info.storeId !== payload.data.storeId);
-                    state.favouriteMedicineItems = newState;
+                    newState = state.favouriteMedicineStore.filter((info) => info?.storeId !== payload?.data?.storeId);
+                    state.favouriteMedicineStore = newState;
 
                 } else {
 
-                    newState = [...state.favouriteFoodShop];
-                    newState = state.favouriteFoodShop.filter((info) => info.storeId !== payload.data.storeId);
+                    newState = state.favouriteFoodShop.filter((info) => info?.storeId !== payload?.data?.storeId);
                     state.favouriteFoodShop = newState;
 
                 }
             }
             else if (payload.type == "ADD_TO_FAVOURITE_ITEM_LIST") {
-                let newState = [];
-                if (payload?.data?.merchantType === 'grocery') {
+                if (payload?.data?.merchantType === 0) {
 
-                } else if (payload?.data?.merchantType === 'medicine') {
+                    state.favouriteGroceryItems = [...state.favouriteGroceryItems, ...payload.data.itemInfo];
 
-                } else {
+                } else if (payload?.data?.merchantType === 1) {
+
+                    state.favouriteMedicineItems = [...state.favouriteMedicineItems, ...payload.data.itemInfo];
 
                 }
             }
             else if (payload.type == "REMOVE_FROM_FAVOURITE_ITEM_LIST") {
                 let newState = [];
-                if (payload?.data?.merchantType === 'grocery') {
 
-                } else if (payload?.data?.merchantType === 'medicine') {
+                if (payload?.data?.merchantType === 0) {
+
+                    newState = state.favouriteGroceryItems.filter((info) => info?.productId !== payload?.data?.productId);
+                    state.favouriteGroceryItems = newState;
 
                 } else {
+
+                    newState = state.favouriteMedicineItems.filter((info) => info?.productId !== payload?.data?.productId);
+                    state.favouriteMedicineItems = newState;
 
                 }
             }

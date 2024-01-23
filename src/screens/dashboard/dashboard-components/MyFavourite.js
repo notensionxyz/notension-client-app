@@ -4,12 +4,23 @@ import { logoColor_1, logoColor_2 } from '../../../helpers/Constants';
 import { storageImageUrl } from '../../../helpers/imageUrl';
 import FastImage from 'react-native-fast-image';
 import NotificationSuccess from '../../../components/popup-notification/NotificationSuccess';
+import { useNavigation } from '@react-navigation/native';
 
 function MyFavourite({ title, data, height }) {
+    const navigation = useNavigation();
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [message, setMessage] = useState('Coming soon');
-    const navigate = () => {
-        setShowSuccessMessage(true);
+    const navigate = (id) => {
+        if (id === '1') {
+            navigation.navigate('FavouriteStore', { merchantType: 0 });
+        } else if (id === '2') {
+            navigation.navigate('FavouriteStore', { merchantType: 1 });
+        } else if (id === '3') {
+            navigation.navigate('FavouriteStore', { merchantType: 2 });
+        } else {
+            setShowSuccessMessage(true);
+        }
+
     }
     return (
         <>
@@ -35,8 +46,9 @@ function MyFavourite({ title, data, height }) {
 }
 
 function ItemImage({ data, height, navigate }) {
+    console.log(data);
     return (
-        <Pressable onPress={() => { navigate() }}>
+        <Pressable onPress={() => { navigate(data.id) }}>
             <View style={{ height: height, width: (height * 1.5), padding: 5 }}>
                 <FastImage
                     source={{ uri: storageImageUrl('app-dashboard', data.file_name) }}

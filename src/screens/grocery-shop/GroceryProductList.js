@@ -43,8 +43,6 @@ function GroceryProductList({ route }) {
         resetLoadingStatus
     } = useGrocery();
 
-
-
     useEffect(() => {
         if (options?.searchProduct) {
             resetLoadingStatus(true);
@@ -112,7 +110,6 @@ function GroceryProductList({ route }) {
         deccreseQty,
         isInOutOfStockList
     } = handleGroceryItems();
-
 
     return (
         <>

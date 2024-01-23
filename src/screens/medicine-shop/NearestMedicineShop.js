@@ -14,9 +14,9 @@ const screenWidth = Dimensions.get('window').width;
 function NearestMedicineShop(props) {
     const navigation = useNavigation();
     const [nearestInfo, setNearestInfo] = useState([]);
-
-    const { getNearestMedicineStoreInfo, progressing } = useMedicine();
-
+    const [searchText, setSearchText] = useState('');
+    const { getNearestMedicineStoreInfo, progressing, handleSearchStore } = useMedicine();
+    const { resetUserLocation } = useUser();
     useEffect(() => {
         getNearestMedicineStoreInfo(setNearestInfo, 1000);
         const backAction = () => {

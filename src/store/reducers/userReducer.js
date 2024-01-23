@@ -105,6 +105,13 @@ const userReducer = createSlice({
             else if (payload.type == "SAVE_FOOD_ORDER_INFO") {
                 state.foodOrderInfo = payload.data;
             }
+            else if (payload.type == "RESET_USER_LOCATION") {
+                state.defaultUserLocation = {};
+                state.currentUserLocation = {};
+                state.userLatitude = '00';
+                state.userLongitude = '00';
+                state.districtId = '00';
+            }
             else if (payload.type == "RESET_USER") {
                 return {
                     ...state,

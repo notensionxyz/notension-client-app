@@ -21,6 +21,8 @@ import OrderDetails from "../screens/user/OrderDetails";
 import OrderSuccessful from "../screens/user/OrderSuccessful";
 import PlaceOrderGrocery from "../screens/grocery-shop/PlaceOrderGrocery";
 import ChangeDefaultLocation from "../screens/user/ChangeDefaultLocation";
+import FavouriteStore from "../screens/user/FavouriteStore";
+import FavouriteItems from "../screens/user/FavouriteItems";
 
 const Stack = createStackNavigator();
 
@@ -190,6 +192,22 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="OrderSuccessful"
                 component={OrderSuccessful}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="FavouriteStore"
+                component={FavouriteStore}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="FavouriteItems"
+                component={FavouriteItems}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MEDICINE_ADMIN_URL, MEDICINE_ADMIN_URL_LOCAL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { EXPLORE_MEDICINE_STORE, MEDICINE_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY_SUBTYPE, MEDICINE_ORDER_INFO, MEDICINE_PLACE_ORDER, NEAREST_MEDICINE_STORE, SEARCH_MEDICINE_ITEMS } from '../../helpers/Constants';
+import { EXPLORE_MEDICINE_STORE, MEDICINE_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY_SUBTYPE, MEDICINE_ITEM_DETAILS, MEDICINE_ORDER_INFO, MEDICINE_PLACE_ORDER, NEAREST_MEDICINE_STORE, SEARCH_MEDICINE_ITEMS, SEARCH_MEDICINE_STORE } from '../../helpers/Constants';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { Alert } from 'react-native';
@@ -78,8 +78,7 @@ export const useMedicine = () => {
         );
     };
 
-
-    const getNearestMedicineStoreInfo = (setNearestInfo, distance = 1000000) => {
+    const getNearestMedicineStoreInfo = (setNearestInfo, distance) => {
         resetReducer();
         setProgressing(true);
         const props = {
@@ -106,6 +105,33 @@ export const useMedicine = () => {
                 setProgressing(false);
             }
         }, 10000);
+    }
+
+    const handleSearchStore = (searchText, setNearestInfo) => {
+        if (searchText.length > 1) {
+            setProgressing(true);
+            AxiosTest
+                .get(SEARCH_MEDICINE_STORE,
+                    {
+                        params: {
+                            search: searchText,
+                        }
+                    }
+                ).then((res) => {
+                    setNearestInfo(res.data.result);
+                    setProgressing(false);
+                })
+                .catch((error) => {
+                    setProgressing(false);
+
+                });
+
+            setTimeout(() => {
+                if (progressing) {
+                    setProgressing(false);
+                }
+            }, 10000);
+        }
     }
 
     const exploreStore = (data) => {
@@ -243,33 +269,6 @@ export const useMedicine = () => {
 
     };
 
-    // const placceOrder = (formData) => {
-    //     setProgressing(true);
-    //     AxiosWithFormData
-    //         .post(MEDICINE_PLACE_ORDER, formData)
-    //         .then(response => {
-    //             console.log('response?.data', response?.data);
-    //             setProgressing(false);
-
-    //             dispatch(
-    //                 handleCartReducer({
-    //                     type: 'MEDICINE_ORDER_PLACED',
-    //                     data: [],
-    //                 })
-    //             );
-    //             navigation.navigate('OrderSuccessful');
-    //         })
-    //         .catch(error => {
-    //             console.log('Error : ', error.response)
-    //             setProgressing(false);
-    //         })
-    //     setTimeout(() => {
-    //         if (progressing) {
-    //             setProgressing(false);
-    //         }
-    //     }, 10000);
-    // }
-
     const reloadCustomTypeData = (options, setPageNo) => {
         setTimeout(() => {
             if (options.customType === "65128cbd20db0921f13b40b3") { // this is "64f5a306baa57a4707524d6e" Offer Items ID
@@ -319,5 +318,6 @@ export const useMedicine = () => {
         exploreStore,
         reloadCustomTypeData,
         resetLoadingStatus,
+        handleSearchStore,
     };
 };

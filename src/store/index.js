@@ -6,10 +6,12 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import stateReducer from './reducers/stateReducer';
 import cartReducer from './reducers/cartReducer';
+import userChoiceReducer from './reducers/userChoiceReducer';
 
 const rootReducer = combineReducers({
     dashboard: dashboardReducer,
     user: userReducer,
+    userChoice: userChoiceReducer,
     itemsByStoreReducer: itemsByStoreReducer,
     cartItems: cartReducer,
     appState: stateReducer
@@ -18,7 +20,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist: ['user', 'cartItems'],//Things you want to persist
+    whitelist: ['user', 'cartItems', 'userChoice'],//Things you want to persist
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

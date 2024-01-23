@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GROCERY_ADMIN_URL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { EXPLORE_GROCERY_STORE, GROCERY_ITEMS_BY_CUSTOMTYPE, GROCERY_ITEMS_BY_SUBTYPE, NEAREST_GROCERY_STORE, SEARCH_GROCERY_ITEMS } from '../../helpers/Constants';
+import { EXPLORE_GROCERY_STORE, GROCERY_ITEMS_BY_CUSTOMTYPE, GROCERY_ITEMS_BY_SUBTYPE, GROCERY_ITEM_DETAILS, NEAREST_GROCERY_STORE, SEARCH_GROCERY_ITEMS, SEARCH_GROCERY_STORE } from '../../helpers/Constants';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 
@@ -29,6 +29,14 @@ export const useGrocery = () => {
 
     const Axios = axios.create({
         baseURL: GROCERY_ADMIN_URL,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const AxiosTest = axios.create({
+        baseURL: 'http://localhost:6012',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -70,7 +78,7 @@ export const useGrocery = () => {
             max_distance: distance,
             districtId: districtId
         };
-        console.log(props);
+        //console.log(props);
         //saveLoadingStatus(true);
         Axios
             .post(NEAREST_GROCERY_STORE, props)
@@ -88,6 +96,33 @@ export const useGrocery = () => {
                 setProgressing(false);
             }
         }, 10000);
+    }
+
+    const handleSearchStore = (searchText, setNearestInfo) => {
+        if (searchText.length > 1) {
+            setProgressing(true);
+            Axios
+                .get(SEARCH_GROCERY_STORE,
+                    {
+                        params: {
+                            search: searchText,
+                        }
+                    }
+                ).then((res) => {
+                    setNearestInfo(res.data.result);
+                    setProgressing(false);
+                })
+                .catch((error) => {
+                    setProgressing(false);
+
+                });
+
+            setTimeout(() => {
+                if (progressing) {
+                    setProgressing(false);
+                }
+            }, 10000);
+        }
     }
 
     const exploreStore = (data) => {
@@ -193,7 +228,7 @@ export const useGrocery = () => {
         //     resetLoadingStatus();
         // }
 
-        console.log('parameter', parameter);
+        //console.log('parameter', parameter);
 
         Axios
             .get(dataURL,
@@ -279,6 +314,7 @@ export const useGrocery = () => {
         handleSearch,
         getItemsOnPress,
         getNearestGroceryStoreInfo,
+        handleSearchStore,
         exploreStore,
         reloadCustomTypeData,
         resetLoadingStatus

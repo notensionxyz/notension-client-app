@@ -16,7 +16,9 @@ import { USER_ADMIN_URL } from "@env"
 import axios from 'axios';
 import { Alert } from 'react-native';
 axios.defaults.withCredentials = true;
-console.log(USER_ADMIN_URL);
+
+console.log('USER_ADMIN_URL', USER_ADMIN_URL);
+
 const Axios = axios.create({
     baseURL: USER_ADMIN_URL,
     headers: {
@@ -199,6 +201,19 @@ export const useUser = () => {
         );
     }
 
+    const resetUserLocation = () => {
+        
+        dispatch(
+            handleUserReducer({
+                type: 'RESET_USER_LOCATION',
+                data: {},
+            })
+        );
+        navigation.navigate('Dashboard');
+    }
+
+
+
     const getOtp = (props) => {
         console.log('props : ', props);
         handleDataChange(props.contact_no, 'contact_no');
@@ -337,6 +352,7 @@ export const useUser = () => {
         handleDataChange,
         getOtp,
         userInfo,
-        registerUser
+        registerUser,
+        resetUserLocation
     }
 }
