@@ -25,7 +25,7 @@ export const useFood = () => {
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
 
-    console.log('FOOD_ADMIN_URL', FOOD_ADMIN_URL);
+    //console.log('FOOD_ADMIN_URL', FOOD_ADMIN_URL);
 
     const Axios = axios.create({
         baseURL: FOOD_ADMIN_URL,
@@ -45,7 +45,6 @@ export const useFood = () => {
     };
 
     const resetReducer = () => {
-
         dispatch(
             handleItemsByStoreReducer({
                 type: 'CLEAR_ALL',
@@ -102,12 +101,12 @@ export const useFood = () => {
             StoreCategory: data._id,
             district_id: districtId
         };
-        console.log(props);
+        //console.log(props);
         
         Axios
             .post(NEAREST_FOOD_STORE, props)
             .then(response => {
-                console.log("Nearest : ",response.data.result);
+                //console.log("Nearest : ",response.data.result);
                 setNearestInfo(response.data.result);
                 setProgressing(false);
             })

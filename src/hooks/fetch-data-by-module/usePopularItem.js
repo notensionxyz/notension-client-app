@@ -13,7 +13,7 @@ export const usePopularItem = () => {
     const [error, setError] = useState(false);
     const popularItem = useSelector((state) => state.itemsByStoreReducer.popularItem);
 
-    console.log(MEDICINE_ADMIN_URL);
+    //console.log(MEDICINE_ADMIN_URL);
 
     const AxiosGrocery = axios.create({
         baseURL: GROCERY_ADMIN_URL,
@@ -48,7 +48,7 @@ export const usePopularItem = () => {
                 }
             )
             .then((res) => {
-                console.log('Length', res?.data?.result?.length);
+                
                 setPageNo(pageNo + 1);
                 if (res?.data?.result?.length > 0) {
                     saveItemsToReducer(res?.data?.result);
@@ -56,7 +56,7 @@ export const usePopularItem = () => {
 
                 if (res?.data?.result?.length < 24) {
                     setAllLoaded(true);
-                    console.log('stop');
+                    //console.log('stop');
                 }
 
                 setLoadingMore(false);
@@ -64,7 +64,7 @@ export const usePopularItem = () => {
             .catch((error) => {
                 setAllLoaded(true);
                 setLoadingMore(false);
-                console.log('From grocery Items : ', error);
+                //console.log('From grocery Items : ', error);
             });
 
     };
@@ -106,7 +106,7 @@ export const usePopularItem = () => {
     };
 
     const resetState = () => {
-        console.log('resetState')
+        //console.log('resetState')
         setItemNotfound(false);
         setAllLoaded(false);
         setLoadingMore(false);

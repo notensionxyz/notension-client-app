@@ -1,7 +1,7 @@
 import { MEDICINE_ADMIN_URL } from "@env"
 import axios from 'axios';
 axios.defaults.withCredentials = true;
-console.log(MEDICINE_ADMIN_URL);
+//console.log(MEDICINE_ADMIN_URL);
 export const axiosInstanceMedicine = axios.create({
   baseURL: MEDICINE_ADMIN_URL,
   headers: {

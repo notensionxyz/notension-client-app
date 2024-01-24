@@ -48,7 +48,7 @@ export const handleMedicineItems = () => {
                 inc_qty: 1,
                 app_image: item?.app_image,
             }
-            console.log('product groceryItems : ', product);
+          
             dispatch(
                 handleCartReducer({
                     type: 'ADD_TO_CART_MEDICINE',

@@ -80,7 +80,7 @@ const cartReducer = createSlice({
 
             }
             else if (payload.type == 'ADD_TO_CART_MEDICINE') {
-                console.log('ADD_TO_CART_MEDICINE');
+              
                 let newState = [];
                 const existingItemIndex = state.medicineItems.findIndex(
                     (item) => item?._id === payload?.data?._id

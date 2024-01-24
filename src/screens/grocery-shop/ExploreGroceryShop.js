@@ -40,7 +40,7 @@ function ExploreGroceryShop() {
     const [pageNo, setPageNo] = useState(2);
 
     useEffect(() => {
-        console.log('Render Page');
+        
         resetState();
         setPageNo(2);
         if (visitedGroceryStore?._id && visitedGroceryStore?.custom_store_id) {
@@ -49,7 +49,7 @@ function ExploreGroceryShop() {
     }, []);
 
     useEffect(() => {
-        console.log('Render Page3333');
+      
         if (typeInfoByShop.length > 0) {
             let generaltypeInfo = typeInfoByShop?.filter(
                 (type) => type.statusType === 'General'

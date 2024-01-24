@@ -56,7 +56,7 @@ export const useDashboard = () => {
                 saveLoadingStatus(false);
             })
             .catch(error => {
-                console.log('getDasboardInfo Failed',error);
+                //console.log('getDasboardInfo Failed',error);
                 saveLoadingStatus(false);
             })
 
@@ -100,7 +100,7 @@ export const useDashboard = () => {
                 'districtInfo', JSON.stringify(districtSelected)
             );
             saveDistrictInfo(districtSelected);
-            console.log('saved District')
+            //console.log('saved District')
         }
         catch (error) {
         }

@@ -26,7 +26,7 @@ export const useMedicine = () => {
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
 
-    console.log('MEDICINE_ADMIN_URL', MEDICINE_ADMIN_URL);
+    //console.log('MEDICINE_ADMIN_URL', MEDICINE_ADMIN_URL);
 
     const Axios = axios.create({
         baseURL: MEDICINE_ADMIN_URL,
@@ -79,6 +79,7 @@ export const useMedicine = () => {
     };
 
     const getNearestMedicineStoreInfo = (setNearestInfo, distance) => {
+
         resetReducer();
         setProgressing(true);
         const props = {
@@ -87,8 +88,7 @@ export const useMedicine = () => {
             max_distance: distance,
             districtId: districtId
         };
-        console.log(props);
-        //saveLoadingStatus(true);
+      
         Axios
             .post(NEAREST_MEDICINE_STORE, props)
             .then(response => {
@@ -110,7 +110,7 @@ export const useMedicine = () => {
     const handleSearchStore = (searchText, setNearestInfo) => {
         if (searchText.length > 1) {
             setProgressing(true);
-            AxiosTest
+            Axios
                 .get(SEARCH_MEDICINE_STORE,
                     {
                         params: {

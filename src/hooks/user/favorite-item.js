@@ -9,7 +9,7 @@ import { handleUserChoiceReducer } from '../../store/reducers/userChoiceReducer'
 import { Alert } from 'react-native';
 axios.defaults.withCredentials = true;
 
-console.log('USER_ADMIN_URL', USER_ADMIN_URL);
+//console.log('USER_ADMIN_URL', USER_ADMIN_URL);
 
 const Axios = axios.create({
     baseURL: USER_ADMIN_URL,
@@ -116,7 +116,6 @@ export const useFavouriteItem = () => {
         Axios
             .post(route, favouriteInfo)
             .then((res) => {
-                console.log(res?.data?.result);
                 manageReducer(favouriteInfo, action, res?.data?.result)
 
             })
@@ -209,7 +208,7 @@ export const useFavouriteItem = () => {
     }
 
     const AxiosMedicine = axios.create({
-        baseURL: MEDICINE_ADMIN_URL_LOCAL,
+        baseURL: MEDICINE_ADMIN_URL,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

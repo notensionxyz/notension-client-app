@@ -8,8 +8,13 @@ import HeaderCommon from '../../components/header/HeaderCommon';
 import { useNavigation } from '@react-navigation/native';
 import { useMedicine } from '../../hooks/fetch-data-by-module/useMedicine';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
+import { useUser } from '../../hooks/useUser';
+import FindStore from '../../components/screens-components/Common/FindStore';
+import SearchField from '../../components/screens-components/Common/SearchField';
 
 const screenWidth = Dimensions.get('window').width;
+let cardMargin = 4;
+let cardWidth = screenWidth - (cardMargin * 4.5);
 
 function NearestMedicineShop(props) {
     const navigation = useNavigation();
@@ -17,8 +22,9 @@ function NearestMedicineShop(props) {
     const [searchText, setSearchText] = useState('');
     const { getNearestMedicineStoreInfo, progressing, handleSearchStore } = useMedicine();
     const { resetUserLocation } = useUser();
+
     useEffect(() => {
-        getNearestMedicineStoreInfo(setNearestInfo, 1000);
+
         const backAction = () => {
             navigation.goBack();
             return true;
@@ -30,21 +36,16 @@ function NearestMedicineShop(props) {
         return () => backHandler.remove();
     }, []);
 
-    const saveSlectedInfo = (slectedDistrict) => {
+    useEffect(() => {
+        setNearestInfo([]);
+    }, [searchText]);
 
-        // let districtSelected = {
-        //     isDistrictSelected: true,
-        //     districtId: slectedDistrict._id,
-        //     districtName: slectedDistrict.district_name,
-        //     districtInfo: districtInfo,
-        // };
-        //storeDistrictInfo(districtSelected);
-    }
+    //const onPress = () => { handleSearchStore(searchText, setNearestInfo); }
 
     return (
         <>
             <ProgressStyle2 visible={progressing} />
-            <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
+            <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                 <HeaderCommon title="Medicine Store Info" toggleDrawer={props.navigation} />
                 <View style={{
                     backgroundColor: '#FFF',
@@ -53,13 +54,27 @@ function NearestMedicineShop(props) {
                     alignItems: 'center',
                 }}>
                     <View style={{ flex: 1, paddingTop: 8, paddingBottom: 8 }}>
-                        <Text style={{ color: '#006400', fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>আপনার নিকটস্থ ষ্টোর নির্বাচন করুন</Text>
+                        <Text style={{ color: '#006400', fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>ষ্টোর নির্বাচন করুন</Text>
                     </View>
                 </View>
+                <SearchField
+                    searchText={searchText}
+                    setSearchText={setSearchText}
+                    onPress={() => { handleSearchStore(searchText, setNearestInfo); }}
+                    placeholderText={'Search store using contact number'}
+                    falseFocus={true}
+                />
+               {searchText === '' && nearestInfo.length === 0 &&
+                    <FindStore
+                        resetUserLocation={resetUserLocation}
+                        getNearestStoreInfo={getNearestMedicineStoreInfo}
+                        setNearestInfo={setNearestInfo}
+                    />
+                }
                 <FlatList
                     contentContainerStyle={{ padding: 5 }}
                     data={nearestInfo}
-                    renderItem={({ item }) => <ListItem data={item} saveSlectedInfo={saveSlectedInfo} />}
+                    renderItem={({ item }) => <ListItem data={item} />}
                     keyExtractor={item => item._id}
                 />
             </View>
@@ -68,8 +83,6 @@ function NearestMedicineShop(props) {
 }
 
 function ListItem({ data }) {
-    let cardMargin = 4;
-    let cardWidth = screenWidth - (cardMargin * 4.5);
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const navigateToExploreShop = () => {

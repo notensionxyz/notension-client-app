@@ -1,7 +1,7 @@
 import { BASE_ADMIN_URL } from "@env"
 import axios from 'axios';
 axios.defaults.withCredentials = true;
-console.log(BASE_ADMIN_URL);
+//console.log(BASE_ADMIN_URL);
 export const axiosInstance = axios.create({
   baseURL: BASE_ADMIN_URL,
   headers: {

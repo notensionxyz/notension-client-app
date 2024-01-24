@@ -24,7 +24,7 @@ export const useOrder = () => {
     const currentModule = useSelector((state) => state.dashboard.currentModule);
     const { userLatitude, userLongitude, districtId, userInfo } = useSelector((state) => state.user);
 
-    console.log('GROCERY_ADMIN_URL', GROCERY_ADMIN_URL);
+    //console.log('GROCERY_ADMIN_URL', GROCERY_ADMIN_URL);
 
     const AxiosGrocery = axios.create({
         baseURL: GROCERY_ADMIN_URL,
@@ -80,7 +80,6 @@ export const useOrder = () => {
 
         }
 
-        console.log('URL', formData);
         setProgressing(true);
 
         AxiosWithFormData

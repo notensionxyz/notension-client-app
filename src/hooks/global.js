@@ -2,25 +2,32 @@ import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { axiosInstance } from '../config/axios-admin/axiosWithoutCredential';
-import { axiosInstanceGrocery } from '../config/axios-grocery/axiosWithoutCredential'
-import { GET_DASHBOARD_INFO, GET_DISTRICT_INFO, NEAREST_GROCERY_STORE, POST_NEAREST_MEDICINE_STORE } from '../helpers/Constants';
+import { GET_DASHBOARD_INFO, GET_DISTRICT_INFO } from '../helpers/Constants';
 import { handleDashboardReducer } from '../store/reducers/dashboardReducer';
 import NetInfo from "@react-native-community/netinfo";
-import { axiosInstanceMedicine } from '../config/axios-medicine/axiosWithoutCredential';
 import { handleUserReducer } from '../store/reducers/userReducer';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 export const useGlobal = () => {
     const dispatch = useDispatch();
-    const { isFetchingFromStorage, isLoading } = useSelector(
-        (state) => state.dashboard
-    );
-    const { userLatitude, userLongitude, districtInfo, defaultUserLocation } = useSelector((state) => state.user);
-    const user = useSelector((state) => state.user);
+    const { userLatitude, districtId, defaultUserLocation } = useSelector((state) => state.user);
     const [error, setError] = useState(false);
     const [progressing, setProgressing] = useState(false);
 
-    const getDasboardInfo = async () => {
-        saveLoadingStatus(true);
+    const AxiosTest = axios.create({
+        baseURL: 'http://localhost:5059',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const getDasboardInfo = () => {
+        resetDashboardReducer();
+
+        setProgressing(true);
+
         if (userLatitude === undefined) {
             dispatch(
                 handleUserReducer({
@@ -29,13 +36,15 @@ export const useGlobal = () => {
                 })
             );
         }
-        resetDashboardReducer();
-        if (districtInfo?.length < 1) {
-            getDistrictInfo();
-        }
+
         axiosInstance
-            .get(GET_DASHBOARD_INFO)
-            .then(response => {
+            .get(GET_DASHBOARD_INFO,
+                {
+                    params: {
+                        district_id: districtId
+                    }
+                }
+            ).then(response => {
                 //console.log(response.data.result);
                 dispatch(
                     handleDashboardReducer({
@@ -43,59 +52,40 @@ export const useGlobal = () => {
                         data: response.data.result,
                     })
                 );
-                saveLoadingStatus(false);
-            })
-            .catch(error => {
+                setProgressing(false);
+            }).catch(error => {
+                setProgressing(false);
+            });
 
-                saveLoadingStatus(false);
-            })
         setTimeout(() => {
-            if (isLoading) {
-                saveLoadingStatus(false);
+            if (progressing) {
+                setProgressing(false);
             }
         }, 10000);
     }
 
-    const getDistrictInfo = async () => {
+    const getDistrictInfo = (setFilteredInfo) => {
         setProgressing(true);
         axiosInstance
             .get(GET_DISTRICT_INFO)
             .then(res => {
-                setProgressing(false);
+                
+                setFilteredInfo(res?.data?.result);
                 dispatch(
                     handleUserReducer({
                         type: 'SAVE_DISTRICT_INFO',
                         data: res?.data?.result,
                     })
                 );
+                setProgressing(false);
             })
             .catch(error => {
                 setProgressing(false);
-            })
-    }
+            });
 
-    const getMedicineStoreInfo = (setFetching, setNearestInfo, distance = 1000) => {
-        const props = {
-            shop_longitude: userLongitude,
-            shop_latitude: userLatitude,
-            max_distance: distance
-        };
-        //console.log(props);
-        //saveLoadingStatus(true);
-        axiosInstanceMedicine
-            .post(POST_NEAREST_MEDICINE_STORE, props)
-            .then(response => {
-                //console.log(response.data);
-                setNearestInfo(response.data.result);
-                setFetching(false);
-            })
-            .catch(error => {
-                console.log('Error : ', error.response)
-                setFetching(false);
-            })
         setTimeout(() => {
-            if (isLoading) {
-                setFetching(false);
+            if (progressing) {
+                setProgressing(false);
             }
         }, 10000);
     }
@@ -149,14 +139,14 @@ export const useGlobal = () => {
                 saveConnectionStatus(false);
             }
         });
-        if (error) logout()
+        if (error) logout();
     }, [error])
 
     return {
         progressing,
+        setProgressing,
         getDasboardInfo,
         getDistrictInfo,
-        getMedicineStoreInfo,
         saveConnectionStatus,
         logout,
     }

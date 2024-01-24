@@ -257,7 +257,6 @@ export const useGrocery = () => {
             .catch((error) => {
                 setAllLoaded(true);
                 setLoadingMore(false);
-                console.log('From grocery Items : ', error);
             });
 
     };

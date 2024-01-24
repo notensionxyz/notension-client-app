@@ -46,7 +46,7 @@ function MyFavourite({ title, data, height }) {
 }
 
 function ItemImage({ data, height, navigate }) {
-    console.log(data);
+
     return (
         <Pressable onPress={() => { navigate(data.id) }}>
             <View style={{ height: height, width: (height * 1.5), padding: 5 }}>

@@ -33,23 +33,33 @@ function Dashboard(props) {
         business_type_banner,
         advertisement_slider,
         medical_services_banner,
-        free_services_slider
+        free_services_slider,
+        ad_slider_by_district
     } = useSelector((state) => state.dashboard);
 
     const { defaultUserLocation, districtInfo } = useSelector((state) => state.user);
 
-    const { getDasboardInfo, saveConnectionStatus } = useGlobal();
-    //const { getStorageInfo } = useAdminInformation();
+    const { getDistrictInfo, getDasboardInfo, saveConnectionStatus, progressing, setProgressing } = useGlobal();
+
     const [filteredInfo, setFilteredInfo] = useState([]);
 
     useEffect(() => {
-        setFilteredInfo(districtInfo);
-    }, [districtInfo]);
+        if (districtInfo?.length < 1) {
+            getDistrictInfo(setFilteredInfo);
+            //console.log('getDistrictInfo()');
+        } else {
+            setFilteredInfo(districtInfo);
+            //console.log('setFilteredInfo()');
+        }
+    }, []);
 
     useEffect(() => {
-        // getStorageInfo();
-        getDasboardInfo();
-        //let isMounted = true;
+
+        if (defaultUserLocation?.userLatitude && defaultUserLocation?.userLatitude !== '00') {
+            getDasboardInfo();
+            //console.log('getDasboardInfo()');
+        }
+
         getConnectionStatus();
 
         const backAction = () => {
@@ -73,7 +83,7 @@ function Dashboard(props) {
         return () => {
             backHandler.remove(); //isMounted = false; 
         };
-    }, []);
+    }, [defaultUserLocation?.userLatitude]);
 
     const getConnectionStatus = () => {
         // dispatch({ type: 'START_APP', item: 'start' });
@@ -107,8 +117,6 @@ function Dashboard(props) {
         });
     }
 
-    console.log('userLatitude', defaultUserLocation?.userLatitude);
-
     const timerRef = React.useRef(null);
     searchDistrict = text => {
         if (timerRef.current) clearTimeout(timerRef.current);
@@ -131,13 +139,15 @@ function Dashboard(props) {
         }, 800);
     };
 
+    //console.log('ad_slider_by_district', ad_slider_by_district);
+    
     return (
         <>
             {!internetConnectionAvailable ?
                 <InternetConnectionFailed reTry={reTry} />
                 :
                 <>
-                    {isLoading ?
+                    {progressing ?
                         <SplashScreen />
                         :
                         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

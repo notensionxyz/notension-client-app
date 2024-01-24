@@ -8,7 +8,7 @@ import { handleUserChoiceReducer } from '../../store/reducers/userChoiceReducer'
 import { Alert } from 'react-native';
 axios.defaults.withCredentials = true;
 
-console.log('USER_ADMIN_URL_Shop', USER_ADMIN_URL);
+//console.log('USER_ADMIN_URL_Shop', USER_ADMIN_URL);
 
 const Axios = axios.create({
     baseURL: USER_ADMIN_URL,
@@ -141,7 +141,6 @@ export const useFavouriteStore = () => {
         Axios
             .post(route, favouriteInfo)
             .then((res) => {
-                console.log(res?.data?.result);
                 manageReducer(favouriteInfo, action, res?.data?.result)
             })
             .catch((error) => {

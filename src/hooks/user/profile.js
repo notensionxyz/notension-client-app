@@ -62,7 +62,7 @@ export const useUserProfile = () => {
             })
         );
         //console.log(userInformation);
-        console.log('User Profile Saved')
+        //console.log('User Profile Saved')
     }
 
     const logout = async () => {

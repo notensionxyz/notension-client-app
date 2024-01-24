@@ -45,7 +45,7 @@ function ExploreMedicineShop() {
     }, []);
 
     useEffect(() => {
-        console.log('Render Page3333');
+     
         if (typeInfoByShop.length > 0) {
 
             let generaltypeInfo = typeInfoByShop?.filter(

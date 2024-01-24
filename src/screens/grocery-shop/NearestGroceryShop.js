@@ -10,6 +10,7 @@ import { useGrocery } from '../../hooks/fetch-data-by-module/useGrocery';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import SearchField from '../../components/screens-components/Common/SearchField';
 import { useUser } from '../../hooks/useUser';
+import FindStore from '../../components/screens-components/Common/FindStore';
 
 const screenWidth = Dimensions.get('window').width;
 let cardMargin = 4;
@@ -21,8 +22,8 @@ function NearestGroceryShop(props) {
     const [searchText, setSearchText] = useState('');
     const { getNearestGroceryStoreInfo, progressing, handleSearchStore } = useGrocery();
     const { resetUserLocation } = useUser();
+    
     useEffect(() => {
-        //getNearestGroceryStoreInfo(setNearestInfo, 1000);
         const backAction = () => {
             navigation.goBack();
             return true;
@@ -37,8 +38,6 @@ function NearestGroceryShop(props) {
     useEffect(() => {
         setNearestInfo([]);
     }, [searchText]);
-
-    const onPress = () => { handleSearchStore(searchText, setNearestInfo); }
 
     return (
         <>
@@ -60,101 +59,26 @@ function NearestGroceryShop(props) {
                 <SearchField
                     searchText={searchText}
                     setSearchText={setSearchText}
-                    onPress={onPress}
+                    onPress={() => { handleSearchStore(searchText, setNearestInfo); }}
                     placeholderText={'Search store using contact number'}
                     falseFocus={true}
                 />
 
                 {searchText === '' && nearestInfo.length === 0 &&
-                    <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', }}>
-                        <Pressable onPress={() => { navigation.navigate('FavouriteStore', { merchantType: 0 }); }}>
-                            <View style={{
-                                marginTop: 10,
-                                backgroundColor: 'white',
-                                width: cardWidth,
-                                margin: cardMargin,
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.3,
-                                shadowRadius: 10,
-                                borderRadius: 10,
-                                elevation: 3,
-                            }} >
-                                <FastImage source={require('../../assets/banner/favourite-store.webp')}
-                                    style={{
-                                        width: "100%",
-                                        height: (screenWidth / 2) - 2,
-                                        justifyContent: 'flex-end',
-                                        padding: 10,
-                                        borderRadius: 10,
-                                        //shadowRadius: 10,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.3,
-                                        overflow: 'hidden'
-                                    }} />
-                            </View>
-                        </Pressable>
-
-                        <Pressable onPress={() => { resetUserLocation(); }}>
-                            <View style={{
-                                marginTop: 10,
-                                backgroundColor: 'white',
-                                width: cardWidth,
-                                margin: cardMargin,
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.3,
-                                shadowRadius: 10,
-                                borderRadius: 10,
-                                elevation: 3,
-                            }} >
-                                <FastImage source={require('../../assets/banner/change-location.webp')}
-                                    style={{
-                                        width: "100%",
-                                        height: (screenWidth / 4) - 2,
-                                        justifyContent: 'flex-end',
-                                        padding: 10,
-                                        borderRadius: 10,
-                                        //shadowRadius: 10,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.3,
-                                        overflow: 'hidden'
-                                    }} />
-                            </View>
-                        </Pressable>
-
-                        <Pressable onPress={() => { getNearestGroceryStoreInfo(setNearestInfo, 1000) }}>
-                            <View style={{
-                                marginTop: 10,
-                                backgroundColor: 'white',
-                                width: cardWidth,
-                                margin: cardMargin,
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.3,
-                                shadowRadius: 10,
-                                borderRadius: 10,
-                                elevation: 3,
-                            }} >
-                                <FastImage source={require('../../assets/banner/nearby-store.webp')}
-                                    style={{
-                                        width: "100%",
-                                        height: (screenWidth / 2) - 2,
-                                        justifyContent: 'flex-end',
-                                        padding: 10,
-                                        borderRadius: 10,
-                                        //shadowRadius: 10,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.3,
-                                        overflow: 'hidden'
-                                    }} />
-                            </View>
-                        </Pressable>
-                    </View>
+                    <FindStore
+                        resetUserLocation={resetUserLocation}
+                        getNearestStoreInfo={getNearestGroceryStoreInfo}
+                        setNearestInfo={setNearestInfo}
+                    />
                 }
+
                 <FlatList
                     contentContainerStyle={{ padding: 5 }}
                     data={nearestInfo}
                     renderItem={({ item }) => <ListItem data={item} />}
                     keyExtractor={item => item._id}
                 />
+
             </View>
         </>
     );

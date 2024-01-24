@@ -19,7 +19,7 @@ export default function OrderInfo() {
     const { getOrderInfo, progressing } = useOrder();
 
     useEffect(() => {
-        console.log('xcxxc');
+      
         getOrderInfo(currentModule);
         const backAction = () => {
             navigation.goBack();

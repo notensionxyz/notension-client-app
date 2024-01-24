@@ -23,7 +23,7 @@ const MultipleImageUploader = ({ title, selectedImages, setSelectedImages, handl
         }).then(response => {
             setImagefile(response);
         }).catch((e) => {
-            console.log(e);
+            //console.log(e);
             Alert.alert(e.message ? e.message : e);
         });
     }
@@ -36,7 +36,7 @@ const MultipleImageUploader = ({ title, selectedImages, setSelectedImages, handl
         }).then(response => {
             setImagefile(response);
         }).catch((e) => {
-            console.log(e);
+            //console.log(e);
             Alert.alert(e.message ? e.message : e);
         });
 
@@ -64,7 +64,7 @@ const MultipleImageUploader = ({ title, selectedImages, setSelectedImages, handl
             uri: response.path,
         };
 
-        console.log(imgFileObj);
+        //console.log(imgFileObj);
 
         imagesFile.push(imgFileObj);
 
@@ -76,7 +76,7 @@ const MultipleImageUploader = ({ title, selectedImages, setSelectedImages, handl
         ImagePicker.clean().then(() => {
             console.log('removed all tmp images from tmp directory');
         }).catch(e => {
-            alert(e);
+            //alert(e);
         });
     };
 

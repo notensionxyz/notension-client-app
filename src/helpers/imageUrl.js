@@ -25,7 +25,7 @@ export const COLORS = {
 }
 
 export const makeCall = (phoneNumber) => {
-    console.log(phoneNumber);
+    //console.log(phoneNumber);
     const args = {
         number: phoneNumber, // String value with the number to call
         prompt: false, // Optional boolean property. Determines if the user should be prompted prior to the call 
