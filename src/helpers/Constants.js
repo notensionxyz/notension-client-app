@@ -50,6 +50,7 @@ export const MEDICINE_ORDER_INFO = '/client-app-api/v1/medicine/order-info';
 
 export const EXPLORE_FOOD_MODULE = '/client-app-api/v1/food/explore-module';
 export const NEAREST_FOOD_STORE = '/client-app-api/v1/food/get-nearest-store';
+export const SEARCH_FOOD_STORE = '/client-app-api/v1/food/find-store';
 export const EXPLORE_FOOD_STORE = '/client-app-api/v1/food/explore-store';
 
 export const MyFavouriteData = [

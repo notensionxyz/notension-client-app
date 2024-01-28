@@ -6,6 +6,8 @@ import axios from 'axios';
 import { FAVORITE_STORE_ADD, FAVORITE_STORE_PUSH, FAVORITE_STORE_REMOVE } from '../../helpers/Constants';
 import { handleUserChoiceReducer } from '../../store/reducers/userChoiceReducer';
 import { Alert } from 'react-native';
+import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
+import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 axios.defaults.withCredentials = true;
 
 //console.log('USER_ADMIN_URL_Shop', USER_ADMIN_URL);
@@ -193,6 +195,23 @@ export const useFavouriteStore = () => {
 
     }
 
+    const resetReducer = (module) => {
+
+        dispatch(
+            handleItemsByStoreReducer({
+                type: 'CLEAR_ALL',
+                data: true,
+            })
+        );
+
+        dispatch(
+            handleDashboardReducer({
+                type: 'SET_CURRENT_MODULE',
+                data: module,
+            })
+        );
+    };
+
     useEffect(() => {
         if (error) {
             //userLogOut();
@@ -203,6 +222,7 @@ export const useFavouriteStore = () => {
         visible,
         isAddedToFavouriteList,
         addToFavouriteList,
-        removeFromfavoriteList
+        removeFromfavoriteList,
+        resetReducer
     };
 };

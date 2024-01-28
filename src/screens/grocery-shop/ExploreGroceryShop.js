@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Dimensions, Text, Image, Pressable } from "react-native";
-import { useSelector } from 'react-redux';
+import { View, Dimensions, Text, Image, Pressable, Alert } from "react-native";
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useGrocery } from '../../hooks/fetch-data-by-module/useGrocery';
 import FastImage from 'react-native-fast-image';
@@ -16,6 +16,7 @@ import HeaderExploreStore from '../../components/header/HeaderExploreStore';
 import FooterExploreStore from '../../components/footer/FooterExploreStore';
 import { grocery_sliderTypeSubtypeImagesFolderName } from '../../helpers/Constants';
 import { useFavouriteStore } from '../../hooks/user/favorite-shop';
+import { handleCartReducer } from '../../store/reducers/cartReducer';
 
 let merchantType = 0;
 let typeInfo = {};
@@ -23,8 +24,12 @@ const screenWidth = Dimensions.get('window').width;
 
 function ExploreGroceryShop() {
     const ref = useRef(null);
+    const dispatch = useDispatch();
     const navigation = useNavigation();
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
+    const {
+        groceryStoreInfo,
+        groceryItems } = useSelector((state) => state.cartItems);
     const { typeInfoByShop, subtypeInfoByShop, DashboardSlider, visitedGroceryStore } = useSelector((state) => state.dashboard);
     const [typeInfoGeneral, setTypeInfoGeneral] = useState([]);
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
@@ -40,7 +45,6 @@ function ExploreGroceryShop() {
     const [pageNo, setPageNo] = useState(2);
 
     useEffect(() => {
-        
         resetState();
         setPageNo(2);
         if (visitedGroceryStore?._id && visitedGroceryStore?.custom_store_id) {
@@ -49,7 +53,7 @@ function ExploreGroceryShop() {
     }, []);
 
     useEffect(() => {
-      
+
         if (typeInfoByShop.length > 0) {
             let generaltypeInfo = typeInfoByShop?.filter(
                 (type) => type.statusType === 'General'
@@ -84,7 +88,7 @@ function ExploreGroceryShop() {
     const checkIsLoggedinAndProcess = (action) => {
         if (isLoggedin) {
             if (action === 'placerOrder') {
-                navigation.navigate('PlaceOrderGrocery');
+                navighateToPlaceOrder();
             } else {
                 addToFavouriteList(visitedGroceryStore, merchantType);
             }
@@ -92,6 +96,37 @@ function ExploreGroceryShop() {
             navigation.navigate('Login')
         }
     }
+
+    const navighateToPlaceOrder = () => {
+        if (groceryItems?.length > 0) {
+            if (groceryStoreInfo?._id && groceryStoreInfo?._id !== visitedGroceryStore?._id) {
+                Alert.alert("Hold on! Proceeding to place order will clear your bag. Proceed any way?", "You alresdy have items from another store in your bag !!", [
+                    {
+                        text: "Cancel",
+                        onPress: () => null,
+                        style: 'cancel'
+                    },
+                    {
+                        text: "Proceed",
+                        onPress: () => emptyCartItems(),
+                        style: 'default'
+                    },
+                ]);
+            }
+        } else {
+            navigation.navigate('PlaceOrderGrocery');
+        }
+    }
+
+    const emptyCartItems = () => {
+        dispatch(
+            handleCartReducer({
+                type: 'GROCERY_ORDER_PLACED',
+                data: [],
+            })
+        );
+        navigation.navigate('PlaceOrderGrocery');
+    };
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

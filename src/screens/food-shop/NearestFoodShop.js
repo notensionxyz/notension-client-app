@@ -6,20 +6,26 @@ import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import { useNavigation } from '@react-navigation/native';
-import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { useFood } from '../../hooks/fetch-data-by-module/useFood';
+import { useUser } from '../../hooks/useUser';
+import SearchField from '../../components/screens-components/Common/SearchField';
+import FindStore from '../../components/screens-components/Common/FindStore';
 
 const screenWidth = Dimensions.get('window').width;
+const cardMargin = 4;
+const cardWidth = screenWidth - (cardMargin * 4.5);
+const merchantType = 2;
 
 function NearestFoodShop({ route }) {
     const data = route.params.data;
     const navigation = useNavigation();
     const [nearestInfo, setNearestInfo] = useState([]);
-
-    const { getNearestFoodStoreInfo, progressing } = useFood();
+    const [searchText, setSearchText] = useState('');
+    const { getNearestFoodStoreInfo, progressing, handleSearchStore, resetReducer } = useFood();
+    const { resetUserCurrentLocation } = useUser();
 
     useEffect(() => {
-        getNearestFoodStoreInfo(setNearestInfo, data);
+        resetReducer();
         const backAction = () => {
             navigation.goBack();
             return true;
@@ -31,11 +37,15 @@ function NearestFoodShop({ route }) {
         return () => backHandler.remove();
     }, []);
 
+    useEffect(() => {
+        setNearestInfo([]);
+    }, [searchText]);
+
     return (
         <>
             <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
-                <HeaderCommon title="Grocery Store Info" toggleDrawer={navigation} />
+                <HeaderCommon title={data?.store_category_name} toggleDrawer={navigation} />
                 <View style={{
                     backgroundColor: '#FFF',
                     paddingHorizontal: 15,
@@ -43,9 +53,27 @@ function NearestFoodShop({ route }) {
                     alignItems: 'center',
                 }}>
                     <View style={{ flex: 1, paddingTop: 8, paddingBottom: 8 }}>
-                        <Text style={{ color: '#006400', fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>আপনার নিকটস্থ ষ্টোর নির্বাচন করুন</Text>
+                        <Text style={{ color: '#006400', fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>ষ্টোর নির্বাচন করুন</Text>
                     </View>
                 </View>
+
+                <SearchField
+                    searchText={searchText}
+                    setSearchText={setSearchText}
+                    onPress={() => { handleSearchStore(searchText, setNearestInfo, data); }}
+                    placeholderText={'Search shop using contact number'}
+                    falseFocus={true}
+                />
+
+                {searchText === '' && nearestInfo.length === 0 &&
+                    <FindStore
+                        resetUserLocation={resetUserCurrentLocation}
+                        getNearestStoreInfo={() => { getNearestFoodStoreInfo(setNearestInfo, data); }}
+                        setNearestInfo={setNearestInfo}
+                        merchantType={merchantType}
+                    />
+                }
+
                 <FlatList
                     contentContainerStyle={{ padding: 5 }}
                     data={nearestInfo}
@@ -58,8 +86,6 @@ function NearestFoodShop({ route }) {
 }
 
 function ListItem({ data }) {
-    let cardMargin = 4;
-    let cardWidth = screenWidth - (cardMargin * 4.5);
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const navigateToExploreShop = () => {

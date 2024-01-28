@@ -130,10 +130,10 @@ const dashboardReducer = createSlice({
                 return {
                     ...state,
                     currentModule: payload?.data,
-                    typeInfoByShop: [],
-                    subtypeInfoByShop: [],
-                    shopCategory: [],
-                    DashboardSlider: [],
+                    //typeInfoByShop: [],
+                    //subtypeInfoByShop: [],
+                    //shopCategory: [],
+                    //DashboardSlider: [],
                 };
             }
             else if (payload.type == "RESET_DASHBOARD_REDUCER") {

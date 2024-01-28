@@ -202,7 +202,7 @@ export const useUser = () => {
     }
 
     const resetUserLocation = () => {
-        
+
         dispatch(
             handleUserReducer({
                 type: 'RESET_USER_LOCATION',
@@ -212,6 +212,15 @@ export const useUser = () => {
         navigation.navigate('Dashboard');
     }
 
+    const resetUserCurrentLocation = () => {
+        dispatch(
+            handleUserReducer({
+                type: 'RESET_USER_CURRENT_LOCATION',
+                data: true,
+            })
+        );
+        navigation.navigate('ChangeCurrentLocation');
+    }
 
 
     const getOtp = (props) => {
@@ -353,6 +362,7 @@ export const useUser = () => {
         getOtp,
         userInfo,
         registerUser,
-        resetUserLocation
+        resetUserLocation,
+        resetUserCurrentLocation
     }
 }

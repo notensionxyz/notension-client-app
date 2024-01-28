@@ -16,6 +16,7 @@ import HeaderCommon from '../../components/header/HeaderCommon';
 import FooterCommon from '../../components/footer/FooterCommon';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { useFavouriteItem } from '../../hooks/user/favorite-item';
+import { handleMedicineItems } from '../../hooks/cart-handler/handleMedicineItems';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = Dimensions.get('window').hight;
@@ -44,15 +45,13 @@ export default function MedicineProductDetails({ route }) {
     const [isVisible, setVisible] = useState(false);
 
     const {
-        groceryItems,
-        totalAmountGrocery,
         getQty,
         addToCart,
         removeFromCart,
         deccreseQty,
         isInOutOfStockList
-    } = handleGroceryItems();
-
+    } = handleMedicineItems();
+    
     const {
         visible,
         isAddedToFavouriteItems,

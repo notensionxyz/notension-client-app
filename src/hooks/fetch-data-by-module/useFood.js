@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FOOD_ADMIN_URL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { EXPLORE_FOOD_MODULE, EXPLORE_FOOD_STORE, NEAREST_FOOD_STORE } from '../../helpers/Constants';
+import { EXPLORE_FOOD_MODULE, EXPLORE_FOOD_STORE, NEAREST_FOOD_STORE, SEARCH_FOOD_STORE } from '../../helpers/Constants';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 
@@ -29,6 +29,14 @@ export const useFood = () => {
 
     const Axios = axios.create({
         baseURL: FOOD_ADMIN_URL,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const AxiosTest = axios.create({
+        baseURL: 'http://localhost:6013',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -92,7 +100,6 @@ export const useFood = () => {
     }
 
     const getNearestFoodStoreInfo = (setNearestInfo, data) => {
-
         setProgressing(true);
         const props = {
             shop_longitude: userLongitude,
@@ -102,7 +109,7 @@ export const useFood = () => {
             district_id: districtId
         };
         //console.log(props);
-        
+
         Axios
             .post(NEAREST_FOOD_STORE, props)
             .then(response => {
@@ -119,6 +126,34 @@ export const useFood = () => {
                 setProgressing(false);
             }
         }, 10000);
+    }
+
+    const handleSearchStore = (searchText, setNearestInfo, data) => {
+        if (searchText.length > 1) {
+            setProgressing(true);
+            Axios
+                .get(SEARCH_FOOD_STORE,
+                    {
+                        params: {
+                            search: searchText,
+                            StoreCategory: data._id,
+                        }
+                    }
+                ).then((res) => {
+                    setNearestInfo(res.data.result);
+                    setProgressing(false);
+                })
+                .catch((error) => {
+                    //console.log()
+                    setProgressing(false);
+                });
+
+            setTimeout(() => {
+                if (progressing) {
+                    setProgressing(false);
+                }
+            }, 10000);
+        }
     }
 
     const exploreStore = (data) => {
@@ -187,7 +222,9 @@ export const useFood = () => {
         saveItemsToReducer,
         exploreFoodModule,
         getNearestFoodStoreInfo,
+        handleSearchStore,
         exploreStore,
         resetLoadingStatus,
+        resetReducer
     };
 };

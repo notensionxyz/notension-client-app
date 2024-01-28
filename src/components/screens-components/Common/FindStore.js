@@ -7,14 +7,14 @@ const screenWidth = Dimensions.get('window').width;
 let cardMargin = 4;
 let cardWidth = screenWidth - (cardMargin * 4.5);
 
-function FindStore({ resetUserLocation, getNearestStoreInfo, setNearestInfo }) {
+function FindStore({ resetUserLocation, getNearestStoreInfo, setNearestInfo, merchantType }) {
     const navigation = useNavigation();
 
     return (
         <ScrollView>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', }}>
 
-                <Pressable onPress={() => { navigation.navigate('FavouriteStore', { merchantType: 0 }); }}>
+                <Pressable onPress={() => { navigation.navigate('FavouriteStore', { merchantType: merchantType }); }}>
                     <View style={{
                         marginTop: 10,
                         backgroundColor: 'white',

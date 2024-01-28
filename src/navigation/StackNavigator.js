@@ -23,6 +23,7 @@ import PlaceOrderGrocery from "../screens/grocery-shop/PlaceOrderGrocery";
 import ChangeDefaultLocation from "../screens/user/ChangeDefaultLocation";
 import FavouriteStore from "../screens/user/FavouriteStore";
 import FavouriteItems from "../screens/user/FavouriteItems";
+import ChangeCurrentLocation from "../screens/user/ChangeCurrentLocation";
 
 const Stack = createStackNavigator();
 
@@ -208,6 +209,14 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="FavouriteItems"
                 component={FavouriteItems}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ChangeCurrentLocation"
+                component={ChangeCurrentLocation}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

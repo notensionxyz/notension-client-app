@@ -18,9 +18,10 @@ export default function ExploreFoodModule() {
 
     const navigation = useNavigation();
     const { shopCategory, DashboardSlider } = useSelector((state) => state.dashboard);
-    const { exploreFoodModule, progressing } = useFood();
+    const { exploreFoodModule, progressing, resetReducer } = useFood();
 
     useEffect(() => {
+        resetReducer();
         exploreFoodModule();
         const backAction = () => {
             navigation.goBack();

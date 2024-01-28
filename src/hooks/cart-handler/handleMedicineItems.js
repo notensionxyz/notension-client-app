@@ -7,21 +7,30 @@ export const handleMedicineItems = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
-
-    const medicineItems = useSelector((state) => state.cartItems.medicineItems);
+    const visitedMedicineStore = useSelector((state) => state.dashboard.visitedMedicineStore);
+    const { medicineStoreInfo, medicineItems } = useSelector((state) => state.cartItems);
 
     const getQty = (_id) => {
-        let newState = [];
         const existingItemIndex = medicineItems.findIndex(
             (item) => item?._id === _id
         );
         if (existingItemIndex > -1) {
-            newState = [...medicineItems];
             return medicineItems[existingItemIndex].quantity;
         } else {
             return 0;
         }
     };
+
+    const isInCart = (medStoreProductInfo) => {
+        const existingItemIndex = medicineItems.findIndex(
+            (item) => item?.medStoreProductInfo === medStoreProductInfo
+        );
+        if (existingItemIndex > -1) {
+            return medicineItems[existingItemIndex].quantity;
+        } else {
+            return 0;
+        }
+    }
 
     const addToCart = (item) => {
         // dispatch(
@@ -48,14 +57,57 @@ export const handleMedicineItems = () => {
                 inc_qty: 1,
                 app_image: item?.app_image,
             }
-          
-            dispatch(
-                handleCartReducer({
-                    type: 'ADD_TO_CART_MEDICINE',
-                    data: product,
-                })
-            );
+
+            if (medicineItems.length > 0) {
+                if (medicineStoreInfo?._id && medicineStoreInfo?._id !== visitedMedicineStore?._id) {
+                    Alert.alert("Hold on! Adding this item will clear your cart. Add any way?", "You alresdy have items from another store in your bag !!", [
+                        {
+                            text: "Don't Add",
+                            onPress: () => null,
+                            style: 'cancel'
+                        },
+                        {
+                            text: "Add Item",
+                            onPress: () => emptyCartItems(product),
+                            style: 'default'
+                        },
+                    ]);
+                } else {
+                    addProduct(product);
+                }
+            } else {
+                saveStoreAndProductInfo(product);
+            }
         }
+    };
+
+    const emptyCartItems = (product) => {
+        dispatch(
+            handleCartReducer({
+                type: 'MEDICINE_ORDER_PLACED',
+                data: [],
+            })
+        );
+        saveStoreAndProductInfo(product);
+    };
+
+    const saveStoreAndProductInfo = (product) => {
+        addProduct(product);
+        dispatch(
+            handleCartReducer({
+                type: 'SAVE_MEDICINE_STORE_INFO',
+                data: visitedMedicineStore,
+            })
+        );
+    };
+
+    const addProduct = (product) => {
+        dispatch(
+            handleCartReducer({
+                type: 'ADD_TO_CART_MEDICINE',
+                data: product,
+            })
+        );
     };
 
     const removeFromCart = (_id) => {
@@ -97,6 +149,7 @@ export const handleMedicineItems = () => {
         addToCart,
         removeFromCart,
         deccreseQty,
-        isInOutOfStockList
+        isInOutOfStockList,
+        isInCart
     };
 };

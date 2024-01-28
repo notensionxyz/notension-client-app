@@ -13,18 +13,19 @@ import FindStore from '../../components/screens-components/Common/FindStore';
 import SearchField from '../../components/screens-components/Common/SearchField';
 
 const screenWidth = Dimensions.get('window').width;
-let cardMargin = 4;
-let cardWidth = screenWidth - (cardMargin * 4.5);
+const cardMargin = 4;
+const cardWidth = screenWidth - (cardMargin * 4.5);
+const merchantType = 1;
 
 function NearestMedicineShop(props) {
     const navigation = useNavigation();
     const [nearestInfo, setNearestInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const { getNearestMedicineStoreInfo, progressing, handleSearchStore } = useMedicine();
-    const { resetUserLocation } = useUser();
+    const { getNearestMedicineStoreInfo, progressing, handleSearchStore, resetReducer } = useMedicine();
+    const { resetUserCurrentLocation } = useUser();
 
     useEffect(() => {
-
+        resetReducer();
         const backAction = () => {
             navigation.goBack();
             return true;
@@ -64,11 +65,12 @@ function NearestMedicineShop(props) {
                     placeholderText={'Search store using contact number'}
                     falseFocus={true}
                 />
-               {searchText === '' && nearestInfo.length === 0 &&
+                {searchText === '' && nearestInfo.length === 0 &&
                     <FindStore
-                        resetUserLocation={resetUserLocation}
+                        resetUserLocation={resetUserCurrentLocation}
                         getNearestStoreInfo={getNearestMedicineStoreInfo}
                         setNearestInfo={setNearestInfo}
+                        merchantType={merchantType}
                     />
                 }
                 <FlatList

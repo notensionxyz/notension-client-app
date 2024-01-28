@@ -8,7 +8,7 @@ const screenWidth = Dimensions.get('window').width;
 export default function HeaderForLocation(props) {
     const navigation = useNavigation();
     const inputText = (text) => {
-        props.onInputText(text);
+       // props.onInputText(text);
     };
     return (
         <View style={{

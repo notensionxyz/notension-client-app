@@ -28,6 +28,7 @@ export default function PlaceOrderMedicine() {
     const [images, setImages] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
     const {
+        medicineStoreInfo,
         medicineItems,
         totalAmountMedicine,
     } = useSelector((state) => state.cartItems);
@@ -35,14 +36,13 @@ export default function PlaceOrderMedicine() {
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { isLoggedin, userInfo } = useSelector((state) => state.user);
 
-    const visitedMedicineStore = useSelector((state) => state.dashboard.visitedMedicineStore);
-    const minOrderAmount = visitedMedicineStore?.min_purchage_amount || 0;
-    const deliveryCharge = visitedMedicineStore?.max_delivery_charge || 0;
-    const minDeliveryCharge = visitedMedicineStore?.min_delivery_charge || 0;
-    const less = visitedMedicineStore?.less || 0;
-    const less_type = visitedMedicineStore?.less_type || 'Percent'
-    const maximum_less = visitedMedicineStore?.maximum_less || 0;
-    const minimum_order_for_less = visitedMedicineStore?.minimum_order_for_less || 0;
+    const minOrderAmount = medicineStoreInfo?.min_purchage_amount || 0;
+    const deliveryCharge = medicineStoreInfo?.max_delivery_charge || 0;
+    const minDeliveryCharge = medicineStoreInfo?.min_delivery_charge || 0;
+    const less = medicineStoreInfo?.less || 0;
+    const less_type = medicineStoreInfo?.less_type || 'Percent'
+    const maximum_less = medicineStoreInfo?.maximum_less || 0;
+    const minimum_order_for_less = medicineStoreInfo?.minimum_order_for_less || 0;
 
     const [paymentOption, setPaymentOption] = useState(paymentData[0]);
     const [remarks, setRemarks] = useState('');
@@ -70,8 +70,6 @@ export default function PlaceOrderMedicine() {
         return () => backHandler.remove();
     }, []);
 
-
-
     const getGrandTotal = () => {
         let shippingCost = deliveryCharge;
         if (parseFloat(totalAmountMedicine) >= parseFloat(minOrderAmount)) {
@@ -94,7 +92,6 @@ export default function PlaceOrderMedicine() {
         total = ((parseFloat(totalAmountMedicine) + parseFloat(shippingCost)) - parseFloat(Discount)).toFixed(2);
         setGrandTotal(total);
     };
-
 
     const handleImagesDetailProduct = (imageFiles) => {
         setImages((prevImages) => [...prevImages, ...imageFiles]);
@@ -124,10 +121,10 @@ export default function PlaceOrderMedicine() {
                 merchant_id: merchantId,
                 custom_merchant_id: customstore_id,
                 merchantInfo: {
-                    shop_name: visitedMedicineStore?.shop_name,
-                    shop_address: visitedMedicineStore?.shop_address,
-                    contact_no: visitedMedicineStore?.contact_no,
-                    alternative_contact_no: visitedMedicineStore?.alternative_contact_no,
+                    shop_name: medicineStoreInfo?.shop_name,
+                    shop_address: medicineStoreInfo?.shop_address,
+                    contact_no: medicineStoreInfo?.contact_no,
+                    alternative_contact_no: medicineStoreInfo?.alternative_contact_no,
                 },
                 order_list_image: [],
                 orderItems: medicineItems,
@@ -172,7 +169,7 @@ export default function PlaceOrderMedicine() {
                         alignItems: 'center',
                     }}>
                         <View style={{ flex: 1, paddingTop: 5, paddingBottom: 5 }}>
-                            <Text style={{ color: '#FFF', fontSize: 15 }}>{visitedMedicineStore?.shop_notice}</Text>
+                            <Text style={{ color: '#FFF', fontSize: 15 }}>{medicineStoreInfo?.shop_notice}</Text>
                         </View>
                     </View>
                     <View style={{ marginHorizontal: 20 }}>

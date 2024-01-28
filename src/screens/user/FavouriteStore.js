@@ -18,25 +18,30 @@ function FavouriteStore({ route }) {
     const [shopBannerFolder, setShopBannerFolder] = useState('');
     const [title, setTitle] = useState('');
     const [favouriteInfo, setFavouriteInfo] = useState([]);
+
     const { favouriteGroceryStore,
         favouriteMedicineStore,
         favouriteFoodShop } = useSelector((state) => state.userChoice);
 
     const {
         visible,
-        removeFromfavoriteList
+        removeFromfavoriteList,
+        resetReducer
     } = useFavouriteStore();
 
     useEffect(() => {
         if (merchantType === 0) {
+            resetReducer('Grocery');
             setShopBannerFolder('grocery-store-docs');
             setTitle('Favourite Grocery Store Info');
             setFavouriteInfo(favouriteGroceryStore);
         } else if (merchantType === 1) {
+            resetReducer('Medicine');
             setShopBannerFolder('medicine-store-docs');
             setTitle('Favourite Medicine Store Info');
             setFavouriteInfo(favouriteMedicineStore);
         } else {
+            resetReducer('Food');
             setShopBannerFolder('food-store-docs');
             setTitle('Favourite Food Shop Info');
             setFavouriteInfo(favouriteFoodShop)

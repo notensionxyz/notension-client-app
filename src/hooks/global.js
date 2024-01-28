@@ -6,7 +6,10 @@ import { GET_DASHBOARD_INFO, GET_DISTRICT_INFO } from '../helpers/Constants';
 import { handleDashboardReducer } from '../store/reducers/dashboardReducer';
 import NetInfo from "@react-native-community/netinfo";
 import { handleUserReducer } from '../store/reducers/userReducer';
+import DeviceInfo from 'react-native-device-info';
 import axios from 'axios';
+import { openUrl } from '../helpers/imageUrl';
+import { Alert, BackHandler } from 'react-native';
 axios.defaults.withCredentials = true;
 
 export const useGlobal = () => {
@@ -36,6 +39,8 @@ export const useGlobal = () => {
                 })
             );
         }
+        
+        console.log('districtId', districtId);
 
         axiosInstance
             .get(GET_DASHBOARD_INFO,
@@ -52,8 +57,15 @@ export const useGlobal = () => {
                         data: response.data.result,
                     })
                 );
+
                 setProgressing(false);
+
+                if (response?.data?.result?.allAppDashboard[0]) {
+                    compareVersion(response?.data?.result?.allAppDashboard[0]);
+                }
+
             }).catch(error => {
+                console.log('Error getDasboardInfo : ', error?.response?.data)
                 setProgressing(false);
             });
 
@@ -69,7 +81,7 @@ export const useGlobal = () => {
         axiosInstance
             .get(GET_DISTRICT_INFO)
             .then(res => {
-                
+
                 setFilteredInfo(res?.data?.result);
                 dispatch(
                     handleUserReducer({
@@ -90,13 +102,35 @@ export const useGlobal = () => {
         }, 10000);
     }
 
-    const saveLoadingStatus = (status) => {
-        dispatch(
-            handleDashboardReducer({
-                type: 'SAVE_LOADING_STATUS',
-                data: status,
-            })
-        );
+    const compareVersion = (appDashboarddata) => {
+        let currentAppVersion = appDashboarddata?.android_version;
+        let playStoreUrl = appDashboarddata?.android_url;
+        let installedAppVersion = DeviceInfo.getVersion();
+
+        // console.log('currentAppVersion : ', typeof (currentAppVersion));
+        // console.log('playStoreUrl : ', playStoreUrl);
+        // console.log('appVersion : ', typeof (appVersion));
+
+        if (playStoreUrl && currentAppVersion) {
+            if (appDashboarddata?.is_android_user_force_to_update) {
+                if (installedAppVersion !== currentAppVersion) {
+                    Alert.alert("Update version available!!!", "Please update the app.", [
+                        { text: "Update Now", onPress: () => { BackHandler.exitApp(); openUrl(playStoreUrl); } }
+                    ]);
+                }
+            } else if (appDashboarddata?.is_android_user_optional_update) {
+                if (installedAppVersion !== currentAppVersion) {
+                    Alert.alert("Update version available!!!", "Please update the app.", [
+                        {
+                            text: "Update later",
+                            onPress: () => null,
+                            style: "cancel"
+                        },
+                        { text: "Update Now", onPress: () => { BackHandler.exitApp(); openUrl(playStoreUrl); } }
+                    ]);
+                }
+            }
+        }
     }
 
     const saveConnectionStatus = (status) => {

@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { EXPLORE_GROCERY_STORE, GROCERY_ITEMS_BY_CUSTOMTYPE, GROCERY_ITEMS_BY_SUBTYPE, GROCERY_ITEM_DETAILS, NEAREST_GROCERY_STORE, SEARCH_GROCERY_ITEMS, SEARCH_GROCERY_STORE } from '../../helpers/Constants';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
+import { handleCartReducer } from '../../store/reducers/cartReducer';
 
 axios.defaults.withCredentials = true;
 
@@ -21,6 +22,7 @@ export const useGrocery = () => {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [message, setMessage] = useState('');
+    const groceryStoreInfo = useSelector((state) => state.cartItems.groceryStoreInfo);
     const { userLatitude, userLongitude, districtId } = useSelector((state) => state.user);
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
@@ -155,6 +157,7 @@ export const useGrocery = () => {
                 );
 
                 setProgressing(false);
+                replaceStore(res?.data?.result);
             })
             .catch((error) => {
                 setProgressing(false);
@@ -162,6 +165,17 @@ export const useGrocery = () => {
             });
 
     };
+
+    const replaceStore = (res) => {
+        if (groceryStoreInfo?._id && groceryStoreInfo?._id === res?.ShopDetails[0]?._id) {
+            dispatch(
+                handleCartReducer({
+                    type: 'SAVE_GROCERY_STORE_INFO',
+                    data: res?.ShopDetails[0],
+                })
+            );
+        }
+    }
 
     const handleSearch = (searchText, pageNo, setPageNo) => {
         if (searchText.length > 1) {
@@ -316,6 +330,7 @@ export const useGrocery = () => {
         handleSearchStore,
         exploreStore,
         reloadCustomTypeData,
-        resetLoadingStatus
+        resetLoadingStatus,
+        resetReducer
     };
 };

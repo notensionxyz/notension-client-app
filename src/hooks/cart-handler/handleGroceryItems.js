@@ -2,25 +2,35 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleCartReducer } from '../../store/reducers/cartReducer';
+import { Alert } from 'react-native';
 
 export const handleGroceryItems = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const [pendingItem, setPendingItem] = useState({});
     const [error, setError] = useState(false);
-    const { groceryItems,
-        totalAmountGrocery,
-        medicineItems,
-        totalAmountMedicine,
-        foodItems,
-        totalAmountFood } = useSelector((state) => state.cartItems);
+    const visitedGroceryStore = useSelector((state) => state.dashboard.visitedGroceryStore);
+    const {
+        groceryStoreInfo,
+        groceryItems,
+        totalAmountGrocery } = useSelector((state) => state.cartItems);
 
     const getQty = (_id) => {
-        let newState = [];
         const existingItemIndex = groceryItems.findIndex(
             (item) => item?._id === _id
         );
         if (existingItemIndex > -1) {
-            newState = [...groceryItems];
+            return groceryItems[existingItemIndex].quantity;
+        } else {
+            return 0;
+        }
+    };
+
+    const isInCart = (productInfoTable) => {
+        const existingItemIndex = groceryItems.findIndex(
+            (item) => item?.productInfoTable === productInfoTable
+        );
+        if (existingItemIndex > -1) {
             return groceryItems[existingItemIndex].quantity;
         } else {
             return 0;
@@ -28,17 +38,16 @@ export const handleGroceryItems = () => {
     };
 
     const addToCart = (item) => {
-        // dispatch(
-        //     handleCartReducer({
-        //         type: 'CLEAR_ALL',
-        //         data: true,
-        //     })
-        // );
 
         if (item?._id !== '' && item?.sale_price > -1) {
+            let productId = item?.productInfoTable;
+            if (item?.productInfoTable?._id) {  // When product add from favorite list then item?.productInfoTable work as object
+                productId = item?.productInfoTable?._id;
+            }
+            //console.log(productId);
             let product = {
                 _id: item?._id,
-                productInfoTable: item?.productInfoTable,
+                productInfoTable: productId,
                 product_title_eng: item?.product_title_eng || '',
                 product_title_beng: item?.product_title_beng || '',
                 pack_size: item?.pack_size || '',
@@ -52,15 +61,59 @@ export const handleGroceryItems = () => {
                 inc_qty: 1,
                 app_image: item?.app_image,
             }
-            //console.log('product groceryItems : ', product);
-            dispatch(
-                handleCartReducer({
-                    type: 'ADD_TO_CART_GROCERY',
-                    data: product,
-                })
-            );
-        }
 
+            if (groceryItems.length > 0) {
+                // console.log('groceryStoreInfo : ', groceryStoreInfo);
+                // console.log('visitedGroceryStore : ', visitedGroceryStore);
+                if (groceryStoreInfo?._id && groceryStoreInfo?._id !== visitedGroceryStore?._id) {
+                    Alert.alert("Hold on! Adding this item will clear your cart. Add any way?", "You alresdy have items from another store in your bag !!", [
+                        {
+                            text: "Don't Add",
+                            onPress: () => null,
+                            style: 'cancel'
+                        },
+                        {
+                            text: "Add Item",
+                            onPress: () => emptyCartItems(product),
+                            style: 'default'
+                        },
+                    ]);
+                } else {
+                    addProduct(product);
+                }
+            } else {
+                saveStoreAndProductInfo(product);
+            }
+        }
+    };
+
+    const emptyCartItems = (product) => {
+        dispatch(
+            handleCartReducer({
+                type: 'GROCERY_ORDER_PLACED',
+                data: [],
+            })
+        );
+        saveStoreAndProductInfo(product);
+    };
+
+    const saveStoreAndProductInfo = (product) => {
+        addProduct(product);
+        dispatch(
+            handleCartReducer({
+                type: 'SAVE_GROCERY_STORE_INFO',
+                data: visitedGroceryStore,
+            })
+        );
+    };
+
+    const addProduct = (product) => {
+        dispatch(
+            handleCartReducer({
+                type: 'ADD_TO_CART_GROCERY',
+                data: product,
+            })
+        );
     };
 
     const removeFromCart = (_id) => {
@@ -68,6 +121,15 @@ export const handleGroceryItems = () => {
             handleCartReducer({
                 type: 'REMOVE_FROM_CART_GROCERY',
                 data: _id,
+            })
+        );
+    };
+
+    const increaseQty = (product) => {
+        dispatch(
+            handleCartReducer({
+                type: 'ADD_TO_CART_GROCERY',
+                data: product,
             })
         );
     };
@@ -100,11 +162,8 @@ export const handleGroceryItems = () => {
     return {
         groceryItems,
         totalAmountGrocery,
-        medicineItems,
-        totalAmountMedicine,
-        foodItems,
-        totalAmountFood,
         getQty,
+        isInCart,
         addToCart,
         removeFromCart,
         deccreseQty,

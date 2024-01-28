@@ -13,17 +13,19 @@ import { useUser } from '../../hooks/useUser';
 import FindStore from '../../components/screens-components/Common/FindStore';
 
 const screenWidth = Dimensions.get('window').width;
-let cardMargin = 4;
-let cardWidth = screenWidth - (cardMargin * 4.5);
+const cardMargin = 4;
+const cardWidth = screenWidth - (cardMargin * 4.5);
+const merchantType = 0;
 
 function NearestGroceryShop(props) {
     const navigation = useNavigation();
     const [nearestInfo, setNearestInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const { getNearestGroceryStoreInfo, progressing, handleSearchStore } = useGrocery();
-    const { resetUserLocation } = useUser();
-    
+    const { getNearestGroceryStoreInfo, progressing, handleSearchStore, resetReducer } = useGrocery();
+    const { resetUserCurrentLocation } = useUser();
+
     useEffect(() => {
+        resetReducer();
         const backAction = () => {
             navigation.goBack();
             return true;
@@ -66,9 +68,10 @@ function NearestGroceryShop(props) {
 
                 {searchText === '' && nearestInfo.length === 0 &&
                     <FindStore
-                        resetUserLocation={resetUserLocation}
+                        resetUserLocation={resetUserCurrentLocation}
                         getNearestStoreInfo={getNearestGroceryStoreInfo}
                         setNearestInfo={setNearestInfo}
+                        merchantType={merchantType}
                     />
                 }
 

@@ -25,7 +25,7 @@ export const useMedicine = () => {
     const { userLatitude, userLongitude, districtId, userInfo } = useSelector((state) => state.user);
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
-
+    const medicineStoreInfo = useSelector((state) => state.cartItems.medicineStoreInfo);
     //console.log('MEDICINE_ADMIN_URL', MEDICINE_ADMIN_URL);
 
     const Axios = axios.create({
@@ -88,7 +88,7 @@ export const useMedicine = () => {
             max_distance: distance,
             districtId: districtId
         };
-      
+
         Axios
             .post(NEAREST_MEDICINE_STORE, props)
             .then(response => {
@@ -162,7 +162,7 @@ export const useMedicine = () => {
                         data: res?.data?.result,
                     })
                 );
-
+                replaceStore(res?.data?.result);
                 setProgressing(false);
             })
             .catch((error) => {
@@ -171,6 +171,17 @@ export const useMedicine = () => {
             });
 
     };
+
+    const replaceStore = (res) => {
+        if (medicineStoreInfo?._id && medicineStoreInfo?._id === res?.ShopDetails[0]?._id) {
+            dispatch(
+                handleCartReducer({
+                    type: 'SAVE_MEDICINE_STORE_INFO',
+                    data: res?.ShopDetails[0],
+                })
+            );
+        }
+    }
 
     const handleSearch = (searchText, pageNo, setPageNo) => {
         if (searchText.length > 1) {
@@ -319,5 +330,6 @@ export const useMedicine = () => {
         reloadCustomTypeData,
         resetLoadingStatus,
         handleSearchStore,
+        resetReducer
     };
 };

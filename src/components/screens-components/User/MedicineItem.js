@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Alert, Dimensions, Image, Pressable, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Dimensions, Image, Pressable, Text, StyleSheet, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { useDispatch } from 'react-redux';
 import { medicine_itemsImages } from '../../../helpers/Constants';
 import { storageImageUrl } from '../../../helpers/imageUrl';
+import { handleMedicineItems } from '../../../hooks/cart-handler/handleMedicineItems';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -11,6 +12,7 @@ export const MemoizedMedicineItem = React.memo(MedicineItem);
 
 function MedicineItem({ data, removeFromfavoriteItems, merchantType, getMedicineProductDetails }) {
     const dispatch = useDispatch();
+    const { isInCart } = handleMedicineItems();
     let cardMargin = 2.5;
     let cardWidth = screenWidth - (cardMargin * 6);
     const removeItem = () => {
@@ -87,21 +89,76 @@ function MedicineItem({ data, removeFromfavoriteItems, merchantType, getMedicine
                     <Text style={{ marginTop: 10, fontSize: 18, color: '#003B95', }} numberOfLines={1} ellipsizeMode="tail">{data?.item_title_eng}</Text>
                     <Text style={{ fontSize: 16, color: '#006400' }} numberOfLines={1} ellipsizeMode="tail">{data?.pack_size}</Text>
                 </Pressable>
-                <View style={{ paddingRight: 15, alignItems: 'flex-end', }}>
-                    <Pressable
-                        onPress={() => { removeItem(); }}
-                        style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 5 }}
-                    >
-                        <Image
-                            style={{ width: 30, height: 30, tintColor: '#FF0000' }}
-                            resizeMode={'contain'}
-                            source={require('../../../assets/icon/trash.png')}
-                        />
-                    </Pressable>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                    {parseFloat(isInCart(data?.productId)) > 0 ?
+                        <View style={styles.boxStyle}>
+                            <Text style={styles.textStyle}>
+                                {isInCart(data?.productId)}
+                            </Text>
+                        </View>
+                        :
+                        <View style={styles.boxStyleBlank}>
+
+                        </View>
+                    }
+                    <View style={{ paddingRight: 15, alignItems: 'flex-end', }}>
+                        <Pressable
+                            onPress={() => { removeItem(); }}
+                            style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 5 }}
+                        >
+                            <Image
+                                style={{ width: 30, height: 30, tintColor: '#FF0000' }}
+                                resizeMode={'contain'}
+                                source={require('../../../assets/icon/trash.png')}
+                            />
+                        </Pressable>
+                    </View>
                 </View>
             </View>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    MainContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+    },
+
+    boxStyle:
+    {
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        width: 36,
+        height: 36,
+        borderRadius: 36 / 2,
+        elevation: 3,
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.5,
+        marginLeft: screenWidth / 6,
+        backgroundColor: '#006400',
+        marginTop: 5,
+    },
+
+    text: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#483D8B',
+        textAlign: 'center',
+        marginTop: -1,
+        fontSize: 22,
+        width: 36
+    },
+
+    textStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#FFFFFF',
+        textAlign: 'center',
+        fontSize: 22,
+        width: 36
+    },
+});
 
 export default MedicineItem;

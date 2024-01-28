@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import HeaderForLocation from '../../header/HeaderForLocation';
 import { useGeoLocation } from '../../../hooks/findGeoLocation';
 import { useUser } from '../../../hooks/useUser';
+import { useNavigation } from '@react-navigation/native';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
 const screenWidth = Dimensions.get('window').width;
@@ -20,7 +21,8 @@ const LONGITUDE = 90.3760062;
 const LATITUDE_DELTA = 0.006;
 
 function ConfirmLocation() {
-    const defaultUserLocation = useSelector((state) => state.user.defaultUserLocation);
+    const navigation = useNavigation();
+    const { defaultUserLocation, currentUserLocation, setCurrentLocation } = useSelector((state) => state.user);
     const mapRef = useRef();
     const [viewWidth, setViewWidth] = useState(screenWidth);
     const [viewHeight, setViewHeight] = useState(screenHeight);
@@ -64,35 +66,38 @@ function ConfirmLocation() {
 
     const confirmRetailerLocation = () => {
         let userLocation = {
-            isSetManually: false,
-            userLatitude: curLoc?.latitude || '00',
-            userLongitude: curLoc?.longitude || '00',
-            districtId: defaultUserLocation?.districtId || '00',
-            districtName: defaultUserLocation?.districtName || '',
+            userLatitude: curLoc?.latitude,
+            userLongitude: curLoc?.longitude,
+            districtId: defaultUserLocation?.districtId,
+            districtName: defaultUserLocation?.districtName,
             districtAreaId: '00',
             districtAreaName: '',
             districtSubAreaId: '00',
             districtSubAreaName: '',
         };
 
-        if (defaultUserLocation?.userLatitude !== '00') {
+        if (setCurrentLocation) {
             userLocation = {
-                isSetManually: false,
+                setCurrentLocation: false,
                 userLatitude: curLoc?.latitude,
                 userLongitude: curLoc?.longitude,
-                districtId: defaultUserLocation?.districtId,
-                districtName: defaultUserLocation?.districtName,
-                districtAreaId: defaultUserLocation?.districtAreaId || '00',
-                districtAreaName: defaultUserLocation?.districtAreaName || '',
-                districtSubAreaId: defaultUserLocation?.districtSubAreaId || '00',
-                districtSubAreaName: defaultUserLocation?.districtSubAreaName || '',
+                districtId: currentUserLocation?.districtId,
+                districtName: currentUserLocation?.districtName,
+                districtAreaId: '00',
+                districtAreaName: '',
+                districtSubAreaId: '00',
+                districtSubAreaName: '',
             };
-            saveCurrentInfo(userLocation);
+            ///saveCurrentInfo(userLocation);
+            //console.log('save as current', userLocation);
+            saveSelectedInfo(userLocation);
+            navigation.navigate('Dashboard');
         } else {
+            //console.log('save as default', userLocation);
             saveSelectedInfo(userLocation);
         }
     };
-
+    console.log('defaultUserLocation : ', defaultUserLocation);
     return (
         <>
             {!isLocationFound ?

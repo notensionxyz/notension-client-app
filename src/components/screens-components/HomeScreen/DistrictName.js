@@ -5,53 +5,61 @@ import { useSelector } from 'react-redux';
 import { useUser } from '../../../hooks/useUser';
 import { storageImageUrl } from '../../../helpers/imageUrl';
 import { useGeoLocation } from '../../../hooks/findGeoLocation';
+import ProgressStyle2 from '../../progress-animation/ProgressStyle2';
+import { useGlobal } from '../../../hooks/global';
 
 const screenWidth = Dimensions.get('window').width;
 
-function DistrictName({ filteredInfo }) {
-    const { defaultUserLocation, districtInfo } = useSelector((state) => state.user);
+function DistrictName({ filteredInfo, setFilteredInfo }) {
+    const { defaultUserLocation, districtInfo, setCurrentLocation } = useSelector((state) => state.user);
     const { curLoc, isLocationFound, isPanding, setState, getGeoLocation } = useGeoLocation();
-    const [fetching, setFetching] = useState(false);
-    const { saveSelectedInfo, saveCurrentInfo } = useUser();
+    const { saveSelectedInfo, saveCurrentInfo, resetUserCurrentLocation } = useUser();
+    const { getDistrictInfo, progressing } = useGlobal();
 
     useEffect(() => {
+        if (districtInfo?.length < 1) {
+            getDistrictInfo(setFilteredInfo);
+        }
         getGeoLocation();
     }, []);
 
     const saveSlectedDistrict = (slectedDistrict) => {
 
         let userLocation = {
-            isSetManually: false,
+            setCurrentLocation: false,
             userLatitude: '00',
             userLongitude: '00',
-            districtId: slectedDistrict._id,
-            districtName: slectedDistrict.district_name,
+            districtId: slectedDistrict?._id,
+            districtName: slectedDistrict?.district_name,
             districtAreaId: '00',
             districtAreaName: '',
             districtSubAreaId: '00',
             districtSubAreaName: '',
         };
 
-        if (defaultUserLocation?.districtId) {
+        if (setCurrentLocation) {
             userLocation = {
-                isSetManually: false,
-                userLatitude: curLoc?.latitude,
-                userLongitude: curLoc?.longitude,
+                setCurrentLocation: setCurrentLocation,
+                userLatitude: defaultUserLocation?.userLatitude,
+                userLongitude: defaultUserLocation?.userLongitude,
                 districtId: slectedDistrict._id,
                 districtName: slectedDistrict.district_name,
-                districtAreaId: defaultUserLocation?.districtAreaId || '00',
-                districtAreaName: defaultUserLocation?.districtAreaName || '',
-                districtSubAreaId: defaultUserLocation?.districtSubAreaId || '00',
-                districtSubAreaName: defaultUserLocation?.districtSubAreaName || '',
+                districtAreaId: '00',
+                districtAreaName: '',
+                districtSubAreaId: '00',
+                districtSubAreaName: '',
             };
+            console.log('save as current -- District Name');
             saveCurrentInfo(userLocation);
         } else {
+            console.log('save as Default -- District Name', userLocation);
             saveSelectedInfo(userLocation);
         }
     }
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
+            <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
                 <View style={{ flexDirection: 'row', backgroundColor: '#ff9800', width: '100%' }}>
                     <Text style={{ flex: 1, color: 'white', paddingVertical: 10, fontSize: 18, textAlign: 'center' }}>Select District</Text>

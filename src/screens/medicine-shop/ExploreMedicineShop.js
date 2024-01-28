@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Dimensions, Text, Image, Alert, Pressable } from "react-native";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
@@ -15,15 +15,18 @@ import FastImage from 'react-native-fast-image';
 import { useMedicine } from '../../hooks/fetch-data-by-module/useMedicine';
 import { medicine_sliderTypeSubtypeImagesFolderName } from '../../helpers/Constants';
 import { useFavouriteStore } from '../../hooks/user/favorite-shop';
+import { handleCartReducer } from '../../store/reducers/cartReducer';
 
 let merchantType = 1;
 let typeInfo = {};
 const screenWidth = Dimensions.get('window').width;
 
 function ExploreMedicineShop() {
+    const dispatch = useDispatch();
     const ref = useRef(null);
     const navigation = useNavigation();
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
+    const { medicineStoreInfo, medicineItems } = useSelector((state) => state.cartItems);
     const { typeInfoByShop, subtypeInfoByShop, DashboardSlider, visitedMedicineStore } = useSelector((state) => state.dashboard);
     const [typeInfoGeneral, setTypeInfoGeneral] = useState([]);
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
@@ -45,7 +48,7 @@ function ExploreMedicineShop() {
     }, []);
 
     useEffect(() => {
-     
+
         if (typeInfoByShop.length > 0) {
 
             let generaltypeInfo = typeInfoByShop?.filter(
@@ -80,7 +83,7 @@ function ExploreMedicineShop() {
     const checkIsLoggedinAndProcess = (action) => {
         if (isLoggedin) {
             if (action === 'placerOrder') {
-                navigation.navigate('PlaceOrderGrocery');
+                navighateToPlaceOrder();
             } else {
                 addToFavouriteList(visitedMedicineStore, merchantType);
             }
@@ -88,6 +91,37 @@ function ExploreMedicineShop() {
             navigation.navigate('Login')
         }
     }
+
+    const navighateToPlaceOrder = () => {
+        if (medicineItems.length > 0) {
+            if (medicineStoreInfo?._id && medicineStoreInfo?._id !== visitedMedicineStore?._id) {
+                Alert.alert("Hold on! Proceeding to place order will clear your bag. Proceed any way?", "You alresdy have items from another store in your bag !!", [
+                    {
+                        text: "Cancel",
+                        onPress: () => null,
+                        style: 'cancel'
+                    },
+                    {
+                        text: "Proceed",
+                        onPress: () => emptyCartItems(),
+                        style: 'default'
+                    },
+                ]);
+            }
+        } else {
+            navigation.navigate('PlaceOrderMedicine');
+        }
+    }
+
+    const emptyCartItems = () => {
+        dispatch(
+            handleCartReducer({
+                type: 'MEDICINE_ORDER_PLACED',
+                data: [],
+            })
+        );
+        navigation.navigate('PlaceOrderMedicine');
+    };
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

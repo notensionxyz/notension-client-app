@@ -46,10 +46,10 @@ function Dashboard(props) {
     useEffect(() => {
         if (districtInfo?.length < 1) {
             getDistrictInfo(setFilteredInfo);
-            //console.log('getDistrictInfo()');
+            console.log('getDistrictInfo()');
         } else {
             setFilteredInfo(districtInfo);
-            //console.log('setFilteredInfo()');
+            console.log('setFilteredInfo()');
         }
     }, []);
 
@@ -57,7 +57,7 @@ function Dashboard(props) {
 
         if (defaultUserLocation?.userLatitude && defaultUserLocation?.userLatitude !== '00') {
             getDasboardInfo();
-            //console.log('getDasboardInfo()');
+            console.log('getDasboardInfo()');
         }
 
         getConnectionStatus();
@@ -139,8 +139,8 @@ function Dashboard(props) {
         }, 800);
     };
 
-    //console.log('ad_slider_by_district', ad_slider_by_district);
-    
+    //console.log('ad_slider_by_district', ad_slider_by_district?.first_slider);
+
     return (
         <>
             {!internetConnectionAvailable ?
@@ -151,10 +151,10 @@ function Dashboard(props) {
                         <SplashScreen />
                         :
                         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                            {!defaultUserLocation?.districtId ?
+                            {!defaultUserLocation?.districtId || defaultUserLocation?.districtId === '00' ?
                                 <>
                                     <HeaderCommon title="search" onInputText={searchDistrict} toggleDrawer={props.navigation} />
-                                    <DistrictName filteredInfo={filteredInfo} />
+                                    <DistrictName filteredInfo={filteredInfo} setFilteredInfo={setFilteredInfo} />
                                 </>
                                 :
                                 <>
@@ -167,8 +167,9 @@ function Dashboard(props) {
                                                 <FreeServicesSlider data={starting_slider} />
                                                 <MyFavourite title='My Favourite' data={favourite_banner} height={100} />
                                                 <BusinessModules data={business_type_banner} />
-                                                <AddSlider data={advertisement_slider} />
+                                                <AddSlider data={ad_slider_by_district?.first_slider} />
                                                 <MedicalServices data={medical_services_banner} />
+                                                <AddSlider data={ad_slider_by_district?.second_slider} />
                                                 {/* <FreeServicesSlider data={free_services_slider} />
                                                 <FreeServices /> */}
                                             </ScrollView>
@@ -180,7 +181,6 @@ function Dashboard(props) {
                     }
                 </>
             }
-
         </>
     );
 }

@@ -28,6 +28,7 @@ export default function PlaceOrderGrocery() {
     const [images, setImages] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
     const {
+        groceryStoreInfo,
         groceryItems,
         totalAmountGrocery,
     } = useSelector((state) => state.cartItems);
@@ -35,14 +36,13 @@ export default function PlaceOrderGrocery() {
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { isLoggedin, userInfo } = useSelector((state) => state.user);
 
-    const visitedGroceryStore = useSelector((state) => state.dashboard.visitedGroceryStore);
-    const minOrderAmount = visitedGroceryStore?.min_purchage_amount || 0;
-    const deliveryCharge = visitedGroceryStore?.max_delivery_charge || 0;
-    const minDeliveryCharge = visitedGroceryStore?.min_delivery_charge || 0;
-    const less = visitedGroceryStore?.less || 0;
-    const less_type = visitedGroceryStore?.less_type || 'Percent'
-    const maximum_less = visitedGroceryStore?.maximum_less || 0;
-    const minimum_order_for_less = visitedGroceryStore?.minimum_order_for_less || 0;
+    const minOrderAmount = groceryStoreInfo?.min_purchage_amount || 0;
+    const deliveryCharge = groceryStoreInfo?.max_delivery_charge || 0;
+    const minDeliveryCharge = groceryStoreInfo?.min_delivery_charge || 0;
+    const less = groceryStoreInfo?.less || 0;
+    const less_type = groceryStoreInfo?.less_type || 'Percent'
+    const maximum_less = groceryStoreInfo?.maximum_less || 0;
+    const minimum_order_for_less = groceryStoreInfo?.minimum_order_for_less || 0;
 
     const [paymentOption, setPaymentOption] = useState(paymentData[0]);
     const [remarks, setRemarks] = useState('');
@@ -69,8 +69,6 @@ export default function PlaceOrderGrocery() {
 
         return () => backHandler.remove();
     }, []);
-
-
 
     const getGrandTotal = () => {
         let shippingCost = deliveryCharge;
@@ -124,10 +122,10 @@ export default function PlaceOrderGrocery() {
                 merchant_id: merchantId,
                 custom_merchant_id: customstore_id,
                 merchantInfo: {
-                    shop_name: visitedGroceryStore?.shop_name,
-                    shop_address: visitedGroceryStore?.shop_address,
-                    contact_no: visitedGroceryStore?.contact_no,
-                    alternative_contact_no: visitedGroceryStore?.alternative_contact_no,
+                    shop_name: groceryStoreInfo?.shop_name,
+                    shop_address: groceryStoreInfo?.shop_address,
+                    contact_no: groceryStoreInfo?.contact_no,
+                    alternative_contact_no: groceryStoreInfo?.alternative_contact_no,
                 },
                 order_list_image: [],
                 orderItems: groceryItems,
@@ -173,7 +171,7 @@ export default function PlaceOrderGrocery() {
                         alignItems: 'center',
                     }}>
                         <View style={{ flex: 1, paddingTop: 5, paddingBottom: 5 }}>
-                            <Text style={{ color: '#FFF', fontSize: 15 }}>{visitedGroceryStore?.shop_notice}</Text>
+                            <Text style={{ color: '#FFF', fontSize: 15 }}>{groceryStoreInfo?.shop_notice}</Text>
                         </View>
                     </View>
                     <View style={{ marginHorizontal: 20 }}>

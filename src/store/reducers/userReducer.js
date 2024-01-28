@@ -89,36 +89,49 @@ const userReducer = createSlice({
             }
             else if (payload.type == "SAVE_USER_CURRENT_LOCATION") {
                 state.currentUserLocation = payload.data;
-                state.userLatitude = payload.data.userLatitude || '00';
-                state.userLongitude = payload.data.userLongitude || '00';
-                state.districtId = payload.data.districtId || '00';
+                state.setCurrentLocation = payload?.data?.setCurrentLocation;
+                state.userLatitude = payload?.data?.userLatitude || '00';
+                state.userLongitude = payload?.data?.userLongitude || '00';
+                state.districtId = payload?.data?.districtId || '00';
             }
             else if (payload.type == "SAVE_USER_DEFAULT_LOCATION") {
-                state.defaultUserLocation = payload.data;
+                console.log('payload?.data : ', payload?.data);
+                state.defaultUserLocation = payload?.data;
             }
             else if (payload.type == "SAVE_GROCERY_ORDER_INFO") {
-                state.groceryOrderInfo = payload.data;
+                state.groceryOrderInfo = payload?.data;
             }
             else if (payload.type == "SAVE_MEDICINE_ORDER_INFO") {
-                state.medicineOrderInfo = payload.data;
+                state.medicineOrderInfo = payload?.data;
             }
             else if (payload.type == "SAVE_FOOD_ORDER_INFO") {
                 state.foodOrderInfo = payload.data;
             }
             else if (payload.type == "RESET_USER_LOCATION") {
+                state.setCurrentLocation = false;
+                state.setDefaultLocation = true;
                 state.defaultUserLocation = {};
                 state.currentUserLocation = {};
                 state.userLatitude = '00';
                 state.userLongitude = '00';
                 state.districtId = '00';
             }
+            else if (payload.type == "RESET_USER_CURRENT_LOCATION") {
+                state.setCurrentLocation = true;
+                state.setDefaultLocation = false;
+                state.currentUserLocation = {};
+            }
             else if (payload.type == "RESET_USER") {
                 return {
                     ...state,
                     setManually: false,
-                    setLocation: false,
+                    setCurrentLocation: false,
+                    setDefaultLocation: false,
                     defaultUserLocation: {},
                     currentUserLocation: {},
+                    userLatitude: '00',
+                    userLongitude: '00',
+                    districtId: '00',
                     isLoggedin: false,
                     userInfo: {},
                     deliveryAddress: '',

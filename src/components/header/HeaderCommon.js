@@ -31,7 +31,7 @@ export default function HeaderCommon(props) {
             </TouchableOpacity>
             {props.title !== 'search' ?
                 <View style={{ height: 50, width: screenWidth - 60, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ color: logoColor_1, fontSize: 18, fontWeight: 'bold' }}>{props.title}</Text>
+                    <Text style={{ color: logoColor_1, fontSize: 18, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">{props.title}</Text>
                 </View>
                 :
                 <>

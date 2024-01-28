@@ -7,10 +7,13 @@ const calculateTotal = (items) =>
 const cartReducer = createSlice({
     name: 'cartItems',
     initialState: {
+        groceryStoreInfo: {},
         groceryItems: [],
         totalAmountGrocery: 0,
+        medicineStoreInfo: {},
         medicineItems: [],
         totalAmountMedicine: 0,
+        foodStoreInfo: {},
         foodItems: [],
         totalAmountFood: 0,
     },
@@ -80,7 +83,7 @@ const cartReducer = createSlice({
 
             }
             else if (payload.type == 'ADD_TO_CART_MEDICINE') {
-              
+
                 let newState = [];
                 const existingItemIndex = state.medicineItems.findIndex(
                     (item) => item?._id === payload?.data?._id
@@ -192,6 +195,13 @@ const cartReducer = createSlice({
             else if (payload.type == 'FOOD_ORDER_PLACED') {
                 state.foodItems = [];
                 state.totalAmountFood = 0;
+            }
+            else if (payload.type == 'SAVE_GROCERY_STORE_INFO') {
+                state.groceryStoreInfo = payload?.data
+            } else if (payload.type == 'SAVE_MEDICINE_STORE_INFO') {
+                state.medicineStoreInfo = payload?.data
+            } else if (payload.type == 'SAVE_FOOD_STORE_INFO') {
+                state.foodStoreInfo = payload?.data
             }
         },
     },
