@@ -22,7 +22,6 @@ export const useGrocery = () => {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [message, setMessage] = useState('');
-    const groceryStoreInfo = useSelector((state) => state.cartItems.groceryStoreInfo);
     const { userLatitude, userLongitude, districtId } = useSelector((state) => state.user);
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
@@ -157,7 +156,7 @@ export const useGrocery = () => {
                 );
 
                 setProgressing(false);
-                replaceStore(res?.data?.result);
+                
             })
             .catch((error) => {
                 setProgressing(false);
@@ -165,17 +164,6 @@ export const useGrocery = () => {
             });
 
     };
-
-    const replaceStore = (res) => {
-        if (groceryStoreInfo?._id && groceryStoreInfo?._id === res?.ShopDetails[0]?._id) {
-            dispatch(
-                handleCartReducer({
-                    type: 'SAVE_GROCERY_STORE_INFO',
-                    data: res?.ShopDetails[0],
-                })
-            );
-        }
-    }
 
     const handleSearch = (searchText, pageNo, setPageNo) => {
         if (searchText.length > 1) {

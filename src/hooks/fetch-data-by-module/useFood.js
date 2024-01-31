@@ -22,8 +22,6 @@ export const useFood = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [message, setMessage] = useState('');
     const { userLatitude, userLongitude, districtId } = useSelector((state) => state.user);
-    const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
-    const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
 
     //console.log('FOOD_ADMIN_URL', FOOD_ADMIN_URL);
 
@@ -157,6 +155,7 @@ export const useFood = () => {
     }
 
     const exploreStore = (data) => {
+        //console.log(data?._id);
         setProgressing(true);
         Axios
             .get(EXPLORE_FOOD_STORE,
@@ -168,20 +167,22 @@ export const useFood = () => {
                 }
             )
             .then((res) => {
-                //console.log(res?.data?.result);
+
                 dispatch(
                     handleItemsByStoreReducer({
-                        type: 'EXPLORE_STORE_ITEMS',
+                        type: 'EXPLORE_FOOD_STORE_ITEMS',
                         data: res?.data?.result,
                     })
                 );
 
                 dispatch(
                     handleDashboardReducer({
-                        type: 'EXPLORE_MED_STORE',
-                        data: res?.data?.result,
+                        type: 'VISITED_FOOD_STORE',
+                        data: res?.data?.result?.shopDetails[0] || {},
                     })
                 );
+
+                //console.log('res?.data?.result?.shopDetails : ', res?.data?.result?.shopDetails);
 
                 setProgressing(false);
             })
@@ -190,6 +191,7 @@ export const useFood = () => {
                 console.log(error);
             });
     };
+
 
     const resetLoadingStatus = (status = false) => {
         saveItemsToReducer([]);

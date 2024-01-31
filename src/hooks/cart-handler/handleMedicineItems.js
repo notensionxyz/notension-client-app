@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleCartReducer } from '../../store/reducers/cartReducer';
+import { Alert } from 'react-native';
 
 export const handleMedicineItems = () => {
     const navigation = useNavigation();
@@ -60,7 +61,7 @@ export const handleMedicineItems = () => {
 
             if (medicineItems.length > 0) {
                 if (medicineStoreInfo?._id && medicineStoreInfo?._id !== visitedMedicineStore?._id) {
-                    Alert.alert("Hold on! Adding this item will clear your cart. Add any way?", "You alresdy have items from another store in your bag !!", [
+                    Alert.alert("Hold on! Adding this item will clear your cart. Add any way?", "You already have items from another store in your bag !!", [
                         {
                             text: "Don't Add",
                             onPress: () => null,
@@ -138,6 +139,65 @@ export const handleMedicineItems = () => {
         return isAvailable;
     }
 
+    const proceedToPlaceOrder = () => {
+
+        if (medicineItems.length > 0 && medicineStoreInfo?._id && medicineStoreInfo?._id !== visitedMedicineStore?._id) {
+            Alert.alert("Hold on! Proceeding to place order will clear your bag. Proceed any way?", "You already have items from another store in your bag !!", [
+                {
+                    text: "Cancel",
+                    onPress: () => navigation.goBack(),
+                    style: 'cancel'
+                },
+                {
+                    text: "Proceed",
+                    onPress: () => claerAndSwitch(),
+                    style: 'default'
+                },
+            ]);
+
+        } else {
+            replaceStore();
+        }
+    }
+
+    const proceedToClaerAnyWay = () => {
+        if (medicineItems.length > 0 && medicineStoreInfo?._id && medicineStoreInfo?._id !== visitedMedicineStore?._id) {
+            Alert.alert("Hold on! Do you want to clear your bag. Clear any way?", "You already have items from another store in your bag !!", [
+                {
+                    text: "Cancel",
+                    onPress: () => null,
+                    style: 'cancel'
+                },
+                {
+                    text: "OK",
+                    onPress: () => claerAndSwitch(),
+                    style: 'default'
+                },
+            ]);
+        } else {
+            replaceStore();
+        }
+    }
+
+    const claerAndSwitch = () => {
+        replaceStore();
+        dispatch(
+            handleCartReducer({
+                type: 'MEDICINE_ORDER_PLACED',
+                data: [],
+            })
+        );
+    };
+
+    const replaceStore = () => {
+        dispatch(
+            handleCartReducer({
+                type: 'SAVE_MEDICINE_STORE_INFO',
+                data: visitedMedicineStore,
+            })
+        );
+    }
+
     useEffect(() => {
         if (error) {
             //userLogOut();
@@ -150,6 +210,8 @@ export const handleMedicineItems = () => {
         removeFromCart,
         deccreseQty,
         isInOutOfStockList,
-        isInCart
+        isInCart,
+        proceedToClaerAnyWay,
+        proceedToPlaceOrder
     };
 };

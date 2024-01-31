@@ -7,6 +7,7 @@ import { EXPLORE_MEDICINE_STORE, MEDICINE_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { Alert } from 'react-native';
+import { handleCartReducer } from '../../store/reducers/cartReducer';
 
 axios.defaults.withCredentials = true;
 
@@ -25,7 +26,7 @@ export const useMedicine = () => {
     const { userLatitude, userLongitude, districtId, userInfo } = useSelector((state) => state.user);
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
-    const medicineStoreInfo = useSelector((state) => state.cartItems.medicineStoreInfo);
+    
     //console.log('MEDICINE_ADMIN_URL', MEDICINE_ADMIN_URL);
 
     const Axios = axios.create({
@@ -162,7 +163,7 @@ export const useMedicine = () => {
                         data: res?.data?.result,
                     })
                 );
-                replaceStore(res?.data?.result);
+               
                 setProgressing(false);
             })
             .catch((error) => {
@@ -171,17 +172,6 @@ export const useMedicine = () => {
             });
 
     };
-
-    const replaceStore = (res) => {
-        if (medicineStoreInfo?._id && medicineStoreInfo?._id === res?.ShopDetails[0]?._id) {
-            dispatch(
-                handleCartReducer({
-                    type: 'SAVE_MEDICINE_STORE_INFO',
-                    data: res?.ShopDetails[0],
-                })
-            );
-        }
-    }
 
     const handleSearch = (searchText, pageNo, setPageNo) => {
         if (searchText.length > 1) {

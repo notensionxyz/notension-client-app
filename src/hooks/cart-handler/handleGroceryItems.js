@@ -38,7 +38,6 @@ export const handleGroceryItems = () => {
     };
 
     const addToCart = (item) => {
-
         if (item?._id !== '' && item?.sale_price > -1) {
             let productId = item?.productInfoTable;
             if (item?.productInfoTable?._id) {  // When product add from favorite list then item?.productInfoTable work as object
@@ -66,7 +65,7 @@ export const handleGroceryItems = () => {
                 // console.log('groceryStoreInfo : ', groceryStoreInfo);
                 // console.log('visitedGroceryStore : ', visitedGroceryStore);
                 if (groceryStoreInfo?._id && groceryStoreInfo?._id !== visitedGroceryStore?._id) {
-                    Alert.alert("Hold on! Adding this item will clear your cart. Add any way?", "You alresdy have items from another store in your bag !!", [
+                    Alert.alert("Hold on! Adding this item will clear your bag. Add any way?", "You already have items from another store in your bag !!", [
                         {
                             text: "Don't Add",
                             onPress: () => null,
@@ -153,6 +152,64 @@ export const handleGroceryItems = () => {
         return isAvailable;
     }
 
+    const proceedToPlaceOrder = () => {
+        if (groceryItems?.length > 0 && groceryStoreInfo?._id && groceryStoreInfo?._id !== visitedGroceryStore?._id) {
+            Alert.alert("Hold on! Proceeding to place order will clear your bag. Proceed any way?", "You already have items from another store in your bag !!", [
+                {
+                    text: "Cancel",
+                    onPress: () => navigation.goBack(),
+                    style: 'cancel'
+                },
+                {
+                    text: "Proceed",
+                    onPress: () => claerAndSwitch(),
+                    style: 'default'
+                },
+            ]);
+        } else {
+            replaceStore();
+        }
+    }
+
+    const proceedToClaerAnyWay = () => {
+        if (groceryItems?.length > 0 && groceryStoreInfo?._id && groceryStoreInfo?._id !== visitedGroceryStore?._id) {
+            Alert.alert("Hold on! Do you want to clear your bag. Clear any way?", "You already have items from another store in your bag !!", [
+                {
+                    text: "Cancel",
+                    onPress: () => null,
+                    style: 'cancel'
+                },
+                {
+                    text: "OK",
+                    onPress: () => claerAndSwitch(),
+                    style: 'default'
+                },
+            ]);
+        } else {
+            replaceStore();
+        }
+    }
+
+    const claerAndSwitch = () => {
+        replaceStore();
+        dispatch(
+            handleCartReducer({
+                type: 'GROCERY_ORDER_PLACED',
+                data: [],
+            })
+        );
+    };
+
+    const replaceStore = () => {
+        dispatch(
+            handleCartReducer({
+                type: 'SAVE_GROCERY_STORE_INFO',
+                data: visitedGroceryStore,
+            })
+        );
+    }
+
+
     useEffect(() => {
         if (error) {
             //userLogOut();
@@ -167,6 +224,8 @@ export const handleGroceryItems = () => {
         addToCart,
         removeFromCart,
         deccreseQty,
-        isInOutOfStockList
+        isInOutOfStockList,
+        proceedToPlaceOrder,
+        proceedToClaerAnyWay
     };
 };

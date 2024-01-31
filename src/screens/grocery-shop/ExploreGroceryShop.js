@@ -27,9 +27,6 @@ function ExploreGroceryShop() {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
-    const {
-        groceryStoreInfo,
-        groceryItems } = useSelector((state) => state.cartItems);
     const { typeInfoByShop, subtypeInfoByShop, DashboardSlider, visitedGroceryStore } = useSelector((state) => state.dashboard);
     const [typeInfoGeneral, setTypeInfoGeneral] = useState([]);
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
@@ -84,11 +81,10 @@ function ExploreGroceryShop() {
 
     }, [typeInfoByShop]);
 
-
     const checkIsLoggedinAndProcess = (action) => {
         if (isLoggedin) {
             if (action === 'placerOrder') {
-                navighateToPlaceOrder();
+                navigation.navigate('PlaceOrderGrocery');
             } else {
                 addToFavouriteList(visitedGroceryStore, merchantType);
             }
@@ -96,37 +92,6 @@ function ExploreGroceryShop() {
             navigation.navigate('Login')
         }
     }
-
-    const navighateToPlaceOrder = () => {
-        if (groceryItems?.length > 0) {
-            if (groceryStoreInfo?._id && groceryStoreInfo?._id !== visitedGroceryStore?._id) {
-                Alert.alert("Hold on! Proceeding to place order will clear your bag. Proceed any way?", "You alresdy have items from another store in your bag !!", [
-                    {
-                        text: "Cancel",
-                        onPress: () => null,
-                        style: 'cancel'
-                    },
-                    {
-                        text: "Proceed",
-                        onPress: () => emptyCartItems(),
-                        style: 'default'
-                    },
-                ]);
-            }
-        } else {
-            navigation.navigate('PlaceOrderGrocery');
-        }
-    }
-
-    const emptyCartItems = () => {
-        dispatch(
-            handleCartReducer({
-                type: 'GROCERY_ORDER_PLACED',
-                data: [],
-            })
-        );
-        navigation.navigate('PlaceOrderGrocery');
-    };
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

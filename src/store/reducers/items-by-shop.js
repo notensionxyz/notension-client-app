@@ -12,6 +12,7 @@ const itemsByStoreReducer = createSlice({
         specialOfferItem: [],
         dealOfTheDay: [],
         popularItem: [],
+        productCategory: []
     },
     reducers: {
         handleItemsByStoreReducer: (state = initialState, { payload }) => {
@@ -54,6 +55,27 @@ const itemsByStoreReducer = createSlice({
                     specialOfferItem: payload?.data?.specialOfferItem || [],
                     dealOfTheDay: payload?.data?.dealOfTheDay || [],
                     popularItem: payload?.data?.popularItem || [],
+                    merchantId: payload?.data?.storeId || '',
+                    customstore_id: payload?.data?.customstoreId || '',
+                };
+            }
+            else if (payload.type == 'EXPLORE_FOOD_STORE_ITEMS') {
+                let productByCategory = [];
+                payload?.data?.allProductCategory?.forEach((info, i) => {
+                    productByCategory.push({
+                        _id: info?.categoryInfo?._id,
+                        catagory: info?.categoryName,
+                        itemsInfo: payload?.data?.allProduct?.filter(
+                            (item) => item?.productCategory === info?.categoryInfo?._id
+                        )
+                    });
+                });
+                return {
+                    ...state,
+                    isLoading: false,
+                    productCategory: payload?.data?.allProductCategory || [],
+                    productInfoByShop: productByCategory || [],
+                    popularItem: payload?.data?.allProduct?.filter(p => p.is_popular === true) || [],
                     merchantId: payload?.data?.storeId || '',
                     customstore_id: payload?.data?.customstoreId || '',
                 };

@@ -26,7 +26,7 @@ function ExploreMedicineShop() {
     const ref = useRef(null);
     const navigation = useNavigation();
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
-    const { medicineStoreInfo, medicineItems } = useSelector((state) => state.cartItems);
+    
     const { typeInfoByShop, subtypeInfoByShop, DashboardSlider, visitedMedicineStore } = useSelector((state) => state.dashboard);
     const [typeInfoGeneral, setTypeInfoGeneral] = useState([]);
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
@@ -83,7 +83,7 @@ function ExploreMedicineShop() {
     const checkIsLoggedinAndProcess = (action) => {
         if (isLoggedin) {
             if (action === 'placerOrder') {
-                navighateToPlaceOrder();
+                navigation.navigate('PlaceOrderMedicine');
             } else {
                 addToFavouriteList(visitedMedicineStore, merchantType);
             }
@@ -91,37 +91,6 @@ function ExploreMedicineShop() {
             navigation.navigate('Login')
         }
     }
-
-    const navighateToPlaceOrder = () => {
-        if (medicineItems.length > 0) {
-            if (medicineStoreInfo?._id && medicineStoreInfo?._id !== visitedMedicineStore?._id) {
-                Alert.alert("Hold on! Proceeding to place order will clear your bag. Proceed any way?", "You alresdy have items from another store in your bag !!", [
-                    {
-                        text: "Cancel",
-                        onPress: () => null,
-                        style: 'cancel'
-                    },
-                    {
-                        text: "Proceed",
-                        onPress: () => emptyCartItems(),
-                        style: 'default'
-                    },
-                ]);
-            }
-        } else {
-            navigation.navigate('PlaceOrderMedicine');
-        }
-    }
-
-    const emptyCartItems = () => {
-        dispatch(
-            handleCartReducer({
-                type: 'MEDICINE_ORDER_PLACED',
-                data: [],
-            })
-        );
-        navigation.navigate('PlaceOrderMedicine');
-    };
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

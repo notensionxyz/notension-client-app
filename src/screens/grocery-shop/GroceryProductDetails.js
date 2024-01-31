@@ -230,7 +230,7 @@ export default function GroceryProductDetails({ route }) {
 
                                 <Text>
                                     <Text style={{ fontSize: 18, color: '#616161', fontWeight: 'bold' }}>{data?.pack_size}    </Text>
-                                    {data?.max_retail_price > 0 ?
+                                    {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
                                         <Text style={{
                                             fontSize: 18,
                                             color: '#800000',

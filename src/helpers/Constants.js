@@ -52,6 +52,8 @@ export const EXPLORE_FOOD_MODULE = '/client-app-api/v1/food/explore-module';
 export const NEAREST_FOOD_STORE = '/client-app-api/v1/food/get-nearest-store';
 export const SEARCH_FOOD_STORE = '/client-app-api/v1/food/find-store';
 export const EXPLORE_FOOD_STORE = '/client-app-api/v1/food/explore-store';
+export const FOOD_PLACE_ORDER = '/client-app-api/v1/food/order';
+export const FOOD_ORDER_INFO = '/client-app-api/v1/food/order-info';
 
 export const MyFavouriteData = [
     { id: '1', image: require('../assets/gallery/favorite-1.jpg') },

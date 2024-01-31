@@ -97,7 +97,7 @@ function ConfirmLocation() {
             saveSelectedInfo(userLocation);
         }
     };
-    console.log('defaultUserLocation : ', defaultUserLocation);
+    //console.log('defaultUserLocation : ', defaultUserLocation);
     return (
         <>
             {!isLocationFound ?

@@ -46,10 +46,10 @@ function Dashboard(props) {
     useEffect(() => {
         if (districtInfo?.length < 1) {
             getDistrictInfo(setFilteredInfo);
-            console.log('getDistrictInfo()');
+            //console.log('getDistrictInfo()');
         } else {
             setFilteredInfo(districtInfo);
-            console.log('setFilteredInfo()');
+            //console.log('setFilteredInfo()');
         }
     }, []);
 
@@ -57,7 +57,7 @@ function Dashboard(props) {
 
         if (defaultUserLocation?.userLatitude && defaultUserLocation?.userLatitude !== '00') {
             getDasboardInfo();
-            console.log('getDasboardInfo()');
+            //console.log('getDasboardInfo()');
         }
 
         getConnectionStatus();

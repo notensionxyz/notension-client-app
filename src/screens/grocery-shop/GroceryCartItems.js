@@ -24,6 +24,7 @@ const GroceryCartItems = (props) => {
     const [grandTotal, setGrandTotal] = useState(0);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [message, setMessage] = useState('');
+
     const {
         groceryStoreInfo,
         groceryItems,
@@ -40,6 +41,7 @@ const GroceryCartItems = (props) => {
     const minimum_order_for_less = groceryStoreInfo?.minimum_order_for_less || 0;
 
     useEffect(() => {
+        proceedToClaerAnyWay();
         getGrandTotal();
         setNotification();
         const backAction = () => {
@@ -52,14 +54,15 @@ const GroceryCartItems = (props) => {
         );
 
         return () => backHandler.remove();
-    }, [totalAmountGrocery]);
+    }, [totalAmountGrocery, groceryStoreInfo]);
 
     const {
         getQty,
         addToCart,
         removeFromCart,
         deccreseQty,
-        isInOutOfStockList
+        isInOutOfStockList,
+        proceedToClaerAnyWay
     } = handleGroceryItems();
 
     const getGrandTotal = () => {
@@ -112,6 +115,7 @@ const GroceryCartItems = (props) => {
                 }
             }
         }
+
     };
 
     return (

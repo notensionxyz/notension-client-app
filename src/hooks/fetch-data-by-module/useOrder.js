@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MEDICINE_ADMIN_URL, GROCERY_ADMIN_URL, GROCERY_ADMIN_URL_LOCAL } from "@env"
+import { MEDICINE_ADMIN_URL, GROCERY_ADMIN_URL, GROCERY_ADMIN_URL_LOCAL, FOOD_ADMIN_URL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { GROCERY_ORDER_INFO, GROCERY_PLACE_ORDER, MEDICINE_ORDER_INFO, MEDICINE_PLACE_ORDER } from '../../helpers/Constants';
+import { FOOD_ORDER_INFO, FOOD_PLACE_ORDER, GROCERY_ORDER_INFO, GROCERY_PLACE_ORDER, MEDICINE_ORDER_INFO, MEDICINE_PLACE_ORDER } from '../../helpers/Constants';
 import { handleCartReducer } from '../../store/reducers/cartReducer';
 import { handleUserReducer } from '../../store/reducers/userReducer';
 
@@ -59,7 +59,15 @@ export const useOrder = () => {
     });
 
     const AxiosTest = axios.create({
-        baseURL: GROCERY_ADMIN_URL_LOCAL,
+        baseURL: 'http://localhost:6013',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const AxiosFood = axios.create({
+        baseURL: FOOD_ADMIN_URL,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -77,7 +85,8 @@ export const useOrder = () => {
             AxiosWithFormData = AxiosWithFormDataMedicine;
             URL = MEDICINE_PLACE_ORDER;
         } else if (currentModule === 'Food') {
-
+            AxiosWithFormData = AxiosFood;
+            URL = FOOD_PLACE_ORDER;
         }
 
         setProgressing(true);
@@ -137,7 +146,8 @@ export const useOrder = () => {
             Axios = AxiosMedicine;
             URL = MEDICINE_ORDER_INFO;
         } else if (currentModule === 'Food') {
-
+            Axios = AxiosFood;
+            URL = FOOD_ORDER_INFO;
         }
         //console.log('URL', URL);
         setProgressing(true);

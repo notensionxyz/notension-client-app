@@ -8,6 +8,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import OrderedProductList from '../../components/screens-components/MedicineShop/products/OrderedProductList';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import OrderedItemList from '../../components/screens-components/GroceryShop/products/OrderedItemList';
+import OrderedFoodItemsList from '../../components/screens-components/FoodShop/Product/OrderedFoodItemsList';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -81,7 +82,7 @@ export default function OrderDetails({ route }) {
                             <View style={{ flexDirection: 'row', marginTop: 5 }}>
                                 <Image source={require('../../assets/icon/ic_place_blue.png')}
                                     style={{ width: 25, height: 25, tintColor: 'blue', resizeMode: 'contain' }} />
-                                <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>{data?.merchantInfo?.shop_address}</Text>
+                                <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }} numberOfLines={2} ellipsizeMode="tail">{data?.merchantInfo?.shop_address}</Text>
 
                             </View>
                             <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>Date : {formattedDate}</Text>
@@ -102,6 +103,15 @@ export default function OrderDetails({ route }) {
                                     data={data?.orderItems}
                                     keyExtractor={item => item._id}
                                     renderItem={({ item }) => <OrderedProductList data={item} />}
+                                />
+                            }
+
+                            {currentModule === 'Food' &&
+                                <FlatList
+                                    contentContainerStyle={{ padding: 5 }}
+                                    data={data?.orderItems}
+                                    keyExtractor={item => item._id}
+                                    renderItem={({ item }) => <OrderedFoodItemsList data={item} />}
                                 />
                             }
                         </View>

@@ -24,12 +24,19 @@ import ChangeDefaultLocation from "../screens/user/ChangeDefaultLocation";
 import FavouriteStore from "../screens/user/FavouriteStore";
 import FavouriteItems from "../screens/user/FavouriteItems";
 import ChangeCurrentLocation from "../screens/user/ChangeCurrentLocation";
+//import ExploreFoodShop from "../screens/food-shop/ExploreFoodShop";
+//import FoodProductList from "../screens/food-shop/FoodProductList";
+import FoodCartItems from "../screens/food-shop/FoodCartItems";
+import PlaceOrderFood from "../screens/food-shop/PlaceOrderFood";
+//import FoodProductDetails from "../screens/food-shop/FoodProductDetails";
+import SharedElementExample from "../screens/sharedElementTransitions";
+import FoodShopNavigation from "../screens/food-shop/FoodShopNavigation";
 
 const Stack = createStackNavigator();
 
 const MainStackNavigator = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen
                 name="Dashboard"
                 component={Dashboard}
@@ -161,6 +168,35 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="NearestFoodShop"
                 component={NearestFoodShop}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="FoodShopNavigation"
+                component={FoodShopNavigation}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="FoodCartItems"
+                component={FoodCartItems}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                options={{ headerShown: false }}
+                name="Ecommerce Shared Element Transision"
+                component={SharedElementExample}
+            />
+            <Stack.Screen
+                name="PlaceOrderFood"
+                component={PlaceOrderFood}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

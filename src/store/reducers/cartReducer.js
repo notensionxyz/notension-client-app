@@ -153,13 +153,12 @@ const cartReducer = createSlice({
             }
             else if (payload.type == 'DECREASE_QUANTITY_FOOD') {
 
-                let newState = [];
+                let newState = [...state.foodItems];
                 const existingItemIndex = state.foodItems.findIndex(
                     (item) => item?._id === payload?.data
                 );
 
                 if (existingItemIndex > -1) {
-                    newState = [...state.foodItems];
                     if (parseFloat(newState[existingItemIndex].quantity) > 1) {
                         newState[existingItemIndex].quantity = parseFloat(newState[existingItemIndex].quantity) - parseFloat(newState[existingItemIndex].inc_qty);
                     } else {

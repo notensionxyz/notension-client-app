@@ -40,7 +40,7 @@ export const useGlobal = () => {
             );
         }
         
-        console.log('districtId', districtId);
+        //console.log('districtId', districtId);
 
         axiosInstance
             .get(GET_DASHBOARD_INFO,

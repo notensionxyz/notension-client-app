@@ -94,9 +94,9 @@ function ListItem({ data, currentModule }) {
                 elevation: 3,
             }} >
                 <View style={{ flex: 1, padding: 15 }}>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#F68F1E' }}>Order Id : {data._id}</Text>
-                    <Text style={{ fontSize: 15, color: '#003B95', marginTop: 8 }} numberOfLines={3} ellipsizeMode="tail">{data?.merchantInfo?.shop_name}</Text>
-                    <Text style={{ fontSize: 15, color: '#003B95', marginTop: 8 }} numberOfLines={3} ellipsizeMode="tail">{data?.merchantInfo?.shop_address}</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#F68F1E' }}>Order Id : {data._id.slice(-5)}</Text>
+                    <Text style={{ fontSize: 15, color: '#003B95', marginTop: 8 }} numberOfLines={1} ellipsizeMode="tail">{data?.merchantInfo?.shop_name}</Text>
+                    <Text style={{ fontSize: 15, color: '#003B95', marginTop: 8 }} numberOfLines={2} ellipsizeMode="tail">{data?.merchantInfo?.shop_address}</Text>
                     <Text style={{ fontSize: 15, color: '#003B95', marginTop: 8 }} numberOfLines={3} ellipsizeMode="tail">
 
                         <Text style={{ fontSize: 17, color: '#008000', marginTop: 8 }} numberOfLines={2} ellipsizeMode="tail" onPress={() => makeCall(data?.merchantInfo?.contact_no)}>

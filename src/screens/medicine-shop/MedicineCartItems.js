@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, FlatList, Text, View, SafeAreaView, BackHandler, Alert } from "react-native";
+import { Dimensions, FlatList, Text, View, SafeAreaView, BackHandler, Alert, Image } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { useSelector } from "react-redux"
 import { useNavigation } from '@react-navigation/native';
@@ -28,7 +28,7 @@ const MedicineCartItems = (props) => {
         medicineItems,
         totalAmountMedicine,
     } = useSelector((state) => state.cartItems);
-    
+
     const minOrderAmount = medicineStoreInfo?.min_purchage_amount || 0;
     const deliveryCharge = medicineStoreInfo?.max_delivery_charge || 0;
     const minDeliveryCharge = medicineStoreInfo?.min_delivery_charge || 0;
@@ -38,7 +38,17 @@ const MedicineCartItems = (props) => {
     const maximum_less = medicineStoreInfo?.maximum_less || 0;
     const minimum_order_for_less = medicineStoreInfo?.minimum_order_for_less || 0;
 
+    const {
+        getQty,
+        addToCart,
+        removeFromCart,
+        deccreseQty,
+        isInOutOfStockList,
+        proceedToClaerAnyWay
+    } = handleMedicineItems();
+
     useEffect(() => {
+        proceedToClaerAnyWay();
         getGrandTotal();
         setNotification();
         const backAction = () => {
@@ -51,15 +61,9 @@ const MedicineCartItems = (props) => {
         );
         return () => backHandler.remove();
 
-    }, [totalAmountMedicine]);
+    }, [totalAmountMedicine, medicineStoreInfo]);
 
-    const {
-        getQty,
-        addToCart,
-        removeFromCart,
-        deccreseQty,
-        isInOutOfStockList
-    } = handleMedicineItems();
+
 
     const getGrandTotal = () => {
         let shippingCost = deliveryCharge;
@@ -100,7 +104,7 @@ const MedicineCartItems = (props) => {
                 if (less_type === 'Percent') {
                     setLessNotice(`${minimum_order_for_less} টাকার বাজার করলে ${less}% ছাড়! সর্বোচ্চ ${maximum_less} টাকা।`);
                 } else {
-                    setLessNotice(`${minimum_order_for_less} টাকার বাজার করলে ${less}টাকা ছাড়`);
+                    setLessNotice(`${minimum_order_for_less} টাকার বাজার করলে ${less} টাকা ছাড়`);
                 }
             } else {
                 if (less_type === 'Percent') {
@@ -126,9 +130,9 @@ const MedicineCartItems = (props) => {
                             <View style={{ flexDirection: 'row', marginTop: 5 }}>
                                 <Image source={require('../../assets/icon/ic_place_blue.png')}
                                     style={{ width: 25, height: 25, tintColor: 'blue', resizeMode: 'contain' }} />
-                                <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>{medicineStoreInfo?.shop_address}</Text>
+                                <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }} numberOfLines={2} ellipsizeMode="tail">{medicineStoreInfo?.shop_address}</Text>
                             </View>
-                            <Text style={{ fontSize: 15, color: '#006400', paddingLeft: 5 }} numberOfLines={2} ellipsizeMode="tail">
+                            <Text style={{ fontSize: 15, color: 'blue', paddingLeft: 5 }} numberOfLines={2} ellipsizeMode="tail">
                                 {lessNotice}
                             </Text>
                         </View>
@@ -175,7 +179,7 @@ const MedicineCartItems = (props) => {
                 borderRadius: 3,
                 elevation: 1,
             }}>
-                <ItemResume title='SubTotal' price={totalAmountMedicine} />
+                <ItemResume title='SubTotal' price={(totalAmountMedicine).toFixed(2)} />
                 {parseFloat(totalAmountMedicine) <= parseFloat(minOrderAmount) ?
                     <ItemResume title='Delivery Charge' price={parseFloat(totalAmountMedicine) > 0 ? (deliveryCharge).toFixed(2) : '0.00'} />
                     :

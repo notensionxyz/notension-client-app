@@ -9,6 +9,7 @@ import HeaderCommon from '../../components/header/HeaderCommon';
 import MultipleImageUploader from '../../components/form-elements/MultipleImageUploader';
 import NotificationError from '../../components/popup-notification/NotificationError';
 import { useOrder } from '../../hooks/fetch-data-by-module/useOrder';
+import { handleMedicineItems } from '../../hooks/cart-handler/handleMedicineItems';
 
 let connectionStatus = 'false';
 let isReachable = 'false';
@@ -56,7 +57,10 @@ export default function PlaceOrderMedicine() {
         placceOrder
     } = useOrder();
 
+    const {proceedToPlaceOrder} = handleMedicineItems();
+
     useEffect(() => {
+        proceedToPlaceOrder();
         getGrandTotal();
         const backAction = () => {
             navigation.goBack();
@@ -68,7 +72,7 @@ export default function PlaceOrderMedicine() {
         );
 
         return () => backHandler.remove();
-    }, []);
+    }, [medicineStoreInfo]);
 
     const getGrandTotal = () => {
         let shippingCost = deliveryCharge;
@@ -128,7 +132,7 @@ export default function PlaceOrderMedicine() {
                 },
                 order_list_image: [],
                 orderItems: medicineItems,
-                subTotal: totalAmountMedicine,
+                subTotal: (totalAmountMedicine).toFixed(2),
                 less_amount: discount,
                 vatAmount: 0,
                 deliveryCharge: shippingCharge,

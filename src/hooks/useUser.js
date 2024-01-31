@@ -324,7 +324,7 @@ export const useUser = () => {
         if (currentModule === 'Grocery') {
             navigation.navigate('ExploreGroceryShop');
         } else if (currentModule === 'Food') {
-            navigation.navigate('ExploreFoodModule');
+            navigation.navigate('ExploreFoodShop');
         } else if (currentModule === 'Medicine') {
             navigation.navigate('ExploreMedicineShop');
         } else {

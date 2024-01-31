@@ -126,7 +126,13 @@ function ListItem({ data, removeFromfavoriteList, merchantType, shopBannerFolder
                 })
             );
         } else {
-
+            navigation.navigate('FoodShopNavigation');
+            dispatch(
+                handleDashboardReducer({
+                    type: 'VISITED_FOOD_STORE',
+                    data: favouriteInfo,
+                })
+            );
         }
     }
 
@@ -186,7 +192,7 @@ function ListItem({ data, removeFromfavoriteList, merchantType, shopBannerFolder
                     }}>
                     <Pressable onPress={() => { removeStore(); }}>
                         <Image source={require('../../assets/icon/remove.png')}
-                            style={{ width: 100, height: 50, resizeMode: 'contain', backgroundColor: 'white' }} />
+                            style={{ width: 100, height: 50, resizeMode: 'contain' }} />
                     </Pressable>
                 </View>
             </View>

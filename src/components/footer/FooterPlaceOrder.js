@@ -22,6 +22,11 @@ export default function FooterPlaceOrder(props) {
         totalSalePrice = props.grandTotal;
     }
 
+    if (props.module === 'Food') {
+        totalItem = cartItems.foodItems.length;
+        totalSalePrice = props.grandTotal;
+    }
+
     const processToPlaceOrder = () => {
         if (isLoggedin) {
             if (props.module === 'Grocery') {
@@ -35,6 +40,14 @@ export default function FooterPlaceOrder(props) {
             if (props.module === 'Medicine') {
                 if (cartItems.medicineItems.length > 0) {
                     navigation.navigate('PlaceOrderMedicine');
+                } else {
+                    showMassage();
+                }
+            }
+
+            if (props.module === 'Food') {
+                if (cartItems.foodItems.length > 0) {
+                    navigation.navigate('PlaceOrderFood');
                 } else {
                     showMassage();
                 }
@@ -56,6 +69,10 @@ export default function FooterPlaceOrder(props) {
 
         if (props.module === 'Medicine') {
             navigation.navigate('ExploreMedicineShop');
+        }
+
+        if (props.module === 'Food') {
+            navigation.navigate('ExploreFoodShop');
         }
     }
 

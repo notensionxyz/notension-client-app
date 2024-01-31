@@ -19,6 +19,7 @@ const merchantType = 0;
 
 function NearestGroceryShop(props) {
     const navigation = useNavigation();
+    const [isPress, setIsPress] = useState(false);
     const [nearestInfo, setNearestInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
     const { getNearestGroceryStoreInfo, progressing, handleSearchStore, resetReducer } = useGrocery();
@@ -39,6 +40,7 @@ function NearestGroceryShop(props) {
 
     useEffect(() => {
         setNearestInfo([]);
+        setIsPress(false);
     }, [searchText]);
 
     return (
@@ -61,7 +63,7 @@ function NearestGroceryShop(props) {
                 <SearchField
                     searchText={searchText}
                     setSearchText={setSearchText}
-                    onPress={() => { handleSearchStore(searchText, setNearestInfo); }}
+                    onPress={() => { handleSearchStore(searchText, setNearestInfo); setIsPress(true); }}
                     placeholderText={'Search store using contact number'}
                     falseFocus={true}
                 />
@@ -75,6 +77,14 @@ function NearestGroceryShop(props) {
                     />
                 }
 
+                {searchText !== '' && nearestInfo.length === 0 && isPress && !progressing &&
+                    <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', justifyContent: 'center' }}>
+                        < View style={{ alignItems: 'center', width: screenWidth, justifyContent: 'center' }}>
+                            <Image source={require('../../assets/banner/no-result-found.png')} style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }} />
+                        </View>
+                    </View >
+                }
+
                 <FlatList
                     contentContainerStyle={{ padding: 5 }}
                     data={nearestInfo}
@@ -82,7 +92,7 @@ function NearestGroceryShop(props) {
                     keyExtractor={item => item._id}
                 />
 
-            </View>
+            </View >
         </>
     );
 }

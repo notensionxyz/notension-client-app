@@ -9,6 +9,7 @@ import HeaderCommon from '../../components/header/HeaderCommon';
 import MultipleImageUploader from '../../components/form-elements/MultipleImageUploader';
 import NotificationError from '../../components/popup-notification/NotificationError';
 import { useOrder } from '../../hooks/fetch-data-by-module/useOrder';
+import { handleGroceryItems } from '../../hooks/cart-handler/handleGroceryItems';
 
 let connectionStatus = 'false';
 let isReachable = 'false';
@@ -56,7 +57,10 @@ export default function PlaceOrderGrocery() {
         placceOrder
     } = useOrder();
 
+    const { proceedToPlaceOrder } = handleGroceryItems();
+
     useEffect(() => {
+        proceedToPlaceOrder();
         getGrandTotal();
         const backAction = () => {
             navigation.goBack();
@@ -68,7 +72,7 @@ export default function PlaceOrderGrocery() {
         );
 
         return () => backHandler.remove();
-    }, []);
+    }, [groceryStoreInfo]);
 
     const getGrandTotal = () => {
         let shippingCost = deliveryCharge;

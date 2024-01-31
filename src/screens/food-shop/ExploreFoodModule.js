@@ -9,8 +9,8 @@ import { useSelector } from 'react-redux';
 import { food_sliderTypeSubtypeImagesFolderName } from '../../helpers/Constants';
 import { ScrollView } from 'react-native-virtualized-view';
 import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
-import HeaderExploreStore from '../../components/header/HeaderExploreStore';
 import SliderLarge from '../../components/screens-components/Common/slider/slider-large';
+import HeaderFoodModule from '../../components/header/HeaderFoodModule';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -37,7 +37,7 @@ export default function ExploreFoodModule() {
         <>
             <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', marginBottom: 8 }}>
-                <HeaderExploreStore Title='Search here.. FS1144 / Shop Name' module='Food' />
+                <HeaderFoodModule toggleDrawer={navigation} />
                 <ScrollView>
                     <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                         <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={food_sliderTypeSubtypeImagesFolderName} />

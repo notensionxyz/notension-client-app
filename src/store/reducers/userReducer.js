@@ -95,7 +95,7 @@ const userReducer = createSlice({
                 state.districtId = payload?.data?.districtId || '00';
             }
             else if (payload.type == "SAVE_USER_DEFAULT_LOCATION") {
-                console.log('payload?.data : ', payload?.data);
+                //console.log('payload?.data : ', payload?.data);
                 state.defaultUserLocation = payload?.data;
             }
             else if (payload.type == "SAVE_GROCERY_ORDER_INFO") {

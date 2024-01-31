@@ -21,6 +21,11 @@ export default function FooterExploreStore(props) {
         totalSalePrice = cartItems.totalAmountMedicine;
     }
 
+    if (props.module === 'Food') {
+        totalItem = cartItems.foodItems.length;
+        totalSalePrice = cartItems.totalAmountFood;
+    }
+
     const navigateTo = () => {
         if (props.module === 'Grocery') {
             navigation.navigate('GroceryCartItems');
@@ -28,6 +33,10 @@ export default function FooterExploreStore(props) {
 
         if (props.module === 'Medicine') {
             navigation.navigate('MedicineCartItems');
+        }
+
+        if (props.module === 'Food') {
+            navigation.navigate('FoodCartItems');
         }
     }
 

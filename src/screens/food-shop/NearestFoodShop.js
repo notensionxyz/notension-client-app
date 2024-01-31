@@ -10,6 +10,7 @@ import { useFood } from '../../hooks/fetch-data-by-module/useFood';
 import { useUser } from '../../hooks/useUser';
 import SearchField from '../../components/screens-components/Common/SearchField';
 import FindStore from '../../components/screens-components/Common/FindStore';
+import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 
 const screenWidth = Dimensions.get('window').width;
 const cardMargin = 4;
@@ -89,13 +90,13 @@ function ListItem({ data }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const navigateToExploreShop = () => {
-        // navigation.navigate('ExploreGroceryShop');
-        // dispatch(
-        //     handleDashboardReducer({
-        //         type: 'VISITED_STORE',
-        //         data: data,
-        //     })
-        // );
+        navigation.navigate('FoodShopNavigation');
+        dispatch(
+            handleDashboardReducer({
+                type: 'VISITED_FOOD_STORE',
+                data: data,
+            })
+        );
     }
 
     return (

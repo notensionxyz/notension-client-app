@@ -74,7 +74,7 @@ function MedicineProductList({ route }) {
         // if already loading more, or all loaded, return
         if (loadingMore || allLoaded)
             return
-
+        
         // set loading more (also updates footer text)
         setLoadingMore(true);
 

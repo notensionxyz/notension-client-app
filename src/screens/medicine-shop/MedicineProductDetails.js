@@ -51,7 +51,7 @@ export default function MedicineProductDetails({ route }) {
         deccreseQty,
         isInOutOfStockList
     } = handleMedicineItems();
-    
+
     const {
         visible,
         isAddedToFavouriteItems,
@@ -246,7 +246,7 @@ export default function MedicineProductDetails({ route }) {
                                 <Text style={{ fontSize: 14, color: '#263238' }} numberOfLines={1} ellipsizeMode="tail">{data?.company_name}</Text>
                                 <Text>
                                     <Text style={{ fontSize: 18, color: '#616161', fontWeight: 'bold' }}>{data?.pack_size}    </Text>
-                                    {data?.max_retail_price > 0 ?
+                                    {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
                                         <Text style={{
                                             fontSize: 18,
                                             color: '#800000',
