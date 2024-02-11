@@ -12,7 +12,8 @@ const itemsByStoreReducer = createSlice({
         specialOfferItem: [],
         dealOfTheDay: [],
         popularItem: [],
-        productCategory: []
+        productCategory: [],
+        pageNoForPopular: 2,
     },
     reducers: {
         handleItemsByStoreReducer: (state = initialState, { payload }) => {
@@ -27,6 +28,7 @@ const itemsByStoreReducer = createSlice({
                     specialOfferItem: [],
                     dealOfTheDay: [],
                     popularItem: [],
+                    pageNoForPopular: 2,
                 };
             }
             else if (payload.type == 'SAVE_PRODUCT_INFO') {
@@ -57,6 +59,7 @@ const itemsByStoreReducer = createSlice({
                     popularItem: payload?.data?.popularItem || [],
                     merchantId: payload?.data?.storeId || '',
                     customstore_id: payload?.data?.customstoreId || '',
+                    pageNoForPopular: 2,
                 };
             }
             else if (payload.type == 'EXPLORE_FOOD_STORE_ITEMS') {
@@ -88,15 +91,8 @@ const itemsByStoreReducer = createSlice({
                 };
             }
             else if (payload.type == 'SAVE_POPULAR_PRODUCT_INFO') {
-                let itemsInfo = [];
-                if (payload?.data?.length > 0) {
-                    itemsInfo = [...state.popularItem, ...payload.data];
-                }
-                return {
-                    ...state,
-                    popularItem: itemsInfo,
-                    isLoading: false,
-                };
+                state.popularItem = [...state.popularItem, ...payload.data];
+                state.pageNoForPopular = parseFloat(state.pageNoForPopular) + 1
             }
             else {
                 return {

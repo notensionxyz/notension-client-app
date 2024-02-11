@@ -31,7 +31,7 @@ export default function PlaceOrderFood() {
         foodItems,
         totalAmountFood,
     } = useSelector((state) => state.cartItems);
-   
+
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { userLatitude, userLongitude, userInfo } = useSelector((state) => state.user);
 
@@ -120,6 +120,7 @@ export default function PlaceOrderFood() {
                 deliveryCharge: shippingCharge,
                 totalAmount: grandTotal,
                 paymet_method: paymentOption?.detail,
+                shortNote: remarks,
                 customer_rating: 0,
                 customer_review: '',
             };

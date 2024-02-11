@@ -36,7 +36,7 @@ const Stack = createStackNavigator();
 
 const MainStackNavigator = () => {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="Dashboard" screenOptions={{ headerShown: false }}>
             <Stack.Screen
                 name="Dashboard"
                 component={Dashboard}
@@ -49,7 +49,7 @@ const MainStackNavigator = () => {
                 name="NearestGroceryShop"
                 component={NearestGroceryShop}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -57,7 +57,7 @@ const MainStackNavigator = () => {
                 name="ExploreGroceryShop"
                 component={ExploreGroceryShop}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -65,7 +65,7 @@ const MainStackNavigator = () => {
                 name="GroceryProductList"
                 component={GroceryProductList}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -73,7 +73,7 @@ const MainStackNavigator = () => {
                 name="GroceryCartItems"
                 component={GroceryCartItems}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -81,7 +81,7 @@ const MainStackNavigator = () => {
                 name="GroceryProductDetails"
                 component={GroceryProductDetails}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -89,7 +89,7 @@ const MainStackNavigator = () => {
                 name="PlaceOrderGrocery"
                 component={PlaceOrderGrocery}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -97,7 +97,7 @@ const MainStackNavigator = () => {
                 name="NearestMedicineShop"
                 component={NearestMedicineShop}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -105,7 +105,7 @@ const MainStackNavigator = () => {
                 name="ExploreMedicineShop"
                 component={ExploreMedicineShop}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -169,7 +169,7 @@ const MainStackNavigator = () => {
                 name="NearestFoodShop"
                 component={NearestFoodShop}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -238,7 +238,7 @@ const MainStackNavigator = () => {
                 name="FavouriteStore"
                 component={FavouriteStore}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />
@@ -246,7 +246,7 @@ const MainStackNavigator = () => {
                 name="FavouriteItems"
                 component={FavouriteItems}
                 options={{
-                    ...TransitionPresets.RevealFromBottomAndroid,
+                    ...TransitionPresets.SlideFromRightIOS,
                     headerShown: false
                 }}
             />

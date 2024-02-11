@@ -139,6 +139,7 @@ export default function PlaceOrderGrocery() {
                 deliveryCharge: shippingCharge,
                 totalAmount: grandTotal,
                 paymet_method: paymentOption?.detail,
+                shortNote: remarks,
                 customer_rating: 0,
                 customer_review: '',
             };

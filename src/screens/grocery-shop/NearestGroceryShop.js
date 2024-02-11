@@ -11,6 +11,8 @@ import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import SearchField from '../../components/screens-components/Common/SearchField';
 import { useUser } from '../../hooks/useUser';
 import FindStore from '../../components/screens-components/Common/FindStore';
+import { usePopularItem } from '../../hooks/fetch-data-by-module/usePopularItem';
+import NotificationError from '../../components/popup-notification/NotificationError';
 
 const screenWidth = Dimensions.get('window').width;
 const cardMargin = 4;
@@ -74,6 +76,7 @@ function NearestGroceryShop(props) {
                         getNearestStoreInfo={getNearestGroceryStoreInfo}
                         setNearestInfo={setNearestInfo}
                         merchantType={merchantType}
+                        setIsPress={setIsPress}
                     />
                 }
 
@@ -92,16 +95,21 @@ function NearestGroceryShop(props) {
                     keyExtractor={item => item._id}
                 />
 
+                {searchText === '' && nearestInfo.length === 0 && isPress && !progressing &&
+                    <NotificationError visible={isPress} setVisible={setIsPress} message={'Shop not available in your region'} />
+                }
+                
             </View >
         </>
     );
 }
 
 function ListItem({ data }) {
-
+    const { resetState } = usePopularItem();
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const navigateToExploreShop = () => {
+        resetState();
         navigation.navigate('ExploreGroceryShop');
         dispatch(
             handleDashboardReducer({

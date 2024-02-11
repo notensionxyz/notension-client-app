@@ -144,6 +144,14 @@ export default function OrderDetails({ route }) {
                                 </View>
                             </>
                         }
+
+                        {data?.shortNote?.length > 0 &&
+                            <>
+                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#F68F1E', textAlign: 'center', marginTop: 5 }}>Short Note</Text>
+                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#006400', margin: 10 }} >{data?.shortNote}</Text>
+                            </>
+                        }
+                        
                         <View style={{
                             marginHorizontal: 2,
                             backgroundColor: 'white',

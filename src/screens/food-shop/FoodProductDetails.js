@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import Animated from 'react-native-reanimated';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { food_itemsImages } from '../../helpers/Constants';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderCommon from '../../components/header/HeaderCommon';
@@ -33,17 +33,21 @@ export default function FoodProductDetails() {
     deccreseQty,
   } = handleFoodItems();
 
-  useEffect(() => {
-    const backAction = () => {
-      navigation.goBack();
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-    return () => backHandler.remove();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        navigation.goBack();
+        return true;
+      };
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress
+      );
+
+      return () => subscription.remove();
+    }, [navigation])
+  );
 
   let currentQty = getQty(data?._id);
 

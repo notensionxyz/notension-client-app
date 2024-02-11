@@ -17,13 +17,16 @@ import { useGlobal } from '../../hooks/global';
 import DistrictName from '../../components/screens-components/HomeScreen/DistrictName';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
+import { useBackHandler } from '@react-native-community/hooks'
 
 const screenWidth = Dimensions.get('window').width;
 
 let connectionStatus = true;
 let isReachable = true;
 
-function Dashboard(props) {
+
+
+function Dashboard() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const { internetConnectionAvailable,
@@ -42,6 +45,44 @@ function Dashboard(props) {
     const { getDistrictInfo, getDasboardInfo, saveConnectionStatus, progressing, setProgressing } = useGlobal();
 
     const [filteredInfo, setFilteredInfo] = useState([]);
+
+    // useBackHandler(() => {
+    //     if (!navigation.canGoBack()) {
+    //         Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+    //             {
+    //                 text: "No",
+    //                 onPress: () => null,
+    //                 style: "No"
+    //             },
+    //             { text: "YES", onPress: () => BackHandler.exitApp() }
+    //         ]);
+    //         return true
+    //     }
+    //     // let the default thing happen
+    //     return false
+    // })
+
+    useEffect(() => {
+
+        const backAction = () => {
+            Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+                {
+                    text: "No",
+                    onPress: () => null,
+                    style: "No"
+                },
+                { text: "YES", onPress: () => BackHandler.exitApp() }
+            ]);
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+
+    }, []);
 
     useEffect(() => {
         if (districtInfo?.length < 1) {
@@ -62,27 +103,6 @@ function Dashboard(props) {
 
         getConnectionStatus();
 
-        const backAction = () => {
-            Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
-                {
-                    text: "No",
-                    onPress: () => null,
-                    style: "No"
-                },
-                { text: "YES", onPress: () => BackHandler.exitApp() }
-            ]);
-            return true;
-
-        };
-        const backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            backAction
-        );
-
-        //return () => backHandler.remove();
-        return () => {
-            backHandler.remove(); //isMounted = false; 
-        };
     }, [defaultUserLocation?.userLatitude]);
 
     const getConnectionStatus = () => {
@@ -153,7 +173,7 @@ function Dashboard(props) {
                         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                             {!defaultUserLocation?.districtId || defaultUserLocation?.districtId === '00' ?
                                 <>
-                                    <HeaderCommon title="search" onInputText={searchDistrict} toggleDrawer={props.navigation} />
+                                    <HeaderCommon title="search" onInputText={searchDistrict} toggleDrawer={navigation} />
                                     <DistrictName filteredInfo={filteredInfo} setFilteredInfo={setFilteredInfo} />
                                 </>
                                 :
@@ -162,7 +182,7 @@ function Dashboard(props) {
                                         <ConfirmLocation />
                                         :
                                         <>
-                                            <HeaderDashboard toggleDrawer={props.navigation} connectionStatus={connectionStatus} isReachable={isReachable} />
+                                            <HeaderDashboard toggleDrawer={navigation} connectionStatus={connectionStatus} isReachable={isReachable} />
                                             <ScrollView>
                                                 <FreeServicesSlider data={starting_slider} />
                                                 <MyFavourite title='My Favourite' data={favourite_banner} height={100} />

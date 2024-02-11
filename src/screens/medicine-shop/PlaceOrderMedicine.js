@@ -138,6 +138,7 @@ export default function PlaceOrderMedicine() {
                 deliveryCharge: shippingCharge,
                 totalAmount: grandTotal,
                 paymet_method: paymentOption?.detail,
+                shortNote: remarks,
                 customer_rating: 0,
                 customer_review: '',
             };
@@ -327,5 +328,3 @@ function ItemPayment({ data, onItemPress, selected }) {
         </TouchableOpacity>
     );
 }
-
-

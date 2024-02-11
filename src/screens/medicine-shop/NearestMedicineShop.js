@@ -11,6 +11,8 @@ import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { useUser } from '../../hooks/useUser';
 import FindStore from '../../components/screens-components/Common/FindStore';
 import SearchField from '../../components/screens-components/Common/SearchField';
+import { usePopularItem } from '../../hooks/fetch-data-by-module/usePopularItem';
+import NotificationError from '../../components/popup-notification/NotificationError';
 
 const screenWidth = Dimensions.get('window').width;
 const cardMargin = 4;
@@ -19,6 +21,7 @@ const merchantType = 1;
 
 function NearestMedicineShop(props) {
     const navigation = useNavigation();
+    const [isPress, setIsPress] = useState(false);
     const [nearestInfo, setNearestInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
     const { getNearestMedicineStoreInfo, progressing, handleSearchStore, resetReducer } = useMedicine();
@@ -39,8 +42,8 @@ function NearestMedicineShop(props) {
 
     useEffect(() => {
         setNearestInfo([]);
+        setIsPress(false);
     }, [searchText]);
-
     //const onPress = () => { handleSearchStore(searchText, setNearestInfo); }
 
     return (
@@ -58,27 +61,44 @@ function NearestMedicineShop(props) {
                         <Text style={{ color: '#006400', fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>ষ্টোর নির্বাচন করুন</Text>
                     </View>
                 </View>
+
                 <SearchField
                     searchText={searchText}
                     setSearchText={setSearchText}
-                    onPress={() => { handleSearchStore(searchText, setNearestInfo); }}
+                    onPress={() => { handleSearchStore(searchText, setNearestInfo); setIsPress(true);}}
                     placeholderText={'Search store using contact number'}
                     falseFocus={true}
                 />
+
+                {searchText !== '' && nearestInfo.length === 0 && isPress && !progressing &&
+                    <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', justifyContent: 'center' }}>
+                        < View style={{ alignItems: 'center', width: screenWidth, justifyContent: 'center' }}>
+                            <Image source={require('../../assets/banner/no-result-found.png')} style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }} />
+                        </View>
+                    </View >
+                }
+
                 {searchText === '' && nearestInfo.length === 0 &&
                     <FindStore
                         resetUserLocation={resetUserCurrentLocation}
                         getNearestStoreInfo={getNearestMedicineStoreInfo}
                         setNearestInfo={setNearestInfo}
                         merchantType={merchantType}
+                        setIsPress={setIsPress}
                     />
                 }
+
                 <FlatList
                     contentContainerStyle={{ padding: 5 }}
                     data={nearestInfo}
                     renderItem={({ item }) => <ListItem data={item} />}
                     keyExtractor={item => item._id}
                 />
+
+                {searchText === '' && nearestInfo.length === 0 && isPress && !progressing &&
+                    <NotificationError visible={isPress} setVisible={setIsPress} message={'Shop not available in your region'} />
+                }
+
             </View>
         </>
     );
@@ -87,7 +107,9 @@ function NearestMedicineShop(props) {
 function ListItem({ data }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { resetState } = usePopularItem();
     const navigateToExploreShop = () => {
+        resetState();
         navigation.navigate('ExploreMedicineShop');
         dispatch(
             handleDashboardReducer({

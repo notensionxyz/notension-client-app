@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Dimensions, StyleSheet, Pressable, View, BackHandler } from "react-native";
+import { Dimensions, StyleSheet, Pressable, View, BackHandler, Alert } from "react-native";
 import FastImage from 'react-native-fast-image';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { useFood } from '../../hooks/fetch-data-by-module/useFood';
@@ -23,16 +23,24 @@ export default function ExploreFoodModule() {
     useEffect(() => {
         resetReducer();
         exploreFoodModule();
-        const backAction = () => {
-            navigation.goBack();
-            return true;
-        };
-        const backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            backAction
-        );
-        return () => backHandler.remove();
     }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                navigation.goBack();
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => subscription.remove();
+        }, [navigation])
+    );
+
     return (
         <>
             <ProgressStyle2 visible={progressing} />
@@ -134,7 +142,38 @@ export default function ExploreFoodModule() {
                         </View>
 
                         <SliderLarge data={DashboardSlider[0]?.second_slider} folder_name={food_sliderTypeSubtypeImagesFolderName} />
+                        <View style={{ flexDirection: 'row', }}>
+                            <Pressable onPress={() => { navigation.navigate('NearestFoodShop', { data: shopCategory[7] }) }}>
+                                <View style={{ height: (screenWidth / 2) - 8, width: screenWidth - 16, borderRadius: 10, margin: 5 }}>
+                                    <View style={{
+                                        borderRadius: 10,
+                                        shadowRadius: 10,
+                                        elevation: 3,
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.3,
+                                        backgroundColor: 'white'
+                                    }}>
+                                        <FastImage
+                                            source={{ uri: storageImageUrl(food_sliderTypeSubtypeImagesFolderName, shopCategory[7]?.banner) }}
+                                            resizeMode={FastImage.resizeMode.contain}
+                                            style={{
+                                                height: '100%',
+                                                width: '100%',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                //padding: 10,
+                                                borderRadius: 10,
+                                                shadowRadius: 10,
+                                                shadowOffset: { width: 0, height: 2 },
+                                                shadowOpacity: 0.3,
+                                                overflow: 'hidden'
+                                            }} />
 
+                                    </View>
+                                </View>
+                            </Pressable>
+                        </View>
+                        <SliderLarge data={DashboardSlider[0]?.third_slider} folder_name={food_sliderTypeSubtypeImagesFolderName} />
                         <View style={{ flexDirection: 'row', }}>
                             <Pressable onPress={() => { navigation.navigate('NearestFoodShop', { data: shopCategory[3] }) }}>
                                 <View style={{ height: (screenWidth / 3) - 5, width: screenWidth - 18, borderRadius: 10, margin: 5 }}>
@@ -258,39 +297,6 @@ export default function ExploreFoodModule() {
                             </Pressable>
                         </View>
 
-                        <SliderLarge data={DashboardSlider[0]?.third_slider} folder_name={food_sliderTypeSubtypeImagesFolderName} />
-
-                        <View style={{ flexDirection: 'row', }}>
-                            <Pressable onPress={() => { navigation.navigate('NearestFoodShop', { data: shopCategory[7] }) }}>
-                                <View style={{ height: (screenWidth / 2) - 5, width: screenWidth - 18, borderRadius: 10, margin: 5 }}>
-                                    <View style={{
-                                        borderRadius: 10,
-                                        shadowRadius: 10,
-                                        elevation: 3,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.3,
-                                        backgroundColor: 'white'
-                                    }}>
-                                        <FastImage
-                                            source={{ uri: storageImageUrl(food_sliderTypeSubtypeImagesFolderName, shopCategory[7]?.banner) }}
-                                            resizeMode={FastImage.resizeMode.contain}
-                                            style={{
-                                                height: '100%',
-                                                width: '100%',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                //padding: 10,
-                                                borderRadius: 10,
-                                                shadowRadius: 10,
-                                                shadowOffset: { width: 0, height: 2 },
-                                                shadowOpacity: 0.3,
-                                                overflow: 'hidden'
-                                            }} />
-
-                                    </View>
-                                </View>
-                            </Pressable>
-                        </View>
                         <SliderLarge data={DashboardSlider[0]?.fourth_slider} folder_name={food_sliderTypeSubtypeImagesFolderName} />
                     </View >
                 </ScrollView>

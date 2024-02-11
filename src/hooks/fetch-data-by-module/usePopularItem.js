@@ -11,7 +11,7 @@ axios.defaults.withCredentials = true;
 export const usePopularItem = () => {
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
-    const popularItem = useSelector((state) => state.itemsByStoreReducer.popularItem);
+    //const popularItem = useSelector((state) => state.itemsByStoreReducer.popularItem);
 
     //console.log(MEDICINE_ADMIN_URL);
 
@@ -31,7 +31,8 @@ export const usePopularItem = () => {
         },
     });
 
-    const getPopularItems = (parameter, module, pageNo, setPageNo) => {
+    const getPopularItems = (parameter, module, pageNo) => {
+       
         let Axios = AxiosGrocery;
         let dataURL = GROCERY_ITEMS_BY_CUSTOMTYPE;
         if (module === 'from_medicine') {
@@ -48,8 +49,7 @@ export const usePopularItem = () => {
                 }
             )
             .then((res) => {
-                
-                setPageNo(pageNo + 1);
+
                 if (res?.data?.result?.length > 0) {
                     saveItemsToReducer(res?.data?.result);
                 }
@@ -119,7 +119,7 @@ export const usePopularItem = () => {
     }, [error]);
 
     return {
-        popularItem,
+        //popularItem,
         setLoadingMore,
         resetState,
         setLoadingMore,

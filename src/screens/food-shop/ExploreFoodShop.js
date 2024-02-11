@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Dimensions, Text, Image, Alert, Pressable, FlatList } from "react-native";
+import { View, Dimensions, Text, Image, Alert, Pressable, FlatList, BackHandler } from "react-native";
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { ScrollView } from 'react-native-virtualized-view';
 import FooterExploreStore from '../../components/footer/FooterExploreStore';
@@ -10,10 +10,9 @@ import { useFood } from '../../hooks/fetch-data-by-module/useFood';
 import { useFavouriteStore } from '../../hooks/user/favorite-shop';
 import ManageListView from '../../components/screens-components/FoodShop/FilterOptionBySubtype/ManageListView';
 import ListView, { MemoizedListView } from '../../components/screens-components/FoodShop/Product/ListView';
-import { handleFoodItems } from '../../hooks/cart-handler/handleFoodItems';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderFoodModule from '../../components/header/HeaderFoodModule';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const screenWidth = Dimensions.get('window').width;
 let merchantType = 2;
@@ -41,6 +40,22 @@ function ExploreFoodShop() {
         }
     }, []);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                navigation.goBack();
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => subscription.remove();
+        }, [navigation])
+    );
+
     const checkIsLoggedinAndProcess = (action) => {
         if (isLoggedin) {
             addToFavouriteList(visitedFoodStore, merchantType);
@@ -52,7 +67,7 @@ function ExploreFoodShop() {
     return (
         <SafeAreaView style={{
             flex: 1,
-            
+
             backgroundColor: '#f9f9f9',
         }}>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
@@ -84,7 +99,7 @@ function ExploreFoodShop() {
                                 }}>
                                 <Pressable onPress={() => { checkIsLoggedinAndProcess('addToFavourite'); }}>
                                     <Image source={require('../../assets/icon/add_favourite.png')}
-                                        style={{ width: 100, height: 50, resizeMode: 'contain'}} />
+                                        style={{ width: 100, height: 50, resizeMode: 'contain' }} />
                                 </Pressable>
                             </View>
                         }

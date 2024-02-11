@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Dimensions, Text, Image, Pressable, Alert } from "react-native";
+import { View, Dimensions, Text, Image, Pressable, Alert, BackHandler } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useGrocery } from '../../hooks/fetch-data-by-module/useGrocery';
@@ -9,14 +9,12 @@ import SliderMedium from '../../components/screens-components/Common/slider/slid
 import ManageListView from '../../components/screens-components/GroceryShop/FilterOptionBySubtype/ManageListView';
 import PopularProduct from '../../components/screens-components/GroceryShop/products/PopularProduct';
 import { ScrollView } from 'react-native-virtualized-view';
-import { usePopularItem } from '../../hooks/fetch-data-by-module/usePopularItem';
 import OfferItems from '../../components/screens-components/GroceryShop/products/OfferItems';
 import DealOfTheDay from '../../components/screens-components/GroceryShop/products/DealOfTheDay';
 import HeaderExploreStore from '../../components/header/HeaderExploreStore';
 import FooterExploreStore from '../../components/footer/FooterExploreStore';
 import { grocery_sliderTypeSubtypeImagesFolderName } from '../../helpers/Constants';
 import { useFavouriteStore } from '../../hooks/user/favorite-shop';
-import { handleCartReducer } from '../../store/reducers/cartReducer';
 
 let merchantType = 0;
 let typeInfo = {};
@@ -37,16 +35,20 @@ function ExploreGroceryShop() {
         addToFavouriteList,
         visible
     } = useFavouriteStore();
-
-    const { resetState } = usePopularItem();
-    const [pageNo, setPageNo] = useState(2);
-
+    
     useEffect(() => {
-        resetState();
-        setPageNo(2);
         if (visitedGroceryStore?._id && visitedGroceryStore?.custom_store_id) {
             exploreStore(visitedGroceryStore)
         }
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+        return () => backHandler.remove();
     }, []);
 
     useEffect(() => {
@@ -65,9 +67,7 @@ function ExploreGroceryShop() {
                         (subtype) => subtype.typeInfo === info?.typeInfo
                     )
                 };
-
                 typeInfo = { ...typeInfo, [info.custom_type_id]: eachTypeInfo };
-
             });
 
             setTypeInfoGeneral(generaltypeInfo);
@@ -237,7 +237,7 @@ function ExploreGroceryShop() {
                             </View>
                         </Pressable>
 
-                        <PopularProduct pageNo={pageNo} setPageNo={setPageNo} />
+                        <PopularProduct />
                     </>
                 }
             </ScrollView>

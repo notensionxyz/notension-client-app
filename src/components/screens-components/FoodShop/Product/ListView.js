@@ -27,7 +27,7 @@ function ListView({ data, index }) {
     } = handleFoodItems();
 
     return (
-        <Animated.View style={{
+        <View style={{
             backgroundColor: 'white',
             width: cardWidth,
             margin: cardMargin,
@@ -143,7 +143,7 @@ function ListView({ data, index }) {
                     />
                 </View>
             </Animated.View>
-        </Animated.View>
+        </View>
     );
 }
 

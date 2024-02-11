@@ -11,6 +11,7 @@ import { useUser } from '../../hooks/useUser';
 import SearchField from '../../components/screens-components/Common/SearchField';
 import FindStore from '../../components/screens-components/Common/FindStore';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
+import NotificationError from '../../components/popup-notification/NotificationError';
 
 const screenWidth = Dimensions.get('window').width;
 const cardMargin = 4;
@@ -20,6 +21,7 @@ const merchantType = 2;
 function NearestFoodShop({ route }) {
     const data = route.params.data;
     const navigation = useNavigation();
+    const [isPress, setIsPress] = useState(false);
     const [nearestInfo, setNearestInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
     const { getNearestFoodStoreInfo, progressing, handleSearchStore, resetReducer } = useFood();
@@ -40,6 +42,7 @@ function NearestFoodShop({ route }) {
 
     useEffect(() => {
         setNearestInfo([]);
+        setIsPress(false);
     }, [searchText]);
 
     return (
@@ -61,17 +64,26 @@ function NearestFoodShop({ route }) {
                 <SearchField
                     searchText={searchText}
                     setSearchText={setSearchText}
-                    onPress={() => { handleSearchStore(searchText, setNearestInfo, data); }}
+                    onPress={() => { handleSearchStore(searchText, setNearestInfo, data); setIsPress(true); }}
                     placeholderText={'Search shop using contact number'}
                     falseFocus={true}
                 />
 
+                {searchText !== '' && nearestInfo.length === 0 && isPress && !progressing &&
+                    <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', justifyContent: 'center' }}>
+                        < View style={{ alignItems: 'center', width: screenWidth, justifyContent: 'center' }}>
+                            <Image source={require('../../assets/banner/no-result-found.png')} style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }} />
+                        </View>
+                    </View >
+                }
+
                 {searchText === '' && nearestInfo.length === 0 &&
                     <FindStore
                         resetUserLocation={resetUserCurrentLocation}
-                        getNearestStoreInfo={() => { getNearestFoodStoreInfo(setNearestInfo, data); }}
+                        getNearestStoreInfo={() => { getNearestFoodStoreInfo(setNearestInfo, data); setIsPress(true); }}
                         setNearestInfo={setNearestInfo}
                         merchantType={merchantType}
+                        setIsPress={setIsPress}
                     />
                 }
 
@@ -81,6 +93,11 @@ function NearestFoodShop({ route }) {
                     renderItem={({ item }) => <ListItem data={item} />}
                     keyExtractor={item => item._id}
                 />
+
+                {searchText === '' && nearestInfo.length === 0 && isPress && !progressing &&
+                    <NotificationError visible={isPress} setVisible={setIsPress} message={'Shop not available in your region'} />
+                }
+
             </View>
         </>
     );

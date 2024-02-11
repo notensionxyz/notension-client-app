@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, BackHandler } from 'react-native'
+import { Alert, Animated, BackHandler } from 'react-native'
 import { View, Text, Dimensions, FlatList, Pressable, ActivityIndicator } from 'react-native';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import { useDispatch, useSelector } from 'react-redux';
 import FooterCommon from '../../components/footer/FooterCommon';
 import AnimatedScroll from '../../components/screens-components/FoodShop/Product/AnimatedScroll';
 import { useNavigation } from '@react-navigation/native';
+import { LogBox } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -28,16 +30,24 @@ function FoodProductList() {
     });
 
     useEffect(() => {
-        const backAction = () => {
-          navigation.goBack();
-          return true;
-        };
-        const backHandler = BackHandler.addEventListener(
-          "hardwareBackPress",
-          backAction
-        );
-        return () => BackHandler.remove();
-      }, []);
+        LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+    }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                navigation.goBack();
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => subscription.remove();
+        }, [navigation])
+    );
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

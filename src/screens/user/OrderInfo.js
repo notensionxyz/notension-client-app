@@ -96,18 +96,18 @@ function ListItem({ data, currentModule }) {
                 <View style={{ flex: 1, padding: 15 }}>
                     <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#F68F1E' }}>Order Id : {data._id.slice(-5)}</Text>
                     <Text style={{ fontSize: 15, color: '#003B95', marginTop: 8 }} numberOfLines={1} ellipsizeMode="tail">{data?.merchantInfo?.shop_name}</Text>
-                    <Text style={{ fontSize: 15, color: '#003B95', marginTop: 8 }} numberOfLines={2} ellipsizeMode="tail">{data?.merchantInfo?.shop_address}</Text>
-                    <Text style={{ fontSize: 15, color: '#003B95', marginTop: 8 }} numberOfLines={3} ellipsizeMode="tail">
+                    <Text style={{ fontSize: 15, color: '#003B95', marginTop: 2 }} numberOfLines={2} ellipsizeMode="tail">{data?.merchantInfo?.shop_address}</Text>
+                    <Text style={{ fontSize: 15, color: '#003B95', marginTop: 2 }} numberOfLines={1} ellipsizeMode="tail">
 
-                        <Text style={{ fontSize: 17, color: '#008000', marginTop: 8 }} numberOfLines={2} ellipsizeMode="tail" onPress={() => makeCall(data?.merchantInfo?.contact_no)}>
+                        <Text style={{ fontSize: 17, color: '#008000', marginTop: 2 }} onPress={() => makeCall(data?.merchantInfo?.contact_no)}>
                             {data?.merchantInfo?.contact_no} </Text>,{'  '}
 
-                        <Text style={{ fontSize: 17, color: '#008000', marginTop: 8 }} numberOfLines={2} ellipsizeMode="tail" onPress={() => makeCall(data?.merchantInfo?.contact_no)}>
+                        <Text style={{ fontSize: 17, color: '#008000', marginTop: 2 }} onPress={() => makeCall(data?.merchantInfo?.contact_no)}>
                             {data?.merchantInfo?.alternative_contact_no} </Text>
 
                     </Text>
-                    <Text style={{ fontSize: 15, color: '#008000', marginTop: 8 }} numberOfLines={3} ellipsizeMode="tail">Order Date : {formattedDate}</Text>
-                    <Text style={{ fontSize: 15, color: '#FF0000', marginTop: 8 }} numberOfLines={3} ellipsizeMode="tail">Order Satatus : {data.order_status}</Text>
+                    <Text style={{ fontSize: 15, color: '#008000', marginTop: 2 }} numberOfLines={3} ellipsizeMode="tail">Order Date : {formattedDate}</Text>
+                    <Text style={{ fontSize: 15, color: '#FF0000', marginTop: 2 }} numberOfLines={3} ellipsizeMode="tail">Order Status : {data.order_status}</Text>
                 </View>
             </View>
         </TouchableOpacity>

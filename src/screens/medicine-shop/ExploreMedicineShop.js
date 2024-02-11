@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Dimensions, Text, Image, Alert, Pressable } from "react-native";
+import { View, Dimensions, Text, Image, Alert, Pressable, BackHandler } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
@@ -7,7 +7,6 @@ import SliderMedium from '../../components/screens-components/Common/slider/slid
 import ManageListView from '../../components/screens-components/MedicineShop/FilterOptionBySubtype/ManageListView';
 import PopularProduct from '../../components/screens-components/MedicineShop/products/PopularProduct';
 import { ScrollView } from 'react-native-virtualized-view';
-import { usePopularItem } from '../../hooks/fetch-data-by-module/usePopularItem';
 import OfferItems from '../../components/screens-components/MedicineShop/products/OfferItems';
 import HeaderExploreStore from '../../components/header/HeaderExploreStore';
 import FooterExploreStore from '../../components/footer/FooterExploreStore';
@@ -15,7 +14,6 @@ import FastImage from 'react-native-fast-image';
 import { useMedicine } from '../../hooks/fetch-data-by-module/useMedicine';
 import { medicine_sliderTypeSubtypeImagesFolderName } from '../../helpers/Constants';
 import { useFavouriteStore } from '../../hooks/user/favorite-shop';
-import { handleCartReducer } from '../../store/reducers/cartReducer';
 
 let merchantType = 1;
 let typeInfo = {};
@@ -26,7 +24,7 @@ function ExploreMedicineShop() {
     const ref = useRef(null);
     const navigation = useNavigation();
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
-    
+
     const { typeInfoByShop, subtypeInfoByShop, DashboardSlider, visitedMedicineStore } = useSelector((state) => state.dashboard);
     const [typeInfoGeneral, setTypeInfoGeneral] = useState([]);
     const [customTypeInfo, setCustomTypeInfo] = useState([]);
@@ -35,16 +33,23 @@ function ExploreMedicineShop() {
         addToFavouriteList,
         visible
     } = useFavouriteStore();
-    const { exploreStore, progressing } = useMedicine();
-    const { resetState } = usePopularItem();
-    const [pageNo, setPageNo] = useState(2);
 
+    const { exploreStore, progressing } = useMedicine();
+    
     useEffect(() => {
-        resetState();
-        setPageNo(2);
+
         if (visitedMedicineStore?._id && visitedMedicineStore?.custom_store_id) {
             exploreStore(visitedMedicineStore)
         }
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+        return () => backHandler.remove();
     }, []);
 
     useEffect(() => {
@@ -96,9 +101,7 @@ function ExploreMedicineShop() {
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <HeaderExploreStore Title='Search here.... e.g Napa, Maxpro' module='Medicine' />
             <ProgressStyle2 visible={progressing || visible} />
-            {/* {!progressing &&
-                <FilterOptionBySubtype  />
-            } */}
+           
             <ScrollView>
                 {typeInfoGeneral?.length > 0 &&
                     <>
@@ -222,7 +225,7 @@ function ExploreMedicineShop() {
                             </View>
                         </Pressable>
 
-                        <PopularProduct pageNo={pageNo} setPageNo={setPageNo} />
+                        <PopularProduct />
                     </>
                 }
             </ScrollView>

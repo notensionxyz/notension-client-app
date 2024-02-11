@@ -108,6 +108,7 @@ function ListItem({ data, removeFromfavoriteList, merchantType, shopBannerFolder
         contact_no: data?.contact_no,
         alternative_contact_no: data?.alternative_contact_no,
     };
+    
     const navigateToExploreShop = () => {
         if (merchantType === 0) {
             navigation.navigate('ExploreGroceryShop');

@@ -6,11 +6,10 @@ import { usePopularItem } from '../../../../hooks/fetch-data-by-module/usePopula
 import { handleGroceryItems } from '../../../../hooks/cart-handler/handleGroceryItems';
 import { logoColor_2 } from '../../../../helpers/Constants';
 
-function PopularProduct({ pageNo, setPageNo }) {
-    const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
-    ///const popularItem = useSelector((state) => state.itemsByStoreReducer.popularItem);
+function PopularProduct() {
+    const { merchantId, customstore_id, popularItem, pageNoForPopular } = useSelector((state) => state.itemsByStoreReducer);
     const { loadingMore, itemNotfound, allLoaded } = useSelector((state) => state.appState);
-    const { popularItem, getPopularItems, setLoadingMore } = usePopularItem();
+    const { getPopularItems, setLoadingMore } = usePopularItem();
 
     let parameter = {
         groceryStoreId: merchantId,
@@ -28,7 +27,7 @@ function PopularProduct({ pageNo, setPageNo }) {
         setLoadingMore(true);
 
         setTimeout(() => {
-            getPopularItems(parameter, 'from_grocery', pageNo, setPageNo);
+            getPopularItems(parameter, 'from_grocery', pageNoForPopular);
         }, 500);
     }
 
