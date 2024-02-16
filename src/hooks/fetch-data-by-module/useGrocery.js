@@ -7,6 +7,7 @@ import { EXPLORE_GROCERY_STORE, GROCERY_ITEMS_BY_CUSTOMTYPE, GROCERY_ITEMS_BY_SU
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { handleCartReducer } from '../../store/reducers/cartReducer';
+import { Alert } from 'react-native';
 
 axios.defaults.withCredentials = true;
 
@@ -127,7 +128,6 @@ export const useGrocery = () => {
     }
 
     const exploreStore = (data) => {
-
         resetReducer();
         setProgressing(true);
         Axios
@@ -141,6 +141,16 @@ export const useGrocery = () => {
             )
             .then((res) => {
                 //console.log(res?.data?.result);
+                if (res?.data?.result?.ShopDetails[0]?.is_closed || !res?.data?.result?.ShopDetails[0]?.is_active || res?.data?.result?.ShopDetails[0]?.is_banned) {
+                    Alert.alert("Sorry we're closed !!", "See you tomorrow !!", [
+                        {
+                            text: "Ok",
+                            onPress: () => navigation.goBack(),
+                            style: 'default'
+                        },
+                    ]);
+                }
+
                 dispatch(
                     handleItemsByStoreReducer({
                         type: 'EXPLORE_STORE_ITEMS',

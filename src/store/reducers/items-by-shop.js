@@ -28,6 +28,7 @@ const itemsByStoreReducer = createSlice({
                     specialOfferItem: [],
                     dealOfTheDay: [],
                     popularItem: [],
+                    productCategory: [],
                     pageNoForPopular: 2,
                 };
             }

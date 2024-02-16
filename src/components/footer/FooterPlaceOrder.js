@@ -27,29 +27,43 @@ export default function FooterPlaceOrder(props) {
         totalSalePrice = props.grandTotal;
     }
 
+    const toBn = (n) => n.toString().replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[d]);
+
     const processToPlaceOrder = () => {
         if (isLoggedin) {
             if (props.module === 'Grocery') {
                 if (cartItems.groceryItems.length > 0) {
-                    navigation.navigate('PlaceOrderGrocery');
+                    if (parseFloat(props.subTotalAmount) < parseFloat(props.minimum_order_amount)) {
+                        showMassage(`কমপক্ষে ${toBn(props.minimum_order_amount)} টাকার অর্ডার করতে হবে!!`)
+                    } else {
+                        navigation.navigate('PlaceOrderGrocery');
+                    }
                 } else {
-                    showMassage();
+                    showMassage('Please add Item(s) in cart!!');
                 }
             }
 
             if (props.module === 'Medicine') {
                 if (cartItems.medicineItems.length > 0) {
-                    navigation.navigate('PlaceOrderMedicine');
+                    if (parseFloat(props.subTotalAmount) < parseFloat(props.minimum_order_amount)) {
+                        showMassage(`কমপক্ষে ${toBn(props.minimum_order_amount)} টাকার অর্ডার করতে হবে!!`)
+                    } else {
+                        navigation.navigate('PlaceOrderMedicine');
+                    }
                 } else {
-                    showMassage();
+                    showMassage('Please add Item(s) in cart!!');
                 }
             }
 
             if (props.module === 'Food') {
                 if (cartItems.foodItems.length > 0) {
-                    navigation.navigate('PlaceOrderFood');
+                    if (parseFloat(props.subTotalAmount) < parseFloat(props.minimum_order_amount)) {
+                        showMassage(`কমপক্ষে ${toBn(props.minimum_order_amount)} টাকার অর্ডার করতে হবে!!`)
+                    } else {
+                        navigation.navigate('PlaceOrderFood');
+                    }
                 } else {
-                    showMassage();
+                    showMassage('Please add Item(s) in cart!!');
                 }
             }
         } else {
@@ -57,9 +71,9 @@ export default function FooterPlaceOrder(props) {
         }
     }
 
-    const showMassage = () => {
+    const showMassage = (message) => {
         props.setShowErrorMessage(true);
-        props.setMessage('Please add Item(s) in cart!!');
+        props.setMessage(message);
     }
 
     const navigateToHome = () => {

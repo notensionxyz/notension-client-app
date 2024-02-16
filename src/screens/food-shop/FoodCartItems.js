@@ -15,8 +15,6 @@ const screenWidth = Dimensions.get('window').width;
 const FoodCartItems = (props) => {
     const navigation = useNavigation();
     const [deliveryFee, setDeliveryFee] = useState(0);
-    const [deliveryChargeNotice, setDeliveryChargeNotice] = useState('');
-    const [lessNotice, setLessNotice] = useState('');
     const [discount, setDiscount] = useState(0);
     const [grandTotal, setGrandTotal] = useState(0);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -32,14 +30,15 @@ const FoodCartItems = (props) => {
     const deliveryCharge = foodStoreInfo?.max_delivery_charge || 0;
     const minDeliveryCharge = foodStoreInfo?.min_delivery_charge || 0;
     const noticeDeliveryCharge = foodStoreInfo?.delivery_notice || '';
+    const noticeLess = foodStoreInfo?.less_notice || '';
     const less = foodStoreInfo?.less || 0;
     const less_type = foodStoreInfo?.less_type || 'Percent'
     const maximum_less = foodStoreInfo?.maximum_less || 0;
     const minimum_order_for_less = foodStoreInfo?.minimum_order_for_less || 0;
+    const minimum_order_amount = foodStoreInfo?.minimum_order_amount || 0;
 
     useEffect(() => {
         getGrandTotal();
-        setNotification();
         replaceStore();
         const backAction = () => {
             navigation.goBack();
@@ -86,34 +85,6 @@ const FoodCartItems = (props) => {
         setGrandTotal(total);
     };
 
-    const setNotification = () => {
-
-        if (parseFloat(deliveryCharge) > parseFloat(minDeliveryCharge)) {
-            if (parseFloat(minOrderAmount) > 0 && parseFloat(minDeliveryCharge) < 1) {
-                setDeliveryChargeNotice(minOrderAmount + ' টাকার বাজার করলে ডেলিভারি চার্জ ফ্রী!');
-            } else if (parseFloat(minOrderAmount) > 0 && parseFloat(minDeliveryCharge) > 0) {
-                setDeliveryChargeNotice(minOrderAmount + ' টাকার বাজার করলে ডেলিভারি চার্জ ' + minDeliveryCharge + ' টাকা মাত্র।');
-            }
-        }
-
-        if (parseFloat(less) > 0 && parseFloat(maximum_less) > 0) {
-            if (parseFloat(minimum_order_for_less) > 0) {
-                if (less_type === 'Percent') {
-                    setLessNotice(`${minimum_order_for_less} টাকার বাজার করলে ${less}% ছাড়! সর্বোচ্চ ${maximum_less} টাকা।`);
-                } else {
-                    setLessNotice(`${minimum_order_for_less} টাকার বাজার করলে ${less}টাকা ছাড়`);
-                }
-            } else {
-                if (less_type === 'Percent') {
-                    setLessNotice(`${less}% ছাড়! সর্বোচ্চ ${maximum_less} টাকা।`);
-                }
-            }
-        } else {
-            setLessNotice('');
-        }
-
-    };
-
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
@@ -130,9 +101,11 @@ const FoodCartItems = (props) => {
                                         style={{ width: 25, height: 25, tintColor: 'blue', resizeMode: 'contain' }} />
                                     <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }} numberOfLines={2} ellipsizeMode="tail">{foodStoreInfo?.shop_address}</Text>
                                 </View>
-                                <Text style={{ fontSize: 15, color: 'blue', paddingLeft: 5 }} numberOfLines={2} ellipsizeMode="tail">
-                                    {lessNotice}
-                                </Text>
+                                {noticeLess && noticeLess !== '' &&
+                                    <Text style={{ fontSize: 15, color: '#006400', paddingLeft: 5 }} numberOfLines={2} ellipsizeMode="tail">
+                                        {noticeLess}
+                                    </Text>
+                                }
                             </View>
                             <FlatList
                                 contentContainerStyle={{ padding: 5 }}
@@ -162,7 +135,7 @@ const FoodCartItems = (props) => {
                         alignItems: 'center',
                     }}>
                         <View style={{ flex: 1, alignItems: 'center' }}>
-                            <Text style={{ color: '#FFF', fontSize: 15 }}>{deliveryChargeNotice}</Text>
+                            <Text style={{ color: '#FFF', fontSize: 15 }}>{noticeDeliveryCharge}</Text>
                         </View>
                     </View>
                     :
@@ -183,7 +156,7 @@ const FoodCartItems = (props) => {
                     <ItemResume title='Less (-)' price={discount} />
                 </View>
 
-                <FooterPlaceOrder module='Food' grandTotal={grandTotal} setShowErrorMessage={setShowErrorMessage} setMessage={setMessage} />
+                <FooterPlaceOrder module='Food' subTotalAmount={totalAmountFood} minimum_order_amount={minimum_order_amount} grandTotal={grandTotal} setShowErrorMessage={setShowErrorMessage} setMessage={setMessage} />
             </View >
         </SafeAreaView>
     );

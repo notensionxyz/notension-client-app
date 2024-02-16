@@ -7,7 +7,7 @@ const screenWidth = Dimensions.get('window').width;
 let cardMargin = 4;
 let cardWidth = screenWidth - (cardMargin * 4.5);
 
-function FindStore({ resetUserLocation, getNearestStoreInfo, setNearestInfo, merchantType, setIsPress }) {
+function FindStore({ resetUserLocation, getNearestStoreInfo, setNearestInfo, merchantType, setIsFindPress }) {
     const navigation = useNavigation();
 
     return (
@@ -66,7 +66,7 @@ function FindStore({ resetUserLocation, getNearestStoreInfo, setNearestInfo, mer
                             }} />
                     </View>
                 </Pressable>
-                <Pressable onPress={() => { getNearestStoreInfo(setNearestInfo, 1000); setIsPress(true); }}>
+                <Pressable onPress={() => { getNearestStoreInfo(setNearestInfo, 1000); setIsFindPress(true); }}>
                     <View style={{
                         marginTop: 10,
                         backgroundColor: 'white',

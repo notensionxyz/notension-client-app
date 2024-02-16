@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, Image, Text, BackHandler, View, Pressable } from "react-native";
+import { Dimensions, FlatList, Image, Text, BackHandler, View, Pressable, ImageBackground } from "react-native";
 import FastImage from 'react-native-fast-image'
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
@@ -13,6 +13,7 @@ import { useUser } from '../../hooks/useUser';
 import FindStore from '../../components/screens-components/Common/FindStore';
 import { usePopularItem } from '../../hooks/fetch-data-by-module/usePopularItem';
 import NotificationError from '../../components/popup-notification/NotificationError';
+import { logoColor_1, logoColor_2 } from '../../helpers/Constants';
 
 const screenWidth = Dimensions.get('window').width;
 const cardMargin = 4;
@@ -22,6 +23,7 @@ const merchantType = 0;
 function NearestGroceryShop(props) {
     const navigation = useNavigation();
     const [isPress, setIsPress] = useState(false);
+    const [isFindPress, setIsFindPress] = useState(false);
     const [nearestInfo, setNearestInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
     const { getNearestGroceryStoreInfo, progressing, handleSearchStore, resetReducer } = useGrocery();
@@ -76,7 +78,7 @@ function NearestGroceryShop(props) {
                         getNearestStoreInfo={getNearestGroceryStoreInfo}
                         setNearestInfo={setNearestInfo}
                         merchantType={merchantType}
-                        setIsPress={setIsPress}
+                        setIsFindPress={setIsFindPress}
                     />
                 }
 
@@ -95,10 +97,10 @@ function NearestGroceryShop(props) {
                     keyExtractor={item => item._id}
                 />
 
-                {searchText === '' && nearestInfo.length === 0 && isPress && !progressing &&
-                    <NotificationError visible={isPress} setVisible={setIsPress} message={'Shop not available in your region'} />
+                {searchText === '' && nearestInfo.length === 0 && isFindPress && !progressing &&
+                    <NotificationError visible={isFindPress} setVisible={setIsFindPress} message={'Shop not available in your region'} />
                 }
-                
+
             </View >
         </>
     );
@@ -110,13 +112,15 @@ function ListItem({ data }) {
     const dispatch = useDispatch();
     const navigateToExploreShop = () => {
         resetState();
-        navigation.navigate('ExploreGroceryShop');
-        dispatch(
-            handleDashboardReducer({
-                type: 'VISITED_STORE',
-                data: data,
-            })
-        );
+        if (!data?.is_closed) {
+            navigation.navigate('ExploreGroceryShop');
+            dispatch(
+                handleDashboardReducer({
+                    type: 'VISITED_STORE',
+                    data: data,
+                })
+            );
+        }
     }
 
     return (
@@ -131,19 +135,40 @@ function ListItem({ data }) {
                 borderRadius: 10,
                 elevation: 3,
             }} >
-                <FastImage source={{ uri: storageImageUrl('grocery-store-docs', data.shop_banner_app) }}
+                <ImageBackground source={{ uri: storageImageUrl('grocery-store-docs', data.shop_banner_app) }}
                     style={{
-                        width: "100%",
+                        width: cardWidth,
                         height: (screenWidth / 2) - 2,
                         justifyContent: 'flex-end',
+                        overflow: 'hidden',
                         padding: 10,
                         borderTopRightRadius: 10,
                         borderTopLeftRadius: 10,
-                        //shadowRadius: 10,
+                        shadowRadius: 5,
                         shadowOffset: { width: 0, height: 2 },
                         shadowOpacity: 0.3,
-                        overflow: 'hidden'
-                    }} />
+                        //elevation: 13,
+                    }} >
+                    {parseFloat(data?.less) > 0 && data?.less_notice !== '' && !data?.is_closed &&
+                        <View style={{ backgroundColor: logoColor_2, opacity: 0.7, position: 'absolute', paddingHorizontal: 15, paddingVertical: 4, borderRadius: 15, bottom: screenWidth / 2.6, marginLeft: 5 }}>
+                            <Text style={{ fontSize: 13, color: 'white', marginLeft: 5 }}>{data?.less_notice}</Text>
+                        </View>
+                    }
+
+                    {data?.delivery_notice && data?.delivery_notice !== '' && !data?.is_closed &&
+                        <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center', justifyContent: 'space-between' }}>
+                            <View style={{ backgroundColor: logoColor_1, opacity: 0.9, paddingHorizontal: 15, paddingVertical: 4, borderRadius: 15 }}>
+                                <Text style={{ fontSize: 13, color: 'white' }}>{data?.delivery_notice}</Text>
+                            </View>
+                        </View>
+                    }
+
+                    {data?.is_closed &&
+                        <View style={{ width: '40%', backgroundColor: '#ff3d00', paddingHorizontal: 15, paddingVertical: 4, borderRadius: 15, alignItems: 'center' }}>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white', textAlign: 'center' }}>Closed</Text>
+                        </View>
+                    }
+                </ImageBackground>
                 <View style={{ padding: 10 }}>
                     <Text style={{ fontSize: 18, color: '#263238', fontWeight: 'bold', paddingLeft: 5 }}>{data.shop_name}</Text>
                     <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>

@@ -26,7 +26,7 @@ export const useMedicine = () => {
     const { userLatitude, userLongitude, districtId, userInfo } = useSelector((state) => state.user);
     const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
-    
+
     //console.log('MEDICINE_ADMIN_URL', MEDICINE_ADMIN_URL);
 
     const Axios = axios.create({
@@ -149,7 +149,17 @@ export const useMedicine = () => {
                 }
             )
             .then((res) => {
-                //console.log(res?.data?.result);
+                //console.log('res?.data?.result?.ShopDetails[0]?.is_closed', res?.data?.result?.ShopDetails[0]?.is_closed);
+                if (res?.data?.result?.ShopDetails[0]?.is_closed || !res?.data?.result?.ShopDetails[0]?.is_active || res?.data?.result?.ShopDetails[0]?.is_banned) {
+                    Alert.alert("Sorry we're closed !!", "See you tomorrow !!", [
+                        {
+                            text: "Ok",
+                            onPress: () => navigation.goBack(),
+                            style: 'default'
+                        },
+                    ]);
+                }
+
                 dispatch(
                     handleItemsByStoreReducer({
                         type: 'EXPLORE_STORE_ITEMS',
@@ -163,7 +173,7 @@ export const useMedicine = () => {
                         data: res?.data?.result,
                     })
                 );
-               
+
                 setProgressing(false);
             })
             .catch((error) => {

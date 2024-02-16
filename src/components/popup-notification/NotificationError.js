@@ -9,7 +9,7 @@ export default function ({ visible, setVisible, message }) {
                 <Card style={{ backgroundColor: '#FFF', minHeight: 350 }}>
                     <View style={{ flex: 1, backgroundColor: '#ff7757', alignItems: 'center', paddingTop: 36 }}>
                         <Image style={{ width: 100, height: 100 }} source={require('../../assets/icon/shield.png')} />
-                        <Text style={{ fontWeight: 'bold', color: '#FFF', paddingTop: 20, fontSize: 18 }}>{message}</Text>
+                        <Text style={{ fontWeight: 'bold', color: '#FFF', paddingTop: 5, fontSize: 18, margin: 10, textAlign: 'center' }}>{message}</Text>
                     </View>
                     <View style={{ height: 140, paddingHorizontal: 20, justifyContent: 'center' }}>
                         <View style={{ paddingHorizontal: 90 }}>

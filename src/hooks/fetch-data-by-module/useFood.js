@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { EXPLORE_FOOD_MODULE, EXPLORE_FOOD_STORE, NEAREST_FOOD_STORE, SEARCH_FOOD_STORE } from '../../helpers/Constants';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
+import { Alert } from 'react-native';
 
 axios.defaults.withCredentials = true;
 
@@ -167,6 +168,15 @@ export const useFood = () => {
                 }
             )
             .then((res) => {
+                if (res?.data?.result?.shopDetails[0]?.is_closed || !res?.data?.result?.shopDetails[0]?.is_active || res?.data?.result?.shopDetails[0]?.is_banned) {
+                    Alert.alert("Sorry we're closed !!", "See you tomorrow !!", [
+                        {
+                            text: "Ok",
+                            onPress: () => navigation.goBack(),
+                            style: 'default'
+                        },
+                    ]);
+                }
 
                 dispatch(
                     handleItemsByStoreReducer({
