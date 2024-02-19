@@ -79,8 +79,8 @@ android {
         applicationId "com.bitsnotension"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 6
-        versionName "1.5"
+        versionCode 8
+        versionName "1.7"
         resConfigs "hi", "en"
     }
     signingConfigs {
@@ -112,21 +112,20 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
-    //implementation project(':react-native-otp-verify')
-    
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
     }
-
+    implementation 'com.google.mlkit:barcode-scanning:17.2.0'
+    implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0'
     implementation(project(':react-native-maps')){
       exclude group: 'com.google.android.gms'
-  }
-  implementation 'com.google.android.gms:play-services-base:18.0.1'
-  implementation 'com.google.android.gms:play-services-location:19.0.1'
-  implementation 'com.google.android.gms:play-services-maps:18.0.2'
-    
+    }
+    implementation 'com.google.android.gms:play-services-base:18.0.1'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

@@ -6,10 +6,11 @@ import { useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { useNavigation } from '@react-navigation/native';
 import HeaderCommon from '../../components/header/HeaderCommon';
-import MultipleImageUploader from '../../components/form-elements/MultipleImageUploader';
+//import MultipleImageUploader from '../../components/form-elements/MultipleImageUploader';
 import NotificationError from '../../components/popup-notification/NotificationError';
 import { useOrder } from '../../hooks/fetch-data-by-module/useOrder';
 import { handleGroceryItems } from '../../hooks/cart-handler/handleGroceryItems';
+import OrderImageUploader from '../../components/form-elements/OrderImageUploader';
 
 let connectionStatus = 'false';
 let isReachable = 'false';
@@ -233,7 +234,7 @@ export default function PlaceOrderGrocery() {
                                 borderColor: 'white',
                                 color: '#2c2c2c'
                             }} />
-                        <MultipleImageUploader
+                        <OrderImageUploader
                             title={'Pick Bazar List'}
                             selectedImages={selectedImages}
                             setSelectedImages={setSelectedImages}

@@ -151,29 +151,29 @@ export const useMedicine = () => {
             .then((res) => {
                 //console.log('res?.data?.result?.ShopDetails[0]?.is_closed', res?.data?.result?.ShopDetails[0]?.is_closed);
                 if (res?.data?.result?.ShopDetails[0]?.is_closed || !res?.data?.result?.ShopDetails[0]?.is_active || res?.data?.result?.ShopDetails[0]?.is_banned) {
+                    navigation.goBack();
                     Alert.alert("Sorry we're closed !!", "See you tomorrow !!", [
                         {
                             text: "Ok",
-                            onPress: () => navigation.goBack(),
+                            onPress: () => null,
                             style: 'default'
                         },
                     ]);
+                } else {
+                    dispatch(
+                        handleItemsByStoreReducer({
+                            type: 'EXPLORE_STORE_ITEMS',
+                            data: res?.data?.result,
+                        })
+                    );
+
+                    dispatch(
+                        handleDashboardReducer({
+                            type: 'EXPLORE_MED_STORE',
+                            data: res?.data?.result,
+                        })
+                    );
                 }
-
-                dispatch(
-                    handleItemsByStoreReducer({
-                        type: 'EXPLORE_STORE_ITEMS',
-                        data: res?.data?.result,
-                    })
-                );
-
-                dispatch(
-                    handleDashboardReducer({
-                        type: 'EXPLORE_MED_STORE',
-                        data: res?.data?.result,
-                    })
-                );
-
                 setProgressing(false);
             })
             .catch((error) => {

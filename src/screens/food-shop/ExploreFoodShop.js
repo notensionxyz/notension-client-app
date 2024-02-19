@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Dimensions, Text, Image, Alert, Pressable, FlatList, BackHandler } from "react-native";
+import { View, Dimensions, Text, Image, SafeAreaView, Pressable, FlatList, BackHandler } from "react-native";
 import { useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
@@ -12,7 +12,7 @@ import ManageListView from '../../components/screens-components/FoodShop/FilterO
 import ListView, { MemoizedListView } from '../../components/screens-components/FoodShop/Product/ListView';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderFoodModule from '../../components/header/HeaderFoodModule';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const screenWidth = Dimensions.get('window').width;
 let merchantType = 2;

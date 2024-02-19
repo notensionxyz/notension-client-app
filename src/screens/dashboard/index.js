@@ -10,14 +10,12 @@ import BusinessModules from "./dashboard-components/BusinessModules";
 import MedicalServices from "./dashboard-components/MedicalServices";
 import AddSlider from "./dashboard-components/AddSlider";
 import FreeServicesSlider from "./dashboard-components/FreeServicesSlider";
-import FreeServices from "./dashboard-components/FreeServices";
 import InternetConnectionFailed from '../../components/screens-components/Common/InternetConnectionFailed';
 import ConfirmLocation from '../../components/screens-components/Common/ConfirmLocation';
 import { useGlobal } from '../../hooks/global';
 import DistrictName from '../../components/screens-components/HomeScreen/DistrictName';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
-import { useBackHandler } from '@react-native-community/hooks'
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -45,22 +43,6 @@ function Dashboard() {
     const { getDistrictInfo, getDasboardInfo, saveConnectionStatus, progressing, setProgressing } = useGlobal();
 
     const [filteredInfo, setFilteredInfo] = useState([]);
-
-    // useBackHandler(() => {
-    //     if (!navigation.canGoBack()) {
-    //         Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
-    //             {
-    //                 text: "No",
-    //                 onPress: () => null,
-    //                 style: "No"
-    //             },
-    //             { text: "YES", onPress: () => BackHandler.exitApp() }
-    //         ]);
-    //         return true
-    //     }
-    //     // let the default thing happen
-    //     return false
-    // })
 
     useEffect(() => {
 

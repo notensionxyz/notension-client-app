@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, Text, BackHandler, View, Pressable, ImageBackground } from "react-native";
-import FastImage from 'react-native-fast-image'
+import { Linking } from 'react-native';
+import { Camera } from 'react-native-vision-camera'
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../helpers/imageUrl';
@@ -14,6 +15,8 @@ import FindStore from '../../components/screens-components/Common/FindStore';
 import { usePopularItem } from '../../hooks/fetch-data-by-module/usePopularItem';
 import NotificationError from '../../components/popup-notification/NotificationError';
 import { logoColor_1, logoColor_2 } from '../../helpers/Constants';
+import QrCodeScannerBtn from '../../components/screens-components/Common/QrCodeScannerBtn';
+import { QrCodeScanner } from '../../components/screens-components/Common/QrCodeScanner';
 
 const screenWidth = Dimensions.get('window').width;
 const cardMargin = 4;
@@ -21,15 +24,23 @@ const cardWidth = screenWidth - (cardMargin * 4.5);
 const merchantType = 0;
 
 function NearestGroceryShop(props) {
+    const cameraPermission = Camera.getCameraPermissionStatus();
     const navigation = useNavigation();
+    const [cameraPermissionStatus, setCameraPermissionStatus] = useState('not-determined')
     const [isPress, setIsPress] = useState(false);
     const [isFindPress, setIsFindPress] = useState(false);
+    const [scanQRcode, setScanQRcode] = useState(false);
     const [nearestInfo, setNearestInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
     const { getNearestGroceryStoreInfo, progressing, handleSearchStore, resetReducer } = useGrocery();
     const { resetUserCurrentLocation } = useUser();
 
     useEffect(() => {
+        if (cameraPermission !== 'granted') {
+            requestCameraPermission();
+        } else {
+            setCameraPermissionStatus(cameraPermission)
+        }
         resetReducer();
         const backAction = () => {
             navigation.goBack();
@@ -44,8 +55,28 @@ function NearestGroceryShop(props) {
 
     useEffect(() => {
         setNearestInfo([]);
-        setIsPress(false);
+        if (searchText.length < 11) {
+            setIsPress(false);
+            setIsFindPress(false);
+        }
     }, [searchText]);
+
+    const requestCameraPermission = useCallback(async () => {
+        console.log('Requesting camera permission...')
+        const permission = await Camera.requestCameraPermission();
+        console.log(`Camera permission status: ${permission}`)
+
+        if (permission === 'denied') await Linking.openSettings();
+        setCameraPermissionStatus(permission)
+    }, []);
+
+    const searchStore = (contact) => {
+        handleSearchStore(contact, setNearestInfo);
+        setScanQRcode(false);
+        setIsPress(true);
+    }
+
+    //console.log('cameraPermissionStatus', cameraPermissionStatus);
 
     return (
         <>
@@ -67,12 +98,22 @@ function NearestGroceryShop(props) {
                 <SearchField
                     searchText={searchText}
                     setSearchText={setSearchText}
-                    onPress={() => { handleSearchStore(searchText, setNearestInfo); setIsPress(true); }}
+                    onPress={() => { handleSearchStore(searchText, setNearestInfo); setIsPress(true); setScanQRcode(false); }}
                     placeholderText={'Search store using contact number'}
                     falseFocus={true}
                 />
 
-                {searchText === '' && nearestInfo.length === 0 &&
+                <QrCodeScannerBtn onPress={() => { setScanQRcode(true); setSearchText(''); setIsPress(false); }} />
+
+                {scanQRcode && !isPress && cameraPermissionStatus === 'granted' &&
+                    <QrCodeScanner
+                        scanQRcode={scanQRcode}
+                        searchText={searchText}
+                        setSearchText={setSearchText}
+                        searchStore={searchStore} />
+                }
+
+                {searchText === '' && nearestInfo.length === 0 && !scanQRcode &&
                     <FindStore
                         resetUserLocation={resetUserCurrentLocation}
                         getNearestStoreInfo={getNearestGroceryStoreInfo}
@@ -82,7 +123,7 @@ function NearestGroceryShop(props) {
                     />
                 }
 
-                {searchText !== '' && nearestInfo.length === 0 && isPress && !progressing &&
+                {searchText !== '' && nearestInfo.length === 0 && !scanQRcode && isPress && !progressing &&
                     <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', justifyContent: 'center' }}>
                         < View style={{ alignItems: 'center', width: screenWidth, justifyContent: 'center' }}>
                             <Image source={require('../../assets/banner/no-result-found.png')} style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }} />
@@ -90,15 +131,17 @@ function NearestGroceryShop(props) {
                     </View >
                 }
 
-                <FlatList
-                    contentContainerStyle={{ padding: 5 }}
-                    data={nearestInfo}
-                    renderItem={({ item }) => <ListItem data={item} />}
-                    keyExtractor={item => item._id}
-                />
+                {!scanQRcode &&
+                    <FlatList
+                        contentContainerStyle={{ padding: 5 }}
+                        data={nearestInfo}
+                        renderItem={({ item }) => <ListItem data={item} />}
+                        keyExtractor={item => item._id}
+                    />
+                }
 
                 {searchText === '' && nearestInfo.length === 0 && isFindPress && !progressing &&
-                    <NotificationError visible={isFindPress} setVisible={setIsFindPress} message={'Shop not available in your region'} />
+                    <NotificationError visible={isFindPress} setVisible={setIsFindPress} message={'Shop not available in saved region!! Set Your Current Location'} />
                 }
 
             </View >

@@ -6,10 +6,11 @@ import { useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { useNavigation } from '@react-navigation/native';
 import HeaderCommon from '../../components/header/HeaderCommon';
-import MultipleImageUploader from '../../components/form-elements/MultipleImageUploader';
+//import MultipleImageUploader from '../../components/form-elements/MultipleImageUploader';
 import NotificationError from '../../components/popup-notification/NotificationError';
 import { useOrder } from '../../hooks/fetch-data-by-module/useOrder';
 import { handleMedicineItems } from '../../hooks/cart-handler/handleMedicineItems';
+import OrderImageUploader from '../../components/form-elements/OrderImageUploader';
 
 let connectionStatus = 'false';
 let isReachable = 'false';
@@ -57,7 +58,7 @@ export default function PlaceOrderMedicine() {
         placceOrder
     } = useOrder();
 
-    const {proceedToPlaceOrder} = handleMedicineItems();
+    const { proceedToPlaceOrder } = handleMedicineItems();
 
     useEffect(() => {
         proceedToPlaceOrder();
@@ -231,13 +232,15 @@ export default function PlaceOrderMedicine() {
                                 borderColor: 'white',
                                 color: '#2c2c2c'
                             }} />
-                        <MultipleImageUploader
+
+                        <OrderImageUploader
                             title={'Pick Prescription'}
                             selectedImages={selectedImages}
                             setSelectedImages={setSelectedImages}
                             handleImage={handleImagesDetailProduct}
                             handleImageDelete={handleImageDelete}
                         />
+
                         <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 5, color: '#006400' }}>Payment Option</Text>
                         <View style={{
                             backgroundColor: 'white',

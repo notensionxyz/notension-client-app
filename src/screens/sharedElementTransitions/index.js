@@ -2,8 +2,8 @@ import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ProductPage from './ProductPage';
 import ProductDetails from './ProductDetails';
-import {StatusBar} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {StatusBar, SafeAreaView} from 'react-native';
+//import {SafeAreaView} from 'react-native-safe-area-context';
 import CartProvider from './context/CartProvider';
 
 const Stack = createNativeStackNavigator();

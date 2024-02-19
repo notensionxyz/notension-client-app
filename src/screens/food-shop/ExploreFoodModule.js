@@ -15,7 +15,6 @@ import HeaderFoodModule from '../../components/header/HeaderFoodModule';
 const screenWidth = Dimensions.get('window').width;
 
 export default function ExploreFoodModule() {
-
     const navigation = useNavigation();
     const { shopCategory, DashboardSlider } = useSelector((state) => state.dashboard);
     const { exploreFoodModule, progressing, resetReducer } = useFood();

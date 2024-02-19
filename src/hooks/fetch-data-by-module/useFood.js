@@ -168,29 +168,31 @@ export const useFood = () => {
                 }
             )
             .then((res) => {
+
                 if (res?.data?.result?.shopDetails[0]?.is_closed || !res?.data?.result?.shopDetails[0]?.is_active || res?.data?.result?.shopDetails[0]?.is_banned) {
+                    navigation.goBack();
                     Alert.alert("Sorry we're closed !!", "See you tomorrow !!", [
                         {
                             text: "Ok",
-                            onPress: () => navigation.goBack(),
+                            onPress: () => null,
                             style: 'default'
                         },
                     ]);
+                } else {
+                    dispatch(
+                        handleItemsByStoreReducer({
+                            type: 'EXPLORE_FOOD_STORE_ITEMS',
+                            data: res?.data?.result,
+                        })
+                    );
+
+                    dispatch(
+                        handleDashboardReducer({
+                            type: 'VISITED_FOOD_STORE',
+                            data: res?.data?.result?.shopDetails[0] || {},
+                        })
+                    );
                 }
-
-                dispatch(
-                    handleItemsByStoreReducer({
-                        type: 'EXPLORE_FOOD_STORE_ITEMS',
-                        data: res?.data?.result,
-                    })
-                );
-
-                dispatch(
-                    handleDashboardReducer({
-                        type: 'VISITED_FOOD_STORE',
-                        data: res?.data?.result?.shopDetails[0] || {},
-                    })
-                );
 
                 //console.log('res?.data?.result?.shopDetails : ', res?.data?.result?.shopDetails);
 
