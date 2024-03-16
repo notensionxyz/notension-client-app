@@ -26,6 +26,7 @@ export default function ExploreFoodModule() {
 
     useFocusEffect(
         React.useCallback(() => {
+
             const onBackPress = () => {
                 navigation.goBack();
                 return true;
@@ -39,6 +40,13 @@ export default function ExploreFoodModule() {
             return () => subscription.remove();
         }, [navigation])
     );
+
+    // useEffect(() => {
+    //     const unsubscribe = navigation.addListener('focus', () => {
+
+    //     });
+    //     return unsubscribe;
+    // }, [navigation]);
 
     return (
         <>

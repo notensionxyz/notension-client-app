@@ -212,6 +212,15 @@ export const useFavouriteStore = () => {
         );
     };
 
+    const setCurrentModule = () => {
+        dispatch(
+            handleDashboardReducer({
+                type: 'SET_CURRENT_MODULE',
+                data: 'dashboard',
+            })
+        );
+    };
+
     useEffect(() => {
         if (error) {
             //userLogOut();
@@ -223,6 +232,7 @@ export const useFavouriteStore = () => {
         isAddedToFavouriteList,
         addToFavouriteList,
         removeFromfavoriteList,
-        resetReducer
+        resetReducer,
+        setCurrentModule
     };
 };

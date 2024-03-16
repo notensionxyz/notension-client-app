@@ -141,8 +141,6 @@ function Dashboard() {
         }, 800);
     };
 
-    //console.log('ad_slider_by_district', ad_slider_by_district?.first_slider);
-
     return (
         <>
             {!internetConnectionAvailable ?

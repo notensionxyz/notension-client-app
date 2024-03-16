@@ -2,8 +2,6 @@ import React from 'react';
 import { Dimensions, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-import { SwiperFlatListWithGestureHandler } from 'react-native-swiper-flatlist/WithGestureHandler';
-//import {storageImageUrl} from "../../../assets";
 const screenWidth = Dimensions.get('window').width;
 import { StyleSheet } from 'react-native';
 import { Pagination, PaginationProps } from 'react-native-swiper-flatlist';

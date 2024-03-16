@@ -42,6 +42,15 @@ export const useFood = () => {
         },
     });
 
+    const setCurrentModule = () => {
+        dispatch(
+            handleDashboardReducer({
+                type: 'SET_CURRENT_MODULE',
+                data: 'dashboard',
+            })
+        );
+    };
+
     const saveItemsToReducer = (items) => {
         dispatch(
             handleItemsByStoreReducer({
@@ -239,6 +248,7 @@ export const useFood = () => {
         handleSearchStore,
         exploreStore,
         resetLoadingStatus,
-        resetReducer
+        resetReducer,
+        setCurrentModule
     };
 };

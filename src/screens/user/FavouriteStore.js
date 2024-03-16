@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderCommon from '../../components/header/HeaderCommon';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useGrocery } from '../../hooks/fetch-data-by-module/useGrocery';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { useFavouriteStore } from '../../hooks/user/favorite-shop';
@@ -26,7 +26,8 @@ function FavouriteStore({ route }) {
     const {
         visible,
         removeFromfavoriteList,
-        resetReducer
+        resetReducer,
+        setCurrentModule
     } = useFavouriteStore();
 
     useEffect(() => {
@@ -49,17 +50,24 @@ function FavouriteStore({ route }) {
 
     }, [favouriteGroceryStore, favouriteMedicineStore, favouriteFoodShop]);
 
-    useEffect(() => {
-        const backAction = () => {
-            navigation.goBack();
-            return true;
-        };
-        const backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            backAction
-        );
-        return () => backHandler.remove();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            setCurrentModule();
+            const onBackPress = () => {
+                navigation.goBack();
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => subscription.remove();
+        }, [navigation])
+    );
+
+
 
     return (
         <>
@@ -108,7 +116,7 @@ function ListItem({ data, removeFromfavoriteList, merchantType, shopBannerFolder
         contact_no: data?.contact_no,
         alternative_contact_no: data?.alternative_contact_no,
     };
-    
+
     const navigateToExploreShop = () => {
         if (merchantType === 0) {
             navigation.navigate('ExploreGroceryShop');

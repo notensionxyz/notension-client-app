@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderCommon from '../../components/header/HeaderCommon';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useGrocery } from '../../hooks/fetch-data-by-module/useGrocery';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import SearchField from '../../components/screens-components/Common/SearchField';
@@ -32,8 +32,25 @@ function NearestGroceryShop(props) {
     const [scanQRcode, setScanQRcode] = useState(false);
     const [nearestInfo, setNearestInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const { getNearestGroceryStoreInfo, progressing, handleSearchStore, resetReducer } = useGrocery();
+    const { getNearestGroceryStoreInfo, progressing, handleSearchStore, setCurrentModule } = useGrocery();
     const { resetUserCurrentLocation } = useUser();
+
+    useFocusEffect(
+        React.useCallback(() => {
+            setCurrentModule();
+            const onBackPress = () => {
+                navigation.goBack();
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => subscription.remove();
+        }, [navigation])
+    );
 
     useEffect(() => {
         if (cameraPermission !== 'granted') {
@@ -41,16 +58,6 @@ function NearestGroceryShop(props) {
         } else {
             setCameraPermissionStatus(cameraPermission)
         }
-        resetReducer();
-        const backAction = () => {
-            navigation.goBack();
-            return true;
-        };
-        const backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            backAction
-        );
-        return () => backHandler.remove();
     }, []);
 
     useEffect(() => {

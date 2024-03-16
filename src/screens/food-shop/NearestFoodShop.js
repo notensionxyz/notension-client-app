@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderCommon from '../../components/header/HeaderCommon';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useFood } from '../../hooks/fetch-data-by-module/useFood';
 import { useUser } from '../../hooks/useUser';
 import SearchField from '../../components/screens-components/Common/SearchField';
@@ -31,8 +31,25 @@ function NearestFoodShop({ route }) {
     const [isFindPress, setIsFindPress] = useState(false);
     const [nearestInfo, setNearestInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const { getNearestFoodStoreInfo, progressing, handleSearchStore, resetReducer } = useFood();
+    const { getNearestFoodStoreInfo, progressing, handleSearchStore, setCurrentModule } = useFood();
     const { resetUserCurrentLocation } = useUser();
+
+    useFocusEffect(
+        React.useCallback(() => {
+            setCurrentModule();
+            const onBackPress = () => {
+                navigation.goBack();
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => subscription.remove();
+        }, [navigation])
+    );
 
     useEffect(() => {
         if (cameraPermission !== 'granted') {
@@ -40,16 +57,6 @@ function NearestFoodShop({ route }) {
         } else {
             setCameraPermissionStatus(cameraPermission)
         }
-        resetReducer();
-        const backAction = () => {
-            navigation.goBack();
-            return true;
-        };
-        const backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            backAction
-        );
-        return () => backHandler.remove();
     }, []);
 
     useEffect(() => {

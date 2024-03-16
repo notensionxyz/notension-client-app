@@ -53,6 +53,15 @@ export const useMedicine = () => {
         },
     });
 
+    const setCurrentModule = () => {
+        dispatch(
+            handleDashboardReducer({
+                type: 'SET_CURRENT_MODULE',
+                data: 'dashboard',
+            })
+        );
+    };
+
     const saveItemsToReducer = (items) => {
         dispatch(
             handleItemsByStoreReducer({
@@ -330,6 +339,7 @@ export const useMedicine = () => {
         reloadCustomTypeData,
         resetLoadingStatus,
         handleSearchStore,
-        resetReducer
+        resetReducer,
+        setCurrentModule
     };
 };
