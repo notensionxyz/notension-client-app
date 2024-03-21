@@ -7,7 +7,7 @@ import { grocery_itemsImages } from '../../../../helpers/Constants';
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
 
-export default function CartProductList({ data, incresePress, deccresePress, removePress, quantityIncart }) {
+export default function CartProductList({ data, showPrice, incresePress, deccresePress, removePress, quantityIncart }) {
     let [quantity, setQuantity] = useState(quantityIncart);
     let [price, setPrice] = useState(data?.price);
     quantity = quantityIncart;
@@ -31,7 +31,11 @@ export default function CartProductList({ data, incresePress, deccresePress, rem
                     <Text style={{ fontSize: 17, color: '#263238' }} numberOfLines={1} ellipsizeMode="tail">{data?.product_title_beng}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 3 }}>
                         <View style={{ width: "80%" }}>
-                            <Text style={{ fontSize: 17, color: '#1F45FC', marginTop: 5 }}>{data?.pack_size}  /  <Text style={{ fontSize: 17, color: '#348017', marginTop: 5 }}>৳ {data?.sale_price} </Text> </Text>
+                            {showPrice ?
+                                <Text style={{ fontSize: 17, color: '#1F45FC', marginTop: 5 }}>{data?.pack_size}  /  <Text style={{ fontSize: 17, color: '#348017', marginTop: 5 }}>৳ {data?.sale_price} </Text> </Text>
+                                :
+                                <Text style={{ fontSize: 17, color: '#1F45FC', marginTop: 5 }}>{data?.pack_size}</Text>
+                            }
                         </View>
                         <View style={{ width: "20%", paddingRight: 5, alignItems: 'flex-end' }}>
                             <Pressable onPress={() => {
@@ -76,7 +80,7 @@ export default function CartProductList({ data, incresePress, deccresePress, rem
                             : null
                         }
                     </View>
-                    <Text style={{ fontSize: 17, color: '#348017', position: 'absolute', bottom: 10, right: 15 }}>৳ {parseFloat(parseFloat(data?.sale_price) * parseFloat(quantity)).toFixed(2)}</Text>
+                    {showPrice && <Text style={{ fontSize: 17, color: '#348017', position: 'absolute', bottom: 10, right: 15 }}>৳ {parseFloat(parseFloat(data?.sale_price) * parseFloat(quantity)).toFixed(2)}</Text>}
                 </View>
             </View>
         );

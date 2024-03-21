@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, TextInput, Dimensions, FlatList, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, Dimensions, FlatList, Pressable, ActivityIndicator } from 'react-native';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
@@ -21,7 +21,8 @@ function GroceryProductList({ route }) {
     const ref = useRef(null);
     const options = route.params.options;
     const dispatch = useDispatch();
-    const { productInfoByShop} = useSelector((state) => state.itemsByStoreReducer);
+    const showProductPrice = useSelector((state) => state.dashboard.showProductPrice);
+    const { productInfoByShop } = useSelector((state) => state.itemsByStoreReducer);
     const [searchText, setSearchText] = useState('');
     const [pageNo, setPageNo] = useState(1);
 
@@ -31,11 +32,6 @@ function GroceryProductList({ route }) {
         allLoaded,
         itemNotfound,
         progressing,
-        showErrorMessage,
-        message,
-        showSuccessMessage,
-        setShowSuccessMessage,
-        setShowErrorMessage,
         setLoadingMore,
         handleSearch,
         getItemsOnPress,
@@ -44,6 +40,8 @@ function GroceryProductList({ route }) {
     } = useGrocery();
 
     useEffect(() => {
+      
+
         if (options?.searchProduct) {
             resetLoadingStatus(true);
         } else {
@@ -173,6 +171,7 @@ function GroceryProductList({ route }) {
                         renderItem={({ item, index }) =>
                             <MemoizedListView
                                 data={item}
+                                showPrice={showProductPrice}
                                 addToBagPress={addToCart}
                                 incresePress={addToCart}
                                 deccresePress={deccreseQty}

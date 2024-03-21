@@ -40,6 +40,7 @@ const GroceryCartItems = (props) => {
     const maximum_less = groceryStoreInfo?.maximum_less || 0;
     const minimum_order_for_less = groceryStoreInfo?.minimum_order_for_less || 0;
     const minimum_order_amount = groceryStoreInfo?.minimum_order_amount || 0;
+    const showProductPrice = groceryStoreInfo?.show_product_price;
 
     useEffect(() => {
         proceedToClaerAnyWay();
@@ -121,6 +122,7 @@ const GroceryCartItems = (props) => {
                                 renderItem={({ item }) =>
                                     <CartProductList
                                         data={item}
+                                        showPrice={showProductPrice}
                                         incresePress={addToCart}
                                         deccresePress={deccreseQty}
                                         removePress={removeFromCart}

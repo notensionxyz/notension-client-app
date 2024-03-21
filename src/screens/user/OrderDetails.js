@@ -151,7 +151,7 @@ export default function OrderDetails({ route }) {
                                 <Text style={{ textAlign: 'justify', fontSize: 16, color: '#006400', margin: 10 }} >{data?.shortNote}</Text>
                             </>
                         }
-                        
+
                         <View style={{
                             marginHorizontal: 2,
                             backgroundColor: 'white',
@@ -162,8 +162,13 @@ export default function OrderDetails({ route }) {
                         }}>
                             <ItemResume title='SubTotal' price={(data?.subTotal).toFixed(2)} />
                             <ItemResume title='Delivery Charge' price={(data?.deliveryCharge).toFixed(2)} />
-                            <ItemResume title='Less (-)' price={(data?.less_amount).toFixed(2)} />
-                            <ItemResume title='Total' price={(data?.totalAmount).toFixed(2)} />
+                            {parseFloat(data?.subTotal) > 0 &&
+                                <>
+                                    <ItemResume title='Less (-)' price={(data?.less_amount).toFixed(2)} />
+                                    <ItemResume title='Total' price={(data?.totalAmount).toFixed(2)} />
+                                </>
+                            }
+
                         </View>
                     </>
                 }

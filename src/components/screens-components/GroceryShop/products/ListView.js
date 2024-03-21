@@ -11,7 +11,7 @@ const screenWidth = Dimensions.get('window').width;
 
 export const MemoizedListView = React.memo(ListView);
 
-function ListView({ data, addToBagPress, deccresePress, removePress, qtyIncart, isOutOfStock }) {
+function ListView({ data, showPrice, addToBagPress, deccresePress, removePress, qtyIncart, isOutOfStock }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     let cardMargin = 2.5;
@@ -54,7 +54,7 @@ function ListView({ data, addToBagPress, deccresePress, removePress, qtyIncart, 
                             resizeMode={FastImage.resizeMode.contain}
                         />
                     </View>
-                    {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
+                    {showPrice && parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
                         <View
                             style={{
                                 position: 'absolute',
@@ -93,18 +93,21 @@ function ListView({ data, addToBagPress, deccresePress, removePress, qtyIncart, 
                         <Text style={{ marginTop: 2, fontSize: 18, color: '#003B95', }} numberOfLines={1} ellipsizeMode="tail">{data?.product_title_beng}</Text>
                         <Text style={{ fontSize: 16, color: '#006400' }} numberOfLines={1} ellipsizeMode="tail">{data?.pack_size}</Text>
                     </TouchableOpacity>
-                    <Text style={{ marginTop: 10, }} numberOfLines={1} ellipsizeMode="tail">
-                        <Text style={{ fontSize: 17, color: '#FF00FF' }} numberOfLines={1} ellipsizeMode="tail">৳ {data?.sale_price}{'      '}</Text>
-                        {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
-                            <Text style={{
-                                fontSize: 15,
-                                color: '#800000',
-                                textDecorationLine: 'line-through',
-                                textDecorationStyle: 'solid'
-                            }} numberOfLines={1} ellipsizeMode="tail">৳ {data?.max_retail_price}</Text>
-                            : null
-                        }
-                    </Text>
+                    {showPrice &&
+                        <Text style={{ marginTop: 10, }} numberOfLines={1} ellipsizeMode="tail">
+                            <Text style={{ fontSize: 17, color: '#FF00FF' }} numberOfLines={1} ellipsizeMode="tail">৳ {data?.sale_price}{'      '}</Text>
+                            {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
+                                <Text style={{
+                                    fontSize: 15,
+                                    color: '#800000',
+                                    textDecorationLine: 'line-through',
+                                    textDecorationStyle: 'solid'
+                                }} numberOfLines={1} ellipsizeMode="tail">৳ {data?.max_retail_price}</Text>
+                                : null
+                            }
+                        </Text>
+                    }
+
 
                     <View
                         style={{

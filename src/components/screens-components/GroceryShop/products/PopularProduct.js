@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MemoizedListView } from './ListView';
@@ -9,6 +9,8 @@ import { logoColor_2 } from '../../../../helpers/Constants';
 function PopularProduct() {
     const { merchantId, customstore_id, popularItem, pageNoForPopular } = useSelector((state) => state.itemsByStoreReducer);
     const { loadingMore, itemNotfound, allLoaded } = useSelector((state) => state.appState);
+    const showProductPrice = useSelector((state) => state.dashboard.showProductPrice);
+
     const { getPopularItems, setLoadingMore } = usePopularItem();
 
     let parameter = {
@@ -76,6 +78,7 @@ function PopularProduct() {
                 renderItem={({ item, index }) =>
                     <MemoizedListView
                         data={item}
+                        showPrice={showProductPrice}
                         addToBagPress={addToCart}
                         incresePress={addToCart}
                         deccresePress={deccreseQty}

@@ -9,11 +9,13 @@ export const handleGroceryItems = () => {
     const dispatch = useDispatch();
     const [pendingItem, setPendingItem] = useState({});
     const [error, setError] = useState(false);
-    const visitedGroceryStore = useSelector((state) => state.dashboard.visitedGroceryStore);
+    const { visitedGroceryStore, showProductPrice } = useSelector((state) => state.dashboard);
     const {
         groceryStoreInfo,
         groceryItems,
         totalAmountGrocery } = useSelector((state) => state.cartItems);
+
+    const [showPrice, setShowPrice] = useState(true);
 
     const getQty = (_id) => {
         const existingItemIndex = groceryItems.findIndex(
@@ -59,6 +61,11 @@ export const handleGroceryItems = () => {
                 delivered_qty: 0,
                 inc_qty: 1,
                 app_image: item?.app_image,
+            }
+
+            if (!showProductPrice) {
+                product.max_retail_price = 0;
+                product.sale_price = 0;
             }
 
             if (groceryItems.length > 0) {
@@ -209,8 +216,8 @@ export const handleGroceryItems = () => {
         );
     }
 
-
     useEffect(() => {
+
         if (error) {
             //userLogOut();
         }

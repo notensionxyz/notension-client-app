@@ -28,6 +28,7 @@ const dashboardReducer = createSlice({
         DashboardSlider: [],
         visitedGroceryStore: {},
         visitedMedicineStore: {},
+        showProductPrice: true,
         visitedFoodStore: {},
         visitedDineInRestaurent: {},
     },
@@ -71,6 +72,11 @@ const dashboardReducer = createSlice({
                 }
             }
             else if (payload.type == 'EXPLORE_STORE') {
+                let status = true;
+                if (payload?.data?.ShopDetails[0]?.show_product_price !== undefined) {
+                    status = payload?.data?.ShopDetails[0]?.show_product_price;
+                }
+
                 return {
                     ...state,
                     isLoading: false,
@@ -78,6 +84,7 @@ const dashboardReducer = createSlice({
                     typeInfoByShop: payload?.data?.ProductTypeByShop || [],
                     subtypeInfoByShop: payload?.data?.ProductSubTypeByShop || [],
                     DashboardSlider: payload?.data?.DashboardSlider || [],
+                    showProductPrice: status
                 };
             }
             else if (payload.type == 'VISITED_STORE') {
@@ -87,6 +94,10 @@ const dashboardReducer = createSlice({
                 };
             }
             else if (payload.type == 'EXPLORE_MED_STORE') {
+                let status = true;
+                if (payload?.data?.ShopDetails[0]?.show_product_price !== undefined) {
+                    status = payload?.data?.ShopDetails[0]?.show_product_price;
+                }
                 return {
                     ...state,
                     isLoading: false,

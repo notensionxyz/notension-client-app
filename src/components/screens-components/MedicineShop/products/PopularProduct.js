@@ -12,7 +12,7 @@ function PopularProduct() {
     const { getPopularItems, setLoadingMore } = usePopularItem();
 
     let parameter = {
-        groceryStoreId: merchantId,
+        merchantId: merchantId,
         custom_store_id: customstore_id,
         customType: "651284f9330595b483e38d73",
     }
@@ -27,7 +27,7 @@ function PopularProduct() {
         setLoadingMore(true);
 
         setTimeout(() => {
-            getPopularItems(parameter, 'from_grocery', pageNoForPopular);
+            getPopularItems(parameter, 'from_medicine', pageNoForPopular);
         }, 500);
     }
 

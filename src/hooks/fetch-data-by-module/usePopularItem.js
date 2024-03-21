@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GROCERY_ADMIN_URL, MEDICINE_ADMIN_URL } from "@env"
+import { GROCERY_ADMIN_URL, MEDICINE_ADMIN_URL, MEDICINE_ADMIN_URL_LOCAL } from "@env"
 import axios from 'axios';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { GROCERY_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY_CUSTOMTYPE } from '../../helpers/Constants';
@@ -31,8 +31,16 @@ export const usePopularItem = () => {
         },
     });
 
+    const AxiosTest = axios.create({
+        baseURL: MEDICINE_ADMIN_URL_LOCAL,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
+
     const getPopularItems = (parameter, module, pageNo) => {
-       
+
         let Axios = AxiosGrocery;
         let dataURL = GROCERY_ITEMS_BY_CUSTOMTYPE;
         if (module === 'from_medicine') {

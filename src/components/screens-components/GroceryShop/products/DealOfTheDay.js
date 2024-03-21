@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, TouchableOpacity, Text, View, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from "react-redux";
@@ -10,7 +10,7 @@ const screenWidth = Dimensions.get('window').width;
 export default function DealOfTheDay() {
     const { dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
     const navigation = useNavigation();
-
+    const showProductPrice = useSelector((state) => state.dashboard.showProductPrice);
 
     const {
         getQty,
@@ -58,6 +58,7 @@ export default function DealOfTheDay() {
                     renderItem={({ item }) =>
                         <MemoizedScrollProductList
                             data={item}
+                            showPrice={showProductPrice}
                             addToBagPress={addToCart}
                             incresePress={addToCart}
                             deccresePress={deccreseQty}

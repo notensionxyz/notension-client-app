@@ -33,25 +33,20 @@ let merchantType = 0;
 
 export default function GroceryProductDetails({ route }) {
     const navigation = useNavigation();
-
+    const showProductPrice = useSelector((state) => state.dashboard.showProductPrice);
     const data = route.params.data;
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
     const deviceWidth = useWindowDimensions().width;
     const deviceHeight = useWindowDimensions().height;
 
-    const dispatch = useDispatch();
-
     //const { data } = props.route.params;
     const [isVisible, setVisible] = useState(false);
 
     const {
-        groceryItems,
-        totalAmountGrocery,
         getQty,
         addToCart,
         removeFromCart,
-        deccreseQty,
-        isInOutOfStockList
+        deccreseQty
     } = handleGroceryItems();
 
     const {
@@ -230,7 +225,7 @@ export default function GroceryProductDetails({ route }) {
 
                                 <Text>
                                     <Text style={{ fontSize: 18, color: '#616161', fontWeight: 'bold' }}>{data?.pack_size}    </Text>
-                                    {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
+                                    {showProductPrice && parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
                                         <Text style={{
                                             fontSize: 18,
                                             color: '#800000',
@@ -242,7 +237,9 @@ export default function GroceryProductDetails({ route }) {
                                 </Text>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 3 }}>
                                     <View style={{ width: "40%" }}>
-                                        <Text style={{ fontSize: 18, color: '#ff9800', marginTop: 5, fontWeight: 'bold' }}>৳ {data?.sale_price}</Text>
+                                        {showProductPrice &&
+                                            <Text style={{ fontSize: 18, color: '#ff9800', marginTop: 5, fontWeight: 'bold' }}>৳ {data?.sale_price}</Text>
+                                        }
                                     </View>
                                     {isInStock > 0 ?
                                         <View style={{ width: "60%", paddingRight: 5, alignItems: 'flex-end' }}>

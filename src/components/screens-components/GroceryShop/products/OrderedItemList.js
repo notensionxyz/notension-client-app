@@ -32,10 +32,18 @@ export default function OrderedItemList({ data }) {
 
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                    <Text style={{  fontSize: 18, color: '#E3319D' }}>৳ {data?.sale_price}</Text> 
-                    <Text style={{ width: 30, textAlign: 'center', fontSize: 18, color: '#E3319D' }}> X {data?.quantity}</Text>
+                    {parseFloat(data?.sale_price) > 0 ?
+                        <>
+                            <Text style={{ fontSize: 18, color: '#E3319D' }}>৳ {data?.sale_price}</Text>
+                            <Text style={{ width: 30, textAlign: 'center', fontSize: 18, color: '#E3319D' }}> X {data?.quantity}</Text>
+                        </>
+                        :
+                        <Text style={{ textAlign: 'center', fontSize: 18, color: '#E3319D' }}>{data?.quantity} {data?.unit_symbol}</Text>
+                    }
                 </View>
-                <Text style={{ fontSize: 17, color: '#348017', position: 'absolute', bottom: 10, right: 15 }}>৳ {parseFloat(parseFloat(data?.sale_price) * parseFloat(data?.quantity)).toFixed(2)}</Text>
+                {parseFloat(data?.sale_price) > 0 &&
+                    <Text style={{ fontSize: 17, color: '#348017', position: 'absolute', bottom: 10, right: 15 }}>৳ {parseFloat(parseFloat(data?.sale_price) * parseFloat(data?.quantity)).toFixed(2)}</Text>
+                }
             </View>
         </View>
     );
