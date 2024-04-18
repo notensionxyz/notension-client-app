@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 //import { useManageItem } from '../../hooks/manage-item-by-shop';
 import ListView, { MemoizedListView } from '../../components/screens-components/GroceryShop/products/ListView';
-import { useGrocery } from '../../hooks/fetch-data-by-module/useGrocery';
 import SubtypeNameScroll from '../../components/screens-components/GroceryShop/subtypeNameScroll';
-import { logoColor_2 } from '../../helpers/Constants';
 import { handleGroceryItems } from '../../hooks/cart-handler/handleGroceryItems';
 import SearchField from '../../components/screens-components/Common/SearchField';
 import FooterCommon from '../../components/footer/FooterCommon';
+import { useGroceryProduct } from '../../hooks/fetch-data-by-module/useGroceryProduct';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -20,9 +19,10 @@ const screenHeight = Dimensions.get('window').height;
 function GroceryProductList({ route }) {
     const ref = useRef(null);
     const options = route.params.options;
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
+    
     const showProductPrice = useSelector((state) => state.dashboard.showProductPrice);
-    const { productInfoByShop } = useSelector((state) => state.itemsByStoreReducer);
+    //const { productInfoByShop } = useSelector((state) => state.itemsByStoreReducer);
     const [searchText, setSearchText] = useState('');
     const [pageNo, setPageNo] = useState(1);
 
@@ -36,11 +36,11 @@ function GroceryProductList({ route }) {
         handleSearch,
         getItemsOnPress,
         reloadCustomTypeData,
-        resetLoadingStatus
-    } = useGrocery();
+        resetLoadingStatus,
+        productInfo
+    } = useGroceryProduct();
 
     useEffect(() => {
-      
 
         if (options?.searchProduct) {
             resetLoadingStatus(true);
@@ -165,7 +165,7 @@ function GroceryProductList({ route }) {
                             loadMoreResults();
                         }}
                         contentContainerStyle={{ padding: 5 }}
-                        data={productInfoByShop}
+                        data={productInfo}
                         // keyExtractor={(item, index) => index.toString()}
                         keyExtractor={item => item?._id}
                         renderItem={({ item, index }) =>

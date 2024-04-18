@@ -184,124 +184,6 @@ export const useGrocery = () => {
 
     };
 
-    const handleSearch = (searchText, pageNo, setPageNo) => {
-        if (searchText.length > 1) {
-            if (pageNo === 1) {
-                resetLoadingStatus();
-            }
-
-            Axios
-                .get(SEARCH_GROCERY_ITEMS,
-                    {
-                        params: {
-                            search: searchText,
-                            groceryStoreId: merchantId,
-                            custom_store_id: customstore_id,
-                            page: pageNo,
-                        }
-                    }
-                ).then((res) => {
-
-                    if (res?.data?.result.length > 0) {
-                        setPageNo(pageNo + 1);
-                        saveItemsToReducer(res?.data?.result);
-                        if (res?.data?.result.length < 24) {
-                            setAllLoaded(true);
-                        }
-                    }
-
-                    if (pageNo === 1 && res?.data?.result.length < 1) {
-                        setItemNotfound(true);
-                        setAllLoaded(true);
-                    }
-
-                    setLoadingMore(false);
-                })
-                .catch((error) => {
-                    setAllLoaded(true);
-                    setLoadingMore(false);
-
-                });
-        }
-    }
-
-    const getItemsOnPress = (options, pageNo, setPageNo) => {
-        let goForSearch = false;
-        let dataURL = GROCERY_ITEMS_BY_SUBTYPE;
-
-        let parameter = {
-            groceryStoreId: merchantId,
-            custom_store_id: customstore_id,
-            page: pageNo,
-        }
-
-        if (options.productSubtype !== '') {
-            parameter.productSubtype = options.productSubtype;
-            goForSearch = true;
-        }
-
-        if (options.customType !== '') {
-            parameter.customType = options.customType;
-            dataURL = GROCERY_ITEMS_BY_CUSTOMTYPE;
-        }
-
-        // if (pageNo === 1) {
-        //     resetLoadingStatus();
-        // }
-
-        //console.log('parameter', parameter);
-
-        Axios
-            .get(dataURL,
-                {
-                    params: parameter
-                }
-            )
-            .then((res) => {
-                //console.log(res?.data?.result);
-
-                if (res?.data?.result?.length > 0) {
-                    setPageNo(pageNo + 1);
-                    saveItemsToReducer(res?.data?.result);
-                    if (res?.data?.result?.length < 24) {
-                        setAllLoaded(true);
-                    }
-                }
-
-                if (pageNo === 1 && res?.data?.result?.length < 1) {
-                    setItemNotfound(true);
-                    setAllLoaded(true);
-                }
-
-                setLoadingMore(false);
-            })
-            .catch((error) => {
-                setAllLoaded(true);
-                setLoadingMore(false);
-            });
-
-    };
-
-    const reloadCustomTypeData = (options, setPageNo) => {
-        setTimeout(() => {
-            if (options.customType === "64f5a306baa57a4707524d6e") { // this is "64f5a306baa57a4707524d6e" Offer Items ID
-
-                if (specialOfferItem.length < 24) {
-                    setAllLoaded(true);
-                }
-                saveItemsToReducer(specialOfferItem);
-
-            } else {
-                if (dealOfTheDay.length < 24) {
-                    setAllLoaded(true);
-                }
-                saveItemsToReducer(dealOfTheDay);
-            }
-            setLoadingMore(false);
-            setPageNo(2);
-        }, 500);
-    }
-
     const resetLoadingStatus = (status = false) => {
         saveItemsToReducer([]);
         setShowActivityIndicator(true);
@@ -331,12 +213,9 @@ export const useGrocery = () => {
         setShowSuccessMessage,
         setLoadingMore,
         saveItemsToReducer,
-        handleSearch,
-        getItemsOnPress,
         getNearestGroceryStoreInfo,
         handleSearchStore,
         exploreStore,
-        reloadCustomTypeData,
         resetLoadingStatus,
         resetReducer,
         setCurrentModule

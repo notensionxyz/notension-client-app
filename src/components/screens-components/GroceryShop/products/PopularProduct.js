@@ -48,9 +48,9 @@ function PopularProduct() {
                     Popular Items</Text>
             </View>
             <FlatList
-                ListHeaderComponent={
-                    null
-                }
+                // ListHeaderComponent={
+                //     null
+                // }
                 ListFooterComponent={
                     <View>
                         {!allLoaded &&
@@ -61,7 +61,7 @@ function PopularProduct() {
                         }
                     </View>
                 }
-                initialNumToRender={30}
+                initialNumToRender={popularItem.length}
                 windowSize={8}
                 maxToRenderPerBatch={28}
                 updateCellsBatchingPeriod={20}

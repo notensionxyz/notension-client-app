@@ -36,7 +36,7 @@ export const QrCodeScanner = ({ scanQRcode, searchText, setSearchText, searchSto
             setSearchText(contact);
             searchStore(contact);
         }
-        console.log(value);
+        //console.log(value);
     }, [])
 
     // 5. Initialize the Code Scanner to scan QR codes and Barcodes

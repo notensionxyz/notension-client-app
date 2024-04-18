@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { View, Text, FlatList, ActivityIndicator, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MemoizedListView } from './ListView';
 import { usePopularItem } from '../../../../hooks/fetch-data-by-module/usePopularItem';
@@ -9,8 +9,11 @@ import { logoColor_2 } from '../../../../helpers/Constants';
 function PopularProduct() {
     const { merchantId, customstore_id, popularItem, pageNoForPopular } = useSelector((state) => state.itemsByStoreReducer);
     const { loadingMore, itemNotfound, allLoaded } = useSelector((state) => state.appState);
+    const showProductPrice = useSelector((state) => state.dashboard.showProductPrice);
     const { getPopularItems, setLoadingMore } = usePopularItem();
+    const { width } = useWindowDimensions();
 
+    const itemHeight = width / 3 + 3;
     let parameter = {
         merchantId: merchantId,
         custom_store_id: customstore_id,
@@ -39,6 +42,39 @@ function PopularProduct() {
         isInOutOfStockList
     } = handleMedicineItems();
 
+
+    const renderItem = useCallback(
+        ({ item }) => <MemoizedListView
+            data={item}
+            showPrice={showProductPrice}
+            addToBagPress={addToCart}
+            incresePress={addToCart}
+            deccresePress={deccreseQty}
+            removePress={removeFromCart}
+            qtyIncart={getQty(item._id)}
+            isOutOfStock={isInOutOfStockList(item._id)}
+        />,
+        []
+    );
+
+    // Use case: increase impression count for posts
+    // that are visible on the screen for more than 0.5 seconds
+    const viewabilityConfigCallbackPairs = useRef([
+        {
+            viewabilityConfig: {
+                minimumViewTime: 500,
+                itemVisiblePercentThreshold: 50,
+            },
+            onViewableItemsChanged: ({ changed, viewableItems }) => {
+                changed.forEach((changedItem) => {
+                    if (changedItem.isViewable) {
+                        console.log('++ Impression for: ', changedItem.item._id);
+                    }
+                });
+            },
+        },
+    ]);
+
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', backgroundColor: '#FFFFFF' }}>
@@ -46,9 +82,29 @@ function PopularProduct() {
                     Popular Items</Text>
             </View>
             <FlatList
-                ListHeaderComponent={
-                    null
-                }
+                // ListHeaderComponent={
+                //     null
+                // }
+                data={popularItem}
+                //renderItem={renderItem}
+                renderItem={({ item, index }) =>
+                    <MemoizedListView
+                        data={item}
+                        showPrice={showProductPrice}
+                        addToBagPress={addToCart}
+                        incresePress={addToCart}
+                        deccresePress={deccreseQty}
+                        removePress={removeFromCart}
+                        qtyIncart={getQty(item._id)}
+                        isOutOfStock={isInOutOfStockList(item._id)}
+                    />}
+                initialNumToRender={popularItem.length}
+                //windowSize={8}
+                // maxToRenderPerBatch={28}
+                updateCellsBatchingPeriod={20}
+                removeClippedSubviews={false}
+                scrollEventThrottle={200}
+                onEndReachedThreshold={1.9}
                 ListFooterComponent={
                     <View>
                         {!allLoaded &&
@@ -59,30 +115,19 @@ function PopularProduct() {
                         }
                     </View>
                 }
-                initialNumToRender={30}
-                windowSize={8}
-                maxToRenderPerBatch={28}
-                updateCellsBatchingPeriod={20}
-                removeClippedSubviews={false}
-                scrollEventThrottle={200}
-                onEndReachedThreshold={1.9}
                 onEndReached={() => {
                     loadMoreResults();
                 }}
                 contentContainerStyle={{ padding: 5 }}
-                data={popularItem}
+
                 // keyExtractor={(item, index) => index.toString()}
                 keyExtractor={item => item?._id}
-                renderItem={({ item, index }) =>
-                    <MemoizedListView
-                        data={item}
-                        addToBagPress={addToCart}
-                        incresePress={addToCart}
-                        deccresePress={deccreseQty}
-                        removePress={removeFromCart}
-                        qtyIncart={getQty(item._id)}
-                        isOutOfStock={isInOutOfStockList(item._id)}
-                    />}
+            // getItemLayout={(data, index) => ({
+            //     length: itemHeight,
+            //     offset: (itemHeight + 5) * index,
+            //     index,
+            // })}
+            //viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
             />
         </View>
     );

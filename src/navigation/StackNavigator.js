@@ -1,5 +1,6 @@
 import React from "react";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Dashboard from "../screens/dashboard";
 import NearestGroceryShop from "../screens/grocery-shop/NearestGroceryShop";
 import NearestMedicineShop from "../screens/medicine-shop/NearestMedicineShop";
@@ -33,6 +34,7 @@ import SharedElementExample from "../screens/sharedElementTransitions";
 import FoodShopNavigation from "../screens/food-shop/FoodShopNavigation";
 
 const Stack = createStackNavigator();
+//const Stack = createNativeStackNavigator();
 
 const MainStackNavigator = () => {
     return (
@@ -42,7 +44,7 @@ const MainStackNavigator = () => {
                 component={Dashboard}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
-                    headerShown: false
+                    headerShown: false,
                 }}
             />
             <Stack.Screen

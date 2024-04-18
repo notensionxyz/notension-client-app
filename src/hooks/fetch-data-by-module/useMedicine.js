@@ -15,6 +15,7 @@ export const useMedicine = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
+    const [productInfo, setProductInfo] = useState([]);
     const [allLoaded, setAllLoaded] = useState(false);
     const [itemNotfound, setItemNotfound] = useState(false);
     const [loadingMore, setLoadingMore] = useState(true);
@@ -63,12 +64,18 @@ export const useMedicine = () => {
     };
 
     const saveItemsToReducer = (items) => {
-        dispatch(
-            handleItemsByStoreReducer({
-                type: 'SAVE_PRODUCT_INFO',
-                data: items,
-            })
-        );
+        if (items.length < 1) {
+            setProductInfo([]);
+        } else {
+            //setProductInfo(items);
+            setProductInfo((prevInfo) => [...prevInfo, ...items]);
+        }
+        // dispatch(
+        //     handleItemsByStoreReducer({
+        //         type: 'SAVE_PRODUCT_INFO',
+        //         data: items,
+        //     })
+        // );
     };
 
     const resetReducer = () => {
@@ -317,7 +324,6 @@ export const useMedicine = () => {
     }, [error]);
 
     return {
-        Axios,
         showActivityIndicator,
         loadingMore,
         itemNotfound,
@@ -326,6 +332,7 @@ export const useMedicine = () => {
         showErrorMessage,
         showSuccessMessage,
         message,
+        productInfo,
         setMessage,
         setProgressing,
         setShowErrorMessage,

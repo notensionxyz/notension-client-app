@@ -79,8 +79,8 @@ android {
         applicationId "com.bitsnotension"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.7.1"
+        versionCode 10
+        versionName "1.8.1"
         resConfigs "hi", "en"
     }
     signingConfigs {

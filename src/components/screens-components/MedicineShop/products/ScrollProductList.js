@@ -10,7 +10,7 @@ const screenWidth = Dimensions.get('window').width;
 
 export const MemoizedScrollProductList = React.memo(ScrollProductList);
 
-export default function ScrollProductList({ data, addToBagPress, deccresePress, removePress, qtyIncart, isOutOfStock }) {
+export default function ScrollProductList({ data, showPrice, addToBagPress, deccresePress, removePress, qtyIncart, isOutOfStock }) {
 
     const navigation = useNavigation();
 
@@ -60,9 +60,9 @@ export default function ScrollProductList({ data, addToBagPress, deccresePress, 
                             removePress={removePress}
                             qtyIncart={qtyIncart}
                             isOutOfStock={isOutOfStock}
-                        />                      
+                        />
                     </View>
-                    {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
+                    {showPrice && parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
                         <View
                             style={{
                                 position: 'absolute',
@@ -106,25 +106,25 @@ export default function ScrollProductList({ data, addToBagPress, deccresePress, 
                             <Text numberOfLines={1} ellipsizeMode="tail">
                                 <Text style={{ fontSize: 15, color: '#006400', paddingLeft: 4 }} numberOfLines={1} ellipsizeMode="tail">{data?.pack_size}    </Text>
                             </Text>
-
-                            <View style={{ flexDirection: 'row', marginTop: 8, justifyContent: 'center', paddingTop: 4 }}>
-                                <View style={{ width: "50%" }}>
-                                    <Text style={{ fontSize: 15, color: '#006400', textAlign: 'left' }} >৳ {data?.sale_price}</Text>
+                            {showPrice &&
+                                <View style={{ flexDirection: 'row', marginTop: 8, justifyContent: 'center', paddingTop: 4 }}>
+                                    <View style={{ width: "50%" }}>
+                                        <Text style={{ fontSize: 15, color: '#006400', textAlign: 'left' }} >৳ {data?.sale_price}</Text>
+                                    </View>
+                                    <View style={{ width: "50%" }}>
+                                        {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
+                                            <Text style={{
+                                                fontSize: 14,
+                                                color: '#800000',
+                                                textDecorationLine: 'line-through',
+                                                textDecorationStyle: 'solid',
+                                                textAlign: 'right'
+                                            }}>৳ {data?.max_retail_price}</Text>
+                                            : null
+                                        }
+                                    </View>
                                 </View>
-                                <View style={{ width: "50%" }}>
-                                    {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
-                                        <Text style={{
-                                            fontSize: 14,
-                                            color: '#800000',
-                                            textDecorationLine: 'line-through',
-                                            textDecorationStyle: 'solid',
-                                            textAlign: 'right'
-                                        }}>৳ {data?.max_retail_price}</Text>
-                                        : null
-                                    }
-                                </View>
-                            </View>
-
+                            }
                         </View>
                     </TouchableOpacity>
                 </View>

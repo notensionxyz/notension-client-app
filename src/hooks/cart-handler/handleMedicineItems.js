@@ -8,7 +8,7 @@ export const handleMedicineItems = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
-    const visitedMedicineStore = useSelector((state) => state.dashboard.visitedMedicineStore);
+    const { visitedMedicineStore, showProductPrice } = useSelector((state) => state.dashboard);
     const { medicineStoreInfo, medicineItems } = useSelector((state) => state.cartItems);
 
     const getQty = (_id) => {
@@ -57,6 +57,11 @@ export const handleMedicineItems = () => {
                 delivered_qty: 0,
                 inc_qty: 1,
                 app_image: item?.app_image,
+            }
+
+            if (!showProductPrice) {
+                product.max_retail_price = 0;
+                product.sale_price = 0;
             }
 
             if (medicineItems.length > 0) {

@@ -34,6 +34,7 @@ let images = [];
 export default function MedicineProductDetails({ route }) {
     const navigation = useNavigation();
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
+    const showProductPrice = useSelector((state) => state.dashboard.showProductPrice);
     const data = route.params.data;
 
     const deviceWidth = useWindowDimensions().width;
@@ -246,7 +247,7 @@ export default function MedicineProductDetails({ route }) {
                                 <Text style={{ fontSize: 14, color: '#263238' }} numberOfLines={1} ellipsizeMode="tail">{data?.company_name}</Text>
                                 <Text>
                                     <Text style={{ fontSize: 18, color: '#616161', fontWeight: 'bold' }}>{data?.pack_size}    </Text>
-                                    {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
+                                    {showProductPrice && parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
                                         <Text style={{
                                             fontSize: 18,
                                             color: '#800000',
@@ -258,8 +259,9 @@ export default function MedicineProductDetails({ route }) {
                                 </Text>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 3 }}>
                                     <View style={{ width: "40%" }}>
-                                        <Text style={{ fontSize: 18, color: '#ff9800', marginTop: 5, fontWeight: 'bold' }}>৳ {data?.sale_price}</Text>
-
+                                        {showProductPrice &&
+                                            <Text style={{ fontSize: 18, color: '#ff9800', marginTop: 5, fontWeight: 'bold' }}>৳ {data?.sale_price}</Text>
+                                        }
                                     </View>
                                     {isInStock > 0 ?
                                         <View style={{ width: "60%", paddingRight: 5, alignItems: 'flex-end' }}>

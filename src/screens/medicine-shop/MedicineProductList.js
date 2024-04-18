@@ -1,17 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, TextInput, Dimensions, FlatList, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, Dimensions, FlatList, ActivityIndicator } from 'react-native';
 import HeaderCommon from '../../components/header/HeaderCommon';
-import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
-//import { useManageItem } from '../../hooks/manage-item-by-shop';
-
-import { logoColor_2 } from '../../helpers/Constants';
 import SearchField from '../../components/screens-components/Common/SearchField';
 import FooterCommon from '../../components/footer/FooterCommon';
 import { useMedicine } from '../../hooks/fetch-data-by-module/useMedicine';
 import { handleMedicineItems } from '../../hooks/cart-handler/handleMedicineItems';
 import SubtypeNameScroll from '../../components/screens-components/MedicineShop/SubtypeNameScroll';
 import { MemoizedListView } from '../../components/screens-components/MedicineShop/products/ListView';
+import { useSelector } from 'react-redux';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -21,8 +18,9 @@ const screenHeight = Dimensions.get('window').height;
 function MedicineProductList({ route }) {
     const ref = useRef(null);
     const options = route.params.options;
-    const dispatch = useDispatch();
-    const { productInfoByShop, typeName, subtypeByselectedType } = useSelector((state) => state.itemsByStoreReducer);
+    const showProductPrice = useSelector((state) => state.dashboard.showProductPrice);
+    //console.log('showProductPrice : ', showProductPrice);
+    //const { productInfoByShop, typeName, subtypeByselectedType } = useSelector((state) => state.itemsByStoreReducer);
     const [searchText, setSearchText] = useState('');
     const [pageNo, setPageNo] = useState(1);
 
@@ -32,13 +30,8 @@ function MedicineProductList({ route }) {
         allLoaded,
         itemNotfound,
         progressing,
-        showErrorMessage,
-        message,
-        showSuccessMessage,
-        setShowSuccessMessage,
-        setShowErrorMessage,
+        productInfo,
         setLoadingMore,
-        saveItemsToReducer,
         handleSearch,
         getItemsOnPress,
         reloadCustomTypeData,
@@ -74,7 +67,7 @@ function MedicineProductList({ route }) {
         // if already loading more, or all loaded, return
         if (loadingMore || allLoaded)
             return
-        
+
         // set loading more (also updates footer text)
         setLoadingMore(true);
 
@@ -170,12 +163,13 @@ function MedicineProductList({ route }) {
                             loadMoreResults();
                         }}
                         contentContainerStyle={{ padding: 5 }}
-                        data={productInfoByShop}
+                        data={productInfo}
                         // keyExtractor={(item, index) => index.toString()}
                         keyExtractor={item => item?._id}
                         renderItem={({ item, index }) =>
                             <MemoizedListView
                                 data={item}
+                                showPrice={showProductPrice}
                                 addToBagPress={addToCart}
                                 incresePress={addToCart}
                                 deccresePress={deccreseQty}

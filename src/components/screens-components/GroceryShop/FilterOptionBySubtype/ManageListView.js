@@ -7,11 +7,13 @@ import { logoColor_2 } from '../../../../helpers/Constants';
 import { useNavigation } from '@react-navigation/native';
 let remainder = 0;
 
-function ManageListView({ data}) {
+export const MemoizedSubtypeView = React.memo(ManageListView);
+
+function ManageListView({ data }) {
     const navigation = useNavigation();
     const [reamainingInfo, setReamainingInfo] = useState([]);
     const [lastInfo, setLastInfo] = useState([]);
-    
+
     useEffect(() => {
 
         if (data?.subtype.length > 6) {
@@ -42,10 +44,12 @@ function ManageListView({ data}) {
             setLastInfo([]);
         }
         // setSubtype(data?.subtype);
+
+        console.log('again');
     }, []);
 
 
-    const subtypeByselectedType = (selectedSubtype) => {
+    const subtypeByselectedType = React.useCallback((selectedSubtype) => {
         const options = {
             searchProduct: false,
             fetchByoption: true,
@@ -55,9 +59,10 @@ function ManageListView({ data}) {
             subtypeByselectedType: data.subtype,
             productSubtype: selectedSubtype?.subtypeInfo?._id || '303030303030303030303030',
         };
-
+        console.log('again - pressss');
+      
         navigation.navigate('GroceryProductList', { options });
-    }
+    }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', marginBottom: 5, marginTop: 5 }}>

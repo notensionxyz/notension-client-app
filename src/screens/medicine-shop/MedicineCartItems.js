@@ -17,6 +17,7 @@ let isReachable = 'true';
 
 const MedicineCartItems = (props) => {
     const navigation = useNavigation();
+    const [deliveryFee, setDeliveryFee] = useState(0);
     const [discount, setDiscount] = useState(0);
     const [grandTotal, setGrandTotal] = useState(0);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -37,7 +38,8 @@ const MedicineCartItems = (props) => {
     const maximum_less = medicineStoreInfo?.maximum_less || 0;
     const minimum_order_for_less = medicineStoreInfo?.minimum_order_for_less || 0;
     const minimum_order_amount = medicineStoreInfo?.minimum_order_amount || 0;
-
+    const showProductPrice = medicineStoreInfo?.show_product_price;
+    //console.log('deliveryCharge : ', deliveryCharge, ' minDeliveryCharge : ', minDeliveryCharge);
     const {
         getQty,
         addToCart,
@@ -63,8 +65,6 @@ const MedicineCartItems = (props) => {
 
     }, [totalAmountMedicine, medicineStoreInfo]);
 
-
-
     const getGrandTotal = () => {
         let shippingCost = deliveryCharge;
         if (parseFloat(totalAmountMedicine) >= parseFloat(minOrderAmount)) {
@@ -83,8 +83,10 @@ const MedicineCartItems = (props) => {
             }
         }
         setDiscount(Discount);
+        setDeliveryFee(shippingCost);
         total = ((parseFloat(totalAmountMedicine) + parseFloat(shippingCost)) - parseFloat(Discount)).toFixed(2);
         setGrandTotal(total);
+        //console.log('shippingCost : ', shippingCost, ' minDeliveryCharge : ', minDeliveryCharge);
     };
 
     return (
@@ -118,6 +120,7 @@ const MedicineCartItems = (props) => {
                             renderItem={({ item }) =>
                                 <CartProductList
                                     data={item}
+                                    showPrice={showProductPrice}
                                     incresePress={addToCart}
                                     deccresePress={deccreseQty}
                                     removePress={removeFromCart}
@@ -155,11 +158,7 @@ const MedicineCartItems = (props) => {
                 elevation: 1,
             }}>
                 <ItemResume title='SubTotal' price={(totalAmountMedicine).toFixed(2)} />
-                {parseFloat(totalAmountMedicine) <= parseFloat(minOrderAmount) ?
-                    <ItemResume title='Delivery Charge' price={parseFloat(totalAmountMedicine) > 0 ? (deliveryCharge).toFixed(2) : '0.00'} />
-                    :
-                    <ItemResume title='Delivery Charge' price={(minDeliveryCharge).toFixed(2)} />
-                }
+                <ItemResume title='Delivery Charge' price={(deliveryFee).toFixed(2)} />
                 <ItemResume title='Less (-)' price={discount} />
             </View>
 

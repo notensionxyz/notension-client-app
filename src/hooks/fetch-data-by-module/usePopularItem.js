@@ -6,15 +6,14 @@ import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { GROCERY_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY_CUSTOMTYPE } from '../../helpers/Constants';
 import { handleStateReducer } from '../../store/reducers/stateReducer';
 
+
 axios.defaults.withCredentials = true;
 
 export const usePopularItem = () => {
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
     //const popularItem = useSelector((state) => state.itemsByStoreReducer.popularItem);
-
-    //console.log(MEDICINE_ADMIN_URL);
-
+    
     const AxiosGrocery = axios.create({
         baseURL: GROCERY_ADMIN_URL,
         headers: {
@@ -60,6 +59,7 @@ export const usePopularItem = () => {
 
                 if (res?.data?.result?.length > 0) {
                     saveItemsToReducer(res?.data?.result);
+                    //setItems((existingItems) => [...existingItems, ...res?.data?.result]);
                 }
 
                 if (res?.data?.result?.length < 24) {
