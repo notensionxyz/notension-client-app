@@ -18,6 +18,7 @@ function DistrictName({ filteredInfo, setFilteredInfo }) {
 
     useEffect(() => {
         if (districtInfo?.length < 1) {
+            //console.log('Now Here');
             getDistrictInfo(setFilteredInfo);
         }
         getGeoLocation();
@@ -49,10 +50,10 @@ function DistrictName({ filteredInfo, setFilteredInfo }) {
                 districtSubAreaId: '00',
                 districtSubAreaName: '',
             };
-            console.log('save as current -- District Name');
+            //console.log('save as current -- District Name');
             saveCurrentInfo(userLocation);
         } else {
-            console.log('save as Default -- District Name', userLocation);
+            //console.log('save as Default -- District Name', userLocation);
             saveSelectedInfo(userLocation);
         }
     }

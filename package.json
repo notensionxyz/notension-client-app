@@ -1,6 +1,6 @@
 {
   "name": "bitsNoTension",
-  "version": "1.8.1",
+  "version": "1.8.11",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

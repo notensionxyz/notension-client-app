@@ -45,7 +45,7 @@ function ManageListView({ data }) {
         }
         // setSubtype(data?.subtype);
 
-        console.log('again');
+        //console.log('again');
     }, []);
 
 
@@ -59,7 +59,7 @@ function ManageListView({ data }) {
             subtypeByselectedType: data.subtype,
             productSubtype: selectedSubtype?.subtypeInfo?._id || '303030303030303030303030',
         };
-        console.log('again - pressss');
+        //console.log('again - pressss');
       
         navigation.navigate('GroceryProductList', { options });
     }, []);

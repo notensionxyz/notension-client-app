@@ -161,7 +161,8 @@ const dashboardReducer = createSlice({
             else if (payload.type == 'VISITED_FOOD_STORE') {
                 return {
                     ...state,
-                    visitedFoodStore: payload?.data
+                    visitedFoodStore: payload?.data,
+                    currentModule: 'Food',
                 };
             }
             else if (payload.type == 'SET_CURRENT_MODULE') {

@@ -35,7 +35,7 @@ function ExploreGroceryShop() {
 
     useEffect(() => {
         if (visitedGroceryStore?._id && visitedGroceryStore?.custom_store_id) {
-            exploreStore(visitedGroceryStore)
+            exploreStore(visitedGroceryStore);
         }
         const backAction = () => {
             navigation.goBack();

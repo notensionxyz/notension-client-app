@@ -92,6 +92,7 @@ export const useGlobal = () => {
                 setProgressing(false);
             })
             .catch(error => {
+                console.log('Error : Failed to district Info, ', error);
                 setProgressing(false);
             });
 
