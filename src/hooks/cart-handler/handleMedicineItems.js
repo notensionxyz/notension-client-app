@@ -9,7 +9,7 @@ export const handleMedicineItems = () => {
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
     const { visitedMedicineStore, showProductPrice } = useSelector((state) => state.dashboard);
-    const { medicineStoreInfo, medicineItems } = useSelector((state) => state.cartItems);
+    const { medicineStoreInfo, medicineItems, medicineCartStartAt } = useSelector((state) => state.cartItems);
 
     const getQty = (_id) => {
         const existingItemIndex = medicineItems.findIndex(
@@ -203,6 +203,17 @@ export const handleMedicineItems = () => {
         );
     }
 
+    const checkCartItem = () => {
+        // const existProductIds = groceryItems.map(obj => obj._id);
+        // console.log('existProductIds : ', existProductIds);
+        if (medicineItems.length > 0) {
+            const cartAge = ((((new Date().getTime()) / 1000)) - ((new Date(medicineCartStartAt)) / 1000)).toFixed(2);
+            if (parseFloat(cartAge) > parseFloat(72000)) {
+                claerAndSwitch();
+            }
+        }
+    }
+
     useEffect(() => {
         if (error) {
             //userLogOut();
@@ -217,6 +228,7 @@ export const handleMedicineItems = () => {
         isInOutOfStockList,
         isInCart,
         proceedToClaerAnyWay,
-        proceedToPlaceOrder
+        proceedToPlaceOrder,
+        checkCartItem
     };
 };

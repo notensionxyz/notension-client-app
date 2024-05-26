@@ -12,7 +12,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { handleUserReducer } from '../store/reducers/userReducer';
 import { handleDashboardReducer } from '../store/reducers/dashboardReducer';
-import { USER_ADMIN_URL } from "@env"
+import { USER_ADMIN_URL, USER_ADMIN_URL_LOCAL } from "@env"
 import axios from 'axios';
 import { Alert } from 'react-native';
 axios.defaults.withCredentials = true;
@@ -34,6 +34,7 @@ export const useUser = () => {
     const currentModule = useSelector((state) => state.dashboard.currentModule);
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
+    const [isUserRegistered, setIsUserRegistered] = useState(false);
     const [progressing, setProgressing] = React.useState(false);
     const [userInfo, setUserInfo] = useState({
         _id: loggedinUserInfo?._id || '',
@@ -49,6 +50,7 @@ export const useUser = () => {
         district_id: districtId,
         district_area_id: '303030303030303030303030',
         district_subarea_id: '303030303030303030303030',
+        ref_contact: ''
     });
 
     let userInformation = {
@@ -227,13 +229,14 @@ export const useUser = () => {
         //console.log('props : ', props);
         handleDataChange(props.contact_no, 'contact_no');
         setProgressing(true);
-
+        setIsUserRegistered(false);
         Axios
             .post(OTP_FOR_REGISTARTION, props)
             .then((res) => {
                 //console.log('res?.result?.data', res?.data);
                 if (res?.data?.user_exist) {
                     setUserData(res?.data?.result);
+                    setIsUserRegistered(true);
                 }
                 setProgressing(false);
             })
@@ -345,6 +348,7 @@ export const useUser = () => {
     }, [error])
 
     return {
+        isUserRegistered,
         progressing,
         setProgressing,
         saveUserCurrentGeolocation,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, TextInput, Text, TouchableOpacity, View, Alert, ScrollView, Keyboard } from "react-native";
+import { Dimensions, TextInput, Text, TouchableOpacity, View, Alert, ScrollView, Keyboard, StyleSheet } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import RNOtpVerify from 'react-native-otp-verify';
 import {
@@ -30,6 +30,7 @@ export default function SignUp({ route }) {
     const [clickOnSubmit, setClickOnSubmit] = useState(false);
     const [inputOtp, setInputOtp] = useState('');
     const {
+        isUserRegistered,
         progressing,
         setProgressing,
         userInfo,
@@ -222,6 +223,28 @@ export default function SignUp({ route }) {
 
                         {clickOnSubmit && errors?.alternative_contact_no && (<Text style={styles.alert}>{errors?.alternative_contact_no}</Text>)}
 
+                        {!isUserRegistered &&
+                            <>
+                                <TextInput placeholder='Ref. Contact (Optional)' keyboardType='numeric' secureTextEntry={false}
+                                    placeholderTextColor='gray'
+                                    onChangeText={(text) => {
+                                        handleDataChange(text.replace(/[^0-9]/g, ''), 'ref_contact')
+                                    }}
+                                    value={userInfo?.ref_contact}
+                                    style={{
+                                        height: 44,
+                                        padding: 10,
+                                        marginTop: 10,
+                                        backgroundColor: 'white',
+                                        borderWidth: 0,
+                                        borderColor: 'white',
+                                        color: '#2c2c2c'
+                                    }} />
+                                {clickOnSubmit && errors?.ref_contact && (<Text style={styles.alert}>{errors?.ref_contact}</Text>)}
+                            </>
+                        }
+
+
                         <TextInput placeholder='OTP কোডটি এখানে লিখুন ' keyboardType='numeric' secureTextEntry={false}
                             placeholderTextColor='gray'
                             onChangeText={(text) => { setInputOtp(text); }} value={inputOtp}
@@ -267,5 +290,13 @@ export default function SignUp({ route }) {
     );
 }
 
+const styles = StyleSheet.create({
+    alert: {
+        fontSize: 16,
+        color: 'red',
+        marginLeft: 5,
+        marginTop: 3
+    },
+});
 
 

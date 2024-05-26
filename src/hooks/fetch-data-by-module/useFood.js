@@ -165,6 +165,7 @@ export const useFood = () => {
     }
 
     const exploreStore = (data) => {
+        resetFoodStore();
         //console.log(data?._id);
         setProgressing(true);
         Axios
@@ -213,6 +214,14 @@ export const useFood = () => {
             });
     };
 
+    const resetFoodStore = () => {
+        dispatch(
+            handleItemsByStoreReducer({
+                type: 'FOOD_STORE_RESET',
+                data: [],
+            })
+        );
+    }
 
     const resetLoadingStatus = (status = false) => {
         saveItemsToReducer([]);

@@ -11,7 +11,7 @@ export const handleFoodItems = () => {
     const visitedFoodStore = useSelector((state) => state.dashboard.visitedFoodStore);
     const {
         foodItems,
-        foodStoreInfo } = useSelector((state) => state.cartItems);
+        foodStoreInfo, foodCartStartAt } = useSelector((state) => state.cartItems);
 
     const getQty = (_id) => {
         const existingItemIndex = foodItems.findIndex(
@@ -71,9 +71,7 @@ export const handleFoodItems = () => {
             } else {
                 saveStoreAndProductInfo(product);
             }
-
         }
-
     };
 
     const emptyCartItems = (product) => {
@@ -176,7 +174,20 @@ export const handleFoodItems = () => {
         );
     };
 
+    const checkCartItem = () => {
+        // const existProductIds = groceryItems.map(obj => obj._id);
+        // console.log('existProductIds : ', existProductIds);
+        //console.log('Now Food4444');
+        if (foodItems.length > 0) {
+            const cartAge = ((((new Date().getTime()) / 1000)) - ((new Date(foodCartStartAt)) / 1000)).toFixed(2);
+            if (parseFloat(cartAge) > parseFloat(72000)) {
+                claerAndSwitch();
+            }
+        }
+    }
+
     useEffect(() => {
+
         if (error) {
             //userLogOut();
         }
@@ -188,5 +199,6 @@ export const handleFoodItems = () => {
         removeFromCart,
         deccreseQty,
         replaceStore,
+        checkCartItem
     };
 };

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { View, Text, FlatList, ActivityIndicator, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MemoizedListView } from './ListView';
@@ -39,7 +39,8 @@ function PopularProduct() {
         addToCart,
         removeFromCart,
         deccreseQty,
-        isInOutOfStockList
+        isInOutOfStockList,
+        checkCartItem
     } = handleMedicineItems();
 
 
@@ -74,6 +75,12 @@ function PopularProduct() {
             },
         },
     ]);
+
+    useEffect(() => {
+        if (popularItem.length > 1) {
+            checkCartItem();
+        }
+    }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

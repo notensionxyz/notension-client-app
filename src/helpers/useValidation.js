@@ -14,9 +14,18 @@ const useValidation = () => {
             errors.customer_address = 'Address must be at least 3 characters long and at most 499 characters long!';
         }
 
-        if (parseFloat(information?.alternative_contact_no.length) > 11 && information?.alternative_contact_no !== '') {
-            isInputValid = false
-            errors.alternative_contact_no = 'Alternative Contact must be 11 digit!';
+        if (information?.alternative_contact_no !== '') {
+            if (parseFloat(information?.alternative_contact_no.length) !== 11 ) {
+                isInputValid = false
+                errors.alternative_contact_no = 'Alternative Contact must be 11 digit!';
+            }
+        }
+
+        if (information?.ref_contact !== '') {
+            if (parseFloat(information?.ref_contact.length) !== 11 ) {
+                isInputValid = false
+                errors.ref_contact = 'Ref. Contact must be 11 digit!';
+            }
         }
 
         setErrors(errors);

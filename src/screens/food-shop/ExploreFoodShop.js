@@ -103,22 +103,27 @@ function ExploreFoodShop() {
                                 </Pressable>
                             </View>
                         }
+                        
+                        {productCategory.length > 0 &&
+                            <>
 
-                        <ManageListView productCategory={productCategory} />
+                                <ManageListView productCategory={productCategory} />
 
-                        <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                            <View style={{ flexDirection: 'row', backgroundColor: '#FFFFFF' }}>
-                                <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
-                                    Popular Items</Text>
-                            </View>
-                            <FlatList
-                                contentContainerStyle={{ padding: 5 }}
-                                data={popularItem}
-                                keyExtractor={(_, index) => index.toString()}
-                                //keyExtractor={item => item?._id}
-                                renderItem={({ item, index }) => <ListView data={item} index={index} />}
-                            />
-                        </View>
+                                <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
+                                    <View style={{ flexDirection: 'row', backgroundColor: '#FFFFFF' }}>
+                                        <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
+                                            Popular Items</Text>
+                                    </View>
+                                    <FlatList
+                                        contentContainerStyle={{ padding: 5 }}
+                                        data={popularItem}
+                                        //keyExtractor={(_, index) => index.toString()}
+                                        keyExtractor={item => item?._id}
+                                        renderItem={({ item, index }) => <ListView data={item} index={index} />}
+                                    />
+                                </View>
+                            </>
+                        }
                     </View>
                 </ScrollView>
                 <FooterExploreStore module='Food' contact={visitedFoodStore?.contact_no} />

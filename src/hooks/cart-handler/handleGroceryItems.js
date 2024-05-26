@@ -3,17 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleCartReducer } from '../../store/reducers/cartReducer';
 import { Alert } from 'react-native';
+import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 
 export const handleGroceryItems = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [pendingItem, setPendingItem] = useState({});
     const [error, setError] = useState(false);
-    const { visitedGroceryStore, showProductPrice } = useSelector((state) => state.dashboard);
+    const { visitedGroceryStore, showProductPrice, isGroceryCartCheck } = useSelector((state) => state.dashboard);
     const {
         groceryStoreInfo,
         groceryItems,
-        totalAmountGrocery } = useSelector((state) => state.cartItems);
+        totalAmountGrocery,
+        groceryCartStartAt } = useSelector((state) => state.cartItems);
 
     const [showPrice, setShowPrice] = useState(true);
 
@@ -216,6 +218,17 @@ export const handleGroceryItems = () => {
         );
     }
 
+    const checkCartItem = () => {
+        // const existProductIds = groceryItems.map(obj => obj._id);
+        // console.log('existProductIds : ', existProductIds);
+        if (groceryItems?.length > 0) {
+            const cartAge = ((((new Date().getTime()) / 1000)) - ((new Date(groceryCartStartAt)) / 1000)).toFixed(2);
+            if (parseFloat(cartAge) > parseFloat(72000)) {
+                claerAndSwitch();
+            }
+        }
+    }
+
     useEffect(() => {
 
         if (error) {
@@ -233,6 +246,7 @@ export const handleGroceryItems = () => {
         deccreseQty,
         isInOutOfStockList,
         proceedToPlaceOrder,
-        proceedToClaerAnyWay
+        proceedToClaerAnyWay,
+        checkCartItem
     };
 };

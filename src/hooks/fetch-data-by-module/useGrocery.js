@@ -23,9 +23,9 @@ export const useGrocery = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [message, setMessage] = useState('');
     const { userLatitude, userLongitude, districtId } = useSelector((state) => state.user);
-    const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
-    const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
-
+    //const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
+    //const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
+    
     //console.log('GROCERY_ADMIN_URL', GROCERY_ADMIN_URL);
 
     const Axios = axios.create({

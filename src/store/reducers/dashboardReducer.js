@@ -32,10 +32,13 @@ const dashboardReducer = createSlice({
         showProductPrice: true,
         visitedFoodStore: {},
         visitedDineInRestaurent: {},
+        isGroceryCartCheck: false,
+        isMedicineCartCheck: false,
+        isFoodCartCheck: false,
     },
     reducers: {
         handleDashboardReducer: (state = initialState, { payload }) => {
-            
+
             if (payload.type == "SAVE_DASHBOARD_INFO") {
                 return {
                     ...state,
@@ -57,6 +60,24 @@ const dashboardReducer = createSlice({
                 return {
                     ...state,
                     isLoading: payload.data
+                }
+            }
+            else if (payload.type == "SAVE_GROCERY_CART_CHECK_STATUS") {
+                return {
+                    ...state,
+                    isGroceryCartCheck: payload.data
+                }
+            }
+            else if (payload.type == "SAVE_GROCERY_CART_CHECK_STATUS") {
+                return {
+                    ...state,
+                    isMedicineCartCheck: payload.data
+                }
+            }
+            else if (payload.type == "SAVE_GROCERY_CART_CHECK_STATUS") {
+                return {
+                    ...state,
+                    isFoodCartCheck: payload.data
                 }
             }
             else if (payload.type == "SAVE_CONNECTION_STATUS") {
@@ -85,7 +106,6 @@ const dashboardReducer = createSlice({
                     payload?.data?.ProductTypeByShop?.forEach((info, i) => {
 
                         if (info.statusType === 'General') {
-
                             let eachTypeInfo = {
                                 _id: info?.typeInfo,
                                 custom_type_id: info.custom_type_id,
@@ -94,8 +114,6 @@ const dashboardReducer = createSlice({
                                     (subtype) => subtype.typeInfo === info?.typeInfo
                                 )
                             };
-
-
                             typeInfoGeneral = { ...typeInfoGeneral, [info.custom_type_id]: eachTypeInfo };
                         }
                     });

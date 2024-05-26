@@ -10,12 +10,15 @@ const cartReducer = createSlice({
         groceryStoreInfo: {},
         groceryItems: [],
         totalAmountGrocery: 0,
+        groceryCartStartAt: '',
         medicineStoreInfo: {},
         medicineItems: [],
         totalAmountMedicine: 0,
+        medicineCartStartAt: 0,
         foodStoreInfo: {},
         foodItems: [],
         totalAmountFood: 0,
+        foodCartStartAt: 0,
     },
     reducers: {
         handleCartReducer: (state = initialState, { payload }) => {
@@ -25,10 +28,13 @@ const cartReducer = createSlice({
                     ...state,
                     groceryItems: [],
                     totalAmountGrocery: 0,
+                    groceryCartStartAt: 0,
                     medicineItems: [],
                     totalAmountMedicine: 0,
+                    medicineCartStartAt: 0,
                     foodItems: [],
                     totalAmountFood: 0,
+                    foodCartStartAt: 0,
                 };
             }
             else if (payload.type == 'ADD_TO_CART_GROCERY') {
@@ -43,6 +49,10 @@ const cartReducer = createSlice({
                     newState[existingItemIndex].quantity = parseFloat(newState[existingItemIndex].quantity) + parseFloat(newState[existingItemIndex].inc_qty);
                 } else {
                     newState = [...state.groceryItems, payload.data];
+                }
+
+                if (state.groceryItems.length < 1) {
+                    state.groceryCartStartAt = new Date().getTime();
                 }
 
                 state.groceryItems = newState;
@@ -96,6 +106,10 @@ const cartReducer = createSlice({
                     newState = [...state.medicineItems, payload.data];
                 }
 
+                if (state.medicineItems.length < 1) {
+                    state.medicineCartStartAt = new Date().getTime();
+                }
+
                 state.medicineItems = newState;
                 state.totalAmountMedicine = calculateTotal(newState);
 
@@ -147,6 +161,10 @@ const cartReducer = createSlice({
                     newState = [...state.foodItems, payload.data];
                 }
 
+                if (state.foodItems.length < 1) {
+                    state.foodCartStartAt = new Date().getTime();
+                }
+
                 state.foodItems = newState;
                 state.totalAmountFood = calculateTotal(newState);
 
@@ -186,14 +204,17 @@ const cartReducer = createSlice({
             else if (payload.type == 'GROCERY_ORDER_PLACED') {
                 state.groceryItems = [];
                 state.totalAmountGrocery = 0;
+                state.groceryCartStartAt = 0;
             }
             else if (payload.type == 'MEDICINE_ORDER_PLACED') {
                 state.medicineItems = [];
                 state.totalAmountMedicine = 0;
+                state.medicineCartStartAt = 0;
             }
             else if (payload.type == 'FOOD_ORDER_PLACED') {
                 state.foodItems = [];
                 state.totalAmountFood = 0;
+                state.foodCartStartAt = 0;
             }
             else if (payload.type == 'SAVE_GROCERY_STORE_INFO') {
                 state.groceryStoreInfo = payload?.data

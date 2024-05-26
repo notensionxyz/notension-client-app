@@ -38,8 +38,15 @@ function PopularProduct() {
         addToCart,
         removeFromCart,
         deccreseQty,
-        isInOutOfStockList
+        isInOutOfStockList,
+        checkCartItem
     } = handleGroceryItems();
+
+    useEffect(() => {
+        if (popularItem.length > 1) {
+            checkCartItem();
+        }
+    }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

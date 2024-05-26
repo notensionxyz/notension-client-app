@@ -84,6 +84,14 @@ const itemsByStoreReducer = createSlice({
                     customstore_id: payload?.data?.customstoreId || '',
                 };
             }
+            else if (payload.type == 'FOOD_STORE_RESET') {
+                return {
+                    ...state,
+                    productCategory: [],
+                    productInfoByShop: [],
+                    popularItem: [],
+                };
+            }
             else if (payload.type == 'SAVE_SUBTYPE_INFO_BY_TYPE') {
                 return {
                     ...state,

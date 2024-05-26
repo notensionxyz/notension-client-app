@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { makeCall } from '../../helpers/imageUrl';
+import { handleFoodItems } from '../../hooks/cart-handler/handleFoodItems';
 
 let totalItem = 0;
 let totalSalePrice = 0;
 
 export default function FooterExploreStore(props) {
     const cartItems = useSelector((state) => state.cartItems);
+    const { checkCartItem } = handleFoodItems();
     const [tab, setTab] = useState('');
     const navigation = useNavigation();
+
     if (props.module === 'Grocery') {
         totalItem = cartItems.groceryItems.length;
         totalSalePrice = cartItems.totalAmountGrocery;
@@ -22,6 +25,7 @@ export default function FooterExploreStore(props) {
     }
 
     if (props.module === 'Food') {
+        checkCartItem();
         totalItem = cartItems.foodItems.length;
         totalSalePrice = cartItems.totalAmountFood;
     }

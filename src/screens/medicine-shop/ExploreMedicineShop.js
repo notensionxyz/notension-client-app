@@ -55,7 +55,8 @@ function ExploreMedicineShop() {
     useEffect(() => {
 
         if (typeInfoByShop.length > 0) {
-
+            typeInfo = {};
+            
             let generaltypeInfo = typeInfoByShop?.filter(
                 (type) => type.statusType === 'General'
             );
