@@ -32,6 +32,12 @@ import PlaceOrderFood from "../screens/food-shop/PlaceOrderFood";
 //import FoodProductDetails from "../screens/food-shop/FoodProductDetails";
 import SharedElementExample from "../screens/sharedElementTransitions";
 import FoodShopNavigation from "../screens/food-shop/FoodShopNavigation";
+import ExploreFindDoctors from "../screens/doctor-portal/ExploreFindDoctors";
+import DoctorsInformation from "../screens/doctor-portal/DoctorsInformation";
+import NearestCenterInfo from "../screens/doctor-portal/NearestCenterInfo"
+import CenterInformation from "../screens/doctor-portal/CenterInformation"
+
+import FindAmbulance from "../screens/ambulance-service/FindAmbulance";
 
 const Stack = createStackNavigator();
 //const Stack = createNativeStackNavigator();
@@ -255,6 +261,46 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="ChangeCurrentLocation"
                 component={ChangeCurrentLocation}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ExploreFindDoctors"
+                component={ExploreFindDoctors}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="DoctorsInformation"
+                component={DoctorsInformation}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="CenterInformation"
+                component={CenterInformation}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="NearestCenterInfo"
+                component={NearestCenterInfo}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="FindAmbulance"
+                component={FindAmbulance}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

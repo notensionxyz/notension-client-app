@@ -3,19 +3,33 @@ import { Dimensions, FlatList, Pressable, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { storageImageUrl } from '../../../helpers/imageUrl';
 import NotificationSuccess from '../../../components/popup-notification/NotificationSuccess';
+import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
 const viewHeight = (screenWidth / 2);
 const viewWidth = ((viewHeight / 2) * 3);
 
 function MedicalServices({ data }) {
+    const navigation = useNavigation();
     let newData = data.slice(0, data.length - 1);
     let ambulance = data[data.length - 1];
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [message, setMessage] = useState('Coming soon');
-    const navigate = () => {
-        setShowSuccessMessage(true);
+    
+    const navigate = (data) => {
+        if (data?.id === "1") {
+            navigation.navigate('ExploreFindDoctors');
+        } else if (data?.id === "2") {
+            setShowSuccessMessage(true);
+        } else if (data?.id === "3") {
+            setShowSuccessMessage(true);
+        } else if (data?.id === "4") {
+            setShowSuccessMessage(true);
+        } else if (data?.id === "5") {
+            setShowSuccessMessage(true);
+        }
     }
+
     return (
         <>
             {/* <View style={{
@@ -37,7 +51,7 @@ function MedicalServices({ data }) {
                 keyExtractor={item => item.id}
             />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', marginTop: -5 }}>
-                <Pressable onPress={() => { navigate() }}>
+                <Pressable onPress={() => { navigation.navigate('FindAmbulance') }}>
                     <View style={{ height: ((screenWidth / 3) * 2) - 3, width: screenWidth - 10, padding: 5, borderRadius: 10 }}>
                         <View style={{
                             justifyContent: 'space-between',
@@ -62,7 +76,6 @@ function MedicalServices({ data }) {
                                     shadowOpacity: 0.3,
                                     overflow: 'hidden'
                                 }} />
-
                         </View>
                     </View>
                 </Pressable>
@@ -74,7 +87,7 @@ function MedicalServices({ data }) {
 
 function ItemImage({ data, navigate }) {
     return (
-        <Pressable onPress={() => { navigate() }}>
+        <Pressable onPress={() => { navigate(data) }}>
             <View style={{ padding: 5 }}>
                 <View style={{
                     height: viewHeight,

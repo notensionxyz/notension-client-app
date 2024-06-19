@@ -7,14 +7,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import stateReducer from './reducers/stateReducer';
 import cartReducer from './reducers/cartReducer';
 import userChoiceReducer from './reducers/userChoiceReducer';
-
+import doctorReducer from './reducers/health-care/doctorReducer';
 const rootReducer = combineReducers({
     dashboard: dashboardReducer,
     user: userReducer,
     userChoice: userChoiceReducer,
     itemsByStoreReducer: itemsByStoreReducer,
     cartItems: cartReducer,
-    appState: stateReducer
+    appState: stateReducer,
+    doctorInfo: doctorReducer
 });
 
 const persistConfig = {

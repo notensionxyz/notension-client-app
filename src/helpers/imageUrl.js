@@ -3,6 +3,7 @@ import { Linking } from "react-native";
 import call from 'react-native-phone-call';
 
 export function storageImageUrl(path, filename) {
+    //console.log(`${STORAGE_URL}/${path}/${filename}`)
     return `${STORAGE_URL}/${path}/${filename}`;
 }
 

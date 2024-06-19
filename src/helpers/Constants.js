@@ -14,6 +14,7 @@ export const medicine_sliderTypeSubtypeImagesFolderName = 'medicine-slider-type-
 export const medicine_itemsImages = 'medicine-items-images';
 export const food_sliderTypeSubtypeImagesFolderName = 'food-slider-type-subtype-images';
 export const food_itemsImages = 'food-items-images';
+export const health_careImages = 'medical-service-provider-images';
 
 export const GET_DASHBOARD_INFO = '/public-api/v1/admin/all-appdashboard-data';
 export const GET_DISTRICT_INFO = '/public-api/v1/admin/all-district';
@@ -58,6 +59,14 @@ export const SEARCH_FOOD_STORE = '/client-app-api/v1/food/find-store';
 export const EXPLORE_FOOD_STORE = '/client-app-api/v1/food/explore-store';
 export const FOOD_PLACE_ORDER = '/client-app-api/v1/food/order';
 export const FOOD_ORDER_INFO = '/client-app-api/v1/food/order-info';
+
+export const EXPLORE_FIND_DOCTOR = '/client-app-api/v1/health-care/explore-find-doctors';
+export const FIND_NEAREST_DOCTOR = '/client-app-api/v1/health-care/get-nearest-doctors';
+export const FIND_DOCTOR_BY_DEPT = '/client-app-api/v1/health-care/get-doctors-by-dept';
+export const NEAREST_CONSULTATION_CENTER = '/client-app-api/v1/health-care/get-nearest-consultation-certer';
+export const CONSULTATION_CENTER_BY_DISTRICT = '/client-app-api/v1/health-care/get-consultation-certer';
+export const EXPLORE_CONSULTATION_CENTER = '/client-app-api/v1/health-care/explore-consultation-certer';
+export const FIND_DOCTOR_BY_CONSULTATION_CENTER = '/client-app-api/v1/health-care/get-doctors-by-center';
 
 export const MyFavouriteData = [
     { id: '1', image: require('../assets/gallery/favorite-1.jpg') },
