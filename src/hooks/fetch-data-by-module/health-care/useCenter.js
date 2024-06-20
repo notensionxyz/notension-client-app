@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
 import { Alert } from 'react-native';
-import { CONSULTATION_CENTER_BY_DISTRICT, EXPLORE_FIND_DOCTOR, FIND_DOCTOR_BY_DEPT, NEAREST_CONSULTATION_CENTER } from '../../../helpers/Constants';
+import { CONSULTATION_CENTER_BY_DISTRICT, EXPLORE_CONSULTATION_CENTER, EXPLORE_FIND_DOCTOR, FIND_DOCTOR_BY_DEPT, NEAREST_CONSULTATION_CENTER } from '../../../helpers/Constants';
 import { handleDoctorReducer } from '../../../store/reducers/health-care/doctorReducer';
 
 axios.defaults.withCredentials = true;
@@ -47,34 +47,6 @@ export const useCenter = () => {
                 data: 'dashboard',
             })
         );
-    };
-
-    const exploreFindDoctor = () => {
-        //console.log('exploreFindDoctor');
-        // resetReducer();
-        setProgressing(true);
-        AxiosTest
-            .get(EXPLORE_FIND_DOCTOR,
-                {
-                    params: {
-                        district_id: districtId,
-                    }
-                }
-            )
-            .then((res) => {
-
-                dispatch(
-                    handleDoctorReducer({
-                        type: 'SAVE_DEPT_INFO',
-                        data: res?.data?.result,
-                    })
-                );
-                setProgressing(false);
-            })
-            .catch((error) => {
-                setProgressing(false);
-                console.log(error);
-            });
     };
 
     const getNearestCenterInfo = (centerType, setCenterInfo) => {
@@ -148,6 +120,40 @@ export const useCenter = () => {
         }, 10000);
     }
 
+    const exploreConsultationCenter = (centerID, setExploreInfo) => {
+        //console.log('exploreFindDoctor');
+        // resetReducer();
+        setProgressing(true);
+        AxiosTest
+            .get(EXPLORE_CONSULTATION_CENTER,
+                {
+                    params: {
+                        CenterID: centerID,
+                    }
+                }
+            )
+            .then((res) => {
+                setExploreInfo(res?.data?.result);
+                // dispatch(
+                //     handleDoctorReducer({
+                //         type: 'SAVE_DEPT_INFO',
+                //         data: res?.data?.result,
+                //     })
+                // );
+                setProgressing(false);
+            })
+            .catch((error) => {
+                setProgressing(false);
+                console.log(error);
+            });
+        setTimeout(() => {
+            if (progressing) {
+                setProgressing(false);
+            }
+        }, 10000);
+    };
+
+
     useEffect(() => {
         if (error) {
             //userLogOut();
@@ -170,7 +176,7 @@ export const useCenter = () => {
         // saveItemsToReducer,
         // getNearestGroceryStoreInfo,
         // handleSearchStore,
-        exploreFindDoctor,
+        exploreConsultationCenter,
         getNearestCenterInfo,
         getCenterInfoByDistrict
         // resetLoadingStatus,

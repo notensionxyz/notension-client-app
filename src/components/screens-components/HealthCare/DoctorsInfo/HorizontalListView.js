@@ -4,16 +4,16 @@ import FastImage from 'react-native-fast-image';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { storageImageUrl } from '../../../../helpers/imageUrl';
-import { logoColor_1 } from '../../../../helpers/Constants';
+import { health_careImages, logoColor_1 } from '../../../../helpers/Constants';
 
 
 const screenWidth = Dimensions.get('window').width;
 
 export const MemoizedHorizontalListView = React.memo(HorizontalListView);
 
-function HorizontalListView({ data }) {
+function HorizontalListView({ data, showCenter = true }) {
     let demo_doctor_pic = require('../../../../assets/gallery/services/image.jpg');
-    if (data?.doctorprofile?.gender === "Female") {
+    if (data?.doctorInfo?.gender === "Female") {
         demo_doctor_pic = require('../../../../assets/gallery/services/female.jpg');
     }
     return (
@@ -32,11 +32,16 @@ function HorizontalListView({ data }) {
                 paddingBottom: 10,
             }}>
                 <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                    <Image source={demo_doctor_pic}
-                        style={{ height: (screenWidth * 0.28), width: (screenWidth * 0.21), resizeMode: 'cover', borderRadius: 6, }} />
+                    <FastImage source={data?.doctorInfo?.profile_pic && data?.doctorInfo?.profile_pic !== '' && data?.doctorInfo?.profile_pic !== null ? {
+                        uri: storageImageUrl(health_careImages, data?.doctorInfo?.profile_pic)
+                    } : demo_doctor_pic}
+                        style={{ height: (screenWidth * 0.28), width: (screenWidth * 0.21), resizeMode: 'cover', borderRadius: 6, }}
+                        resizeMode={FastImage.resizeMode.contain}
+                    />
+
                     <View style={{ paddingLeft: 15, flex: 1 }}>
-                        <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#ad3257' }}>{data?.doctorprofile?.doctor_name}</Text>
-                        <Text style={{ fontSize: 14, marginTop: 3, color: '#616161' }} numberOfLines={3} ellipsizeMode="tail">{data?.doctorprofile?.qualifications}</Text>
+                        <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#ad3257' }}>{data?.doctorInfo?.doctor_name}</Text>
+                        <Text style={{ fontSize: 14, marginTop: 3, color: '#616161' }} numberOfLines={3} ellipsizeMode="tail">{data?.doctorInfo?.qualifications}</Text>
                     </View>
                 </View>
                 <View style={{
@@ -47,9 +52,11 @@ function HorizontalListView({ data }) {
                     //alignItems: 'center',
                     //justifyContent: 'center'
                 }}>
-                    <Text style={{ fontSize: 16, color: 'white', padding: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">{data?.doctorprofile?.speciality}</Text>
+                    <Text style={{ fontSize: 16, color: 'white', padding: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">{data?.doctorInfo?.speciality}</Text>
                 </View>
-                <Text adjustsFontSizeToFit style={{ fontSize: 16, marginTop: 5, paddingLeft: 5, color: '#616161', fontWeight: 'bold', lineHeight: 22 }} numberOfLines={1} ellipsizeMode="tail">{data?.consultationcenter?.center_name}</Text>
+                {showCenter &&
+                    <Text adjustsFontSizeToFit style={{ fontSize: 16, marginTop: 5, paddingLeft: 5, color: '#616161', fontWeight: 'bold', lineHeight: 22 }} numberOfLines={1} ellipsizeMode="tail">{data?.consultationcenter?.center_name}</Text>
+                }
             </View>
         </View>
     );

@@ -80,6 +80,13 @@ function CenterInformation({ route }) {
         navigation.navigate('NearestCenterInfo', { options });
     }, []);
 
+    const exploreCenter = React.useCallback((data) => {
+        //console.log(data);
+
+        navigation.navigate('ExploreConsultationCenter', { data });
+    }, []);
+
+
     return (
         <>
             <ProgressStyle2 visible={progressing} />
@@ -110,7 +117,7 @@ function CenterInformation({ route }) {
                         updateCellsBatchingPeriod={20}
                         removeClippedSubviews={false}
                         scrollEventThrottle={200}
-                        onEndReachedThreshold={1.7}
+                        onEndReachedThreshold={1.4}
                         onEndReached={() => {
                             loadMoreResults();
                         }}
@@ -119,7 +126,7 @@ function CenterInformation({ route }) {
                         // keyExtractor={(item, index) => index.toString()}
                         keyExtractor={item => item?._id}
                         renderItem={({ item, index }) =>
-                            <MemoizedVerticalListView data={item} showDistance={options?.findNearestCenter} />}
+                            <MemoizedVerticalListView data={item} showDistance={options?.findNearestCenter} exploreCenter={exploreCenter} />}
                     />
                 </View>
             </View>

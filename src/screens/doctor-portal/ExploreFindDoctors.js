@@ -79,6 +79,20 @@ function ExploreFindDoctors() {
         navigation.navigate('CenterInformation', { options });
     }, []);
 
+    const findDoctorsByDept = React.useCallback((selected) => {
+        const options = {
+            searchDoctors: false,
+            findNearestDoctors: false,
+            findDoctorsByDept: true,
+            findDoctorsByCenter: false,
+            Title: `Doctors Info (${selected?.dept_name})`,
+            deptId: selected?._id,
+            centerId: '303030303030303030303030',
+        };
+        console.log(selected);
+        navigation.navigate('DoctorsInformation', { options });
+    }, []);
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f9f9f9', alignItems: 'center' }}>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
@@ -146,7 +160,7 @@ function ExploreFindDoctors() {
                         </Pressable>
                     </View>
                     <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
-                        <ManageListView allDeptInfo={allDeptInfo} popularDoctors={popularDoctors} />
+                        <ManageListView allDeptInfo={allDeptInfo} popularDoctors={popularDoctors} findDoctors={findDoctorsByDept} />
                     </View>
                 </ScrollView>
             </View>

@@ -10,7 +10,7 @@ let remainder = 0;
 
 const screenWidth = Dimensions.get('window').width;
 
-function ManageListView({ allDeptInfo, popularDoctors }) {
+function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
     const navigation = useNavigation();
     const [firstFive, setFirstFive] = useState(popularDoctors?.slice(0, 5) || []);
     const [doctors6To10, setDoctors6To10] = useState(popularDoctors?.slice(5, 10) || []);
@@ -55,19 +55,7 @@ function ManageListView({ allDeptInfo, popularDoctors }) {
         // setSubtype(allDeptInfo?);
     }, []);
 
-    const findDoctors = React.useCallback((selected) => {
-        const options = {
-            searchDoctors: false,
-            findNearestDoctors: false,
-            findDoctorsByDept: true,
-            findDoctorsByCenter: false,
-            Title: `Doctors Info (${selected?.dept_name})`,
-            deptId: selected?._id,
-            centerId: '303030303030303030303030',
-        };
-        //console.log(selected);
-        navigation.navigate('DoctorsInformation', { options });
-    }, []);
+
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>

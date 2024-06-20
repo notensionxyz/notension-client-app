@@ -36,7 +36,7 @@ import ExploreFindDoctors from "../screens/doctor-portal/ExploreFindDoctors";
 import DoctorsInformation from "../screens/doctor-portal/DoctorsInformation";
 import NearestCenterInfo from "../screens/doctor-portal/NearestCenterInfo"
 import CenterInformation from "../screens/doctor-portal/CenterInformation"
-
+import ExploreConsultationCenter from "../screens/doctor-portal/ExploreConsultationCenter"
 import FindAmbulance from "../screens/ambulance-service/FindAmbulance";
 
 const Stack = createStackNavigator();
@@ -293,6 +293,14 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="NearestCenterInfo"
                 component={NearestCenterInfo}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ExploreConsultationCenter"
+                component={ExploreConsultationCenter}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

@@ -11,56 +11,58 @@ const screenWidth = Dimensions.get('window').width;
 
 export const MemoizedVerticalListView = React.memo(VerticalListView);
 
-function VerticalListView({ data, showDistance }) {
+function VerticalListView({ data, showDistance, exploreCenter }) {
     let cardMargin = 2;
     let cardWidth = screenWidth - (cardMargin * 3);
 
     return (
         <React.Fragment key={data?._id}>
-            <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', justifyContent: 'center' }}>
-                <View style={{
-                    //height: screenWidth * 0.60,
-                    width: cardWidth,
-                    margin: cardMargin,
-                    backgroundColor: 'white',
-                    borderRadius: 5,
-                    shadowRadius: 3,
-                    elevation: 1,
-                    shadowOffset: { width: 0, height: 1 },
-                    shadowOpacity: 0.1,
-                    backgroundColor: 'white',
-                    padding: 8
-                }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{
-                            height: screenWidth * 0.40,
-                            width: screenWidth * 0.27,
-                            overflow: 'hidden',
-                            borderRadius: 10,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                            <FastImage
-                                style={{ height: '180%', width: '380%', borderRadius: 10, }}
-                                source={{
-                                    uri: storageImageUrl(health_careImages, data?.medical_center_banner_app),
-                                    priority: FastImage.priority.normal,
-                                }}
-                                resizeMode={FastImage.resizeMode.contain}
-                            />
+            <Pressable onPress={() => { exploreCenter(data); }}>
+                <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{
+                        //height: screenWidth * 0.60,
+                        width: cardWidth,
+                        margin: cardMargin,
+                        backgroundColor: 'white',
+                        borderRadius: 5,
+                        shadowRadius: 3,
+                        elevation: 1,
+                        shadowOffset: { width: 0, height: 1 },
+                        shadowOpacity: 0.1,
+                        backgroundColor: 'white',
+                        padding: 8
+                    }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{
+                                height: screenWidth * 0.40,
+                                width: screenWidth * 0.27,
+                                overflow: 'hidden',
+                                borderRadius: 10,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}>
+                                <FastImage
+                                    style={{ height: '180%', width: '380%', borderRadius: 10, }}
+                                    source={{
+                                        uri: storageImageUrl(health_careImages, data?.medical_center_banner_app),
+                                        priority: FastImage.priority.normal,
+                                    }}
+                                    resizeMode={FastImage.resizeMode.contain}
+                                />
+                            </View>
+                            <View style={{ paddingLeft: 15, flex: 1 }}>
+                                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#ad3257' }} numberOfLines={2} ellipsizeMode="tail">{data?.center_name}</Text>
+                                {showDistance &&
+                                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'blue' }} >{((data?.distance) / 1000).toFixed(2)} kilometer(s) away</Text>
+                                }
+                                <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'red' }} >{data?.center_type}</Text>
+                                <Text style={{ fontSize: 15, marginTop: 4, color: '#616161', lineHeight: 22 }} numberOfLines={4} ellipsizeMode="tail">{data?.address}</Text>
+                            </View>
                         </View>
-                        <View style={{ paddingLeft: 15, flex: 1 }}>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#ad3257' }} numberOfLines={2} ellipsizeMode="tail">{data?.center_name}</Text>
-                            {showDistance &&
-                                <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'blue' }} >{((data?.distance) / 1000).toFixed(2)} kilometer(s) away</Text>
-                            }
-                            <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'red' }} >{data?.center_type}</Text>
-                            <Text style={{ fontSize: 15, marginTop: 4, color: '#616161', lineHeight: 22 }} numberOfLines={4} ellipsizeMode="tail">{data?.address}</Text>
-                        </View>
-                    </View>
 
+                    </View>
                 </View>
-            </View>
+            </Pressable>
         </React.Fragment >
     );
 }
