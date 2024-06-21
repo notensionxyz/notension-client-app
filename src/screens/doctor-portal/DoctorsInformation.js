@@ -19,6 +19,7 @@ function DoctorsInformation({ route }) {
     const ref = useRef(null);
     const navigation = useNavigation();
     const options = route.params.options;
+    const [visible, setVisible] = useState(true);
     const [doctorsInfo, setDoctorsInfo] = useState([]);
     //const dispatch = useDispatch();
     //const { productInfoByShop } = useSelector((state) => state.itemsByStoreReducer);
@@ -33,7 +34,8 @@ function DoctorsInformation({ route }) {
         progressing,
         setLoadingMore,
         getNearestDoctorsInfo,
-        getDoctorsInfoByDistrict
+        getDoctorsInfoByDistrict,
+        getDoctorsInfoByCenter
     } = useDoctor();
 
     useEffect(() => {
@@ -48,6 +50,11 @@ function DoctorsInformation({ route }) {
 
         if (options?.findDoctorsByDept) {
             getDoctorsInfoByDistrict(options?.deptId, setDoctorsInfo, pageNo, setPageNo);
+        }
+
+        if (options?.findDoctorsByCenter) {
+            getDoctorsInfoByCenter(options?.centerId, options?.deptId, setDoctorsInfo, pageNo, setPageNo);
+            setVisible(false);
         }
 
         const backAction = () => {
@@ -75,8 +82,10 @@ function DoctorsInformation({ route }) {
         setTimeout(() => {
             if (options.searchProduct) {
                 //handleSearch(searchText, pageNo, setPageNo);
-            } else {
+            } else if (options?.findDoctorsByDept) {
                 getDoctorsInfoByDistrict(options?.deptId, setDoctorsInfo, pageNo, setPageNo);
+            } else if (options?.findDoctorsByCenter) {
+                getDoctorsInfoByCenter(options?.centerId, options?.deptId, setDoctorsInfo, pageNo, setPageNo);
             }
         }, 500);
     }
@@ -126,7 +135,7 @@ function DoctorsInformation({ route }) {
                         // keyExtractor={(item, index) => index.toString()}
                         keyExtractor={item => item?._id}
                         renderItem={({ item, index }) =>
-                            <VerticalListView data={item} showDept={options?.findNearestDoctors} />}
+                            <VerticalListView data={item} showDept={true} showCenter={visible}/>}
                     />
                 </View>
             </View>

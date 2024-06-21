@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
 import { Alert } from 'react-native';
-import { EXPLORE_FIND_DOCTOR, FIND_DOCTOR_BY_DEPT, FIND_NEAREST_DOCTOR } from '../../../helpers/Constants';
+import { EXPLORE_FIND_DOCTOR, FIND_DOCTOR_BY_CONSULTATION_CENTER, FIND_DOCTOR_BY_DEPT, FIND_NEAREST_DOCTOR } from '../../../helpers/Constants';
 import { handleDoctorReducer } from '../../../store/reducers/health-care/doctorReducer';
 
 axios.defaults.withCredentials = true;
@@ -148,6 +148,47 @@ export const useDoctor = () => {
         }, 10000);
     }
 
+    const getDoctorsInfoByCenter = (centerId, deptId, setDoctorsInfo, pageNo, setPageNo) => {
+
+        //setProgressing(true);
+        const props = {
+            page: pageNo,
+            deptId: deptId,
+            centerId: centerId
+        };
+
+        AxiosTest
+            .post(FIND_DOCTOR_BY_CONSULTATION_CENTER, props)
+            .then(response => {
+                if (response?.data?.result.length > 0) {
+                    setPageNo(pageNo + 1);
+                    setDoctorsInfo((prevInfo) => [...prevInfo, ...response?.data?.result]);
+                }
+
+                if (response?.data?.result.length < 20) {
+                    setAllLoaded(true);
+                }
+
+                //console.log('response?.data?.result.length : ', response?.data?.result.length);
+                if (pageNo === 1 && response?.data?.result.length < 1) {
+                    setItemNotfound(true);
+                }
+
+                setLoadingMore(false);
+            })
+            .catch(error => {
+                console.log('Error : ', error.response.data)
+                setProgressing(false);
+                setAllLoaded(true);
+            })
+        setTimeout(() => {
+            if (progressing) {
+                setProgressing(false);
+                setAllLoaded(true);
+            }
+        }, 10000);
+    }
+
     useEffect(() => {
         if (error) {
             //userLogOut();
@@ -172,8 +213,8 @@ export const useDoctor = () => {
         // handleSearchStore,
         exploreFindDoctor,
         getNearestDoctorsInfo,
-        getDoctorsInfoByDistrict
-        // resetLoadingStatus,
+        getDoctorsInfoByDistrict,
+        getDoctorsInfoByCenter,
         // resetReducer,
         // setCurrentModule
     };

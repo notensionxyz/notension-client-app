@@ -12,6 +12,7 @@ const screenWidth = Dimensions.get('window').width;
 export const MemoizedVerticalListView = React.memo(VerticalListView);
 
 function VerticalListView({ data, showDistance, exploreCenter }) {
+    
     let cardMargin = 2;
     let cardWidth = screenWidth - (cardMargin * 3);
 

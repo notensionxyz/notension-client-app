@@ -12,53 +12,56 @@ const screenWidth = Dimensions.get('window').width;
 export const MemoizedHorizontalListView = React.memo(HorizontalListView);
 
 function HorizontalListView({ data, showCenter = true }) {
-    let demo_doctor_pic = require('../../../../assets/gallery/services/image.jpg');
+    const navigation = useNavigation();
+    let demo_doctor_pic = require('../../../../assets/gallery/services/male.jpg');
     if (data?.doctorInfo?.gender === "Female") {
         demo_doctor_pic = require('../../../../assets/gallery/services/female.jpg');
     }
     return (
-        <View style={{ width: screenWidth * 0.85 }}>
-            <View style={{
-                //height: (screenWidth * 0.50),
-                marginHorizontal: 5,
-                // marginTop: 5,
-                padding: 6,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                shadowRadius: 10,
-                elevation: 1,
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.1,
-                paddingBottom: 10,
-            }}>
-                <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                    <FastImage source={data?.doctorInfo?.profile_pic && data?.doctorInfo?.profile_pic !== '' && data?.doctorInfo?.profile_pic !== null ? {
-                        uri: storageImageUrl(health_careImages, data?.doctorInfo?.profile_pic)
-                    } : demo_doctor_pic}
-                        style={{ height: (screenWidth * 0.28), width: (screenWidth * 0.21), resizeMode: 'cover', borderRadius: 6, }}
-                        resizeMode={FastImage.resizeMode.contain}
-                    />
-
-                    <View style={{ paddingLeft: 15, flex: 1 }}>
-                        <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#ad3257' }}>{data?.doctorInfo?.doctor_name}</Text>
-                        <Text style={{ fontSize: 14, marginTop: 3, color: '#616161' }} numberOfLines={3} ellipsizeMode="tail">{data?.doctorInfo?.qualifications}</Text>
-                    </View>
-                </View>
+        <Pressable onPress={() => { navigation.navigate('ProfileOfDoctor', { data }) }}>
+            <View style={{ width: screenWidth * 0.85 }}>
                 <View style={{
-                    marginTop: 5,
-                    //width: screenWidth * 0.75,
-                    paddingLeft: 5,
-                    backgroundColor: logoColor_1,
-                    //alignItems: 'center',
-                    //justifyContent: 'center'
+                    //height: (screenWidth * 0.50),
+                    marginHorizontal: 5,
+                    // marginTop: 5,
+                    padding: 6,
+                    backgroundColor: 'white',
+                    borderRadius: 10,
+                    shadowRadius: 10,
+                    elevation: 1,
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.1,
+                    paddingBottom: 10,
                 }}>
-                    <Text style={{ fontSize: 16, color: 'white', padding: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">{data?.doctorInfo?.speciality}</Text>
+                    <View style={{ flexDirection: 'row', marginTop: 2 }}>
+                        <FastImage source={data?.doctorInfo?.profile_pic && data?.doctorInfo?.profile_pic !== '' && data?.doctorInfo?.profile_pic !== null ? {
+                            uri: storageImageUrl(health_careImages, data?.doctorInfo?.profile_pic)
+                        } : demo_doctor_pic}
+                            style={{ height: (screenWidth * 0.28), width: (screenWidth * 0.21), resizeMode: 'cover', borderRadius: 6, }}
+                            resizeMode={FastImage.resizeMode.contain}
+                        />
+
+                        <View style={{ paddingLeft: 15, flex: 1 }}>
+                            <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#ad3257' }}>{data?.doctorInfo?.doctor_name}</Text>
+                            <Text style={{ fontSize: 14, marginTop: 3, color: '#616161' }} numberOfLines={3} ellipsizeMode="tail">{data?.doctorInfo?.qualifications}</Text>
+                        </View>
+                    </View>
+                    <View style={{
+                        marginTop: 5,
+                        //width: screenWidth * 0.75,
+                        paddingLeft: 5,
+                        backgroundColor: logoColor_1,
+                        //alignItems: 'center',
+                        //justifyContent: 'center'
+                    }}>
+                        <Text style={{ fontSize: 16, color: 'white', padding: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">{data?.doctorInfo?.speciality}</Text>
+                    </View>
+                    {showCenter &&
+                        <Text adjustsFontSizeToFit style={{ fontSize: 16, marginTop: 5, paddingLeft: 5, color: '#616161', fontWeight: 'bold', lineHeight: 22 }} numberOfLines={1} ellipsizeMode="tail">{data?.consultationcenter?.center_name}</Text>
+                    }
                 </View>
-                {showCenter &&
-                    <Text adjustsFontSizeToFit style={{ fontSize: 16, marginTop: 5, paddingLeft: 5, color: '#616161', fontWeight: 'bold', lineHeight: 22 }} numberOfLines={1} ellipsizeMode="tail">{data?.consultationcenter?.center_name}</Text>
-                }
             </View>
-        </View>
+        </Pressable>
     );
 }
 

@@ -16,7 +16,7 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
     const [doctors6To10, setDoctors6To10] = useState(popularDoctors?.slice(5, 10) || []);
     const [doctors11To15, setDoctors11To15] = useState(popularDoctors?.slice(10, 15) || []);
     const [doctors16To20, setDoctors16To20] = useState(popularDoctors?.slice(15, 20) || []);
-    const [doctors21To25, setDoctors21To25] = useState(popularDoctors?.slice(21, 25) || []);
+    const [doctors21To25, setDoctors21To25] = useState(popularDoctors?.slice(20, 25) || []);
 
     const [firstTwelve, setFirstTwelve] = useState(allDeptInfo?.slice(0, 12) || []);
     const [elements13To16, setElements13To16] = useState(allDeptInfo?.slice(12, 16) || []);
@@ -25,35 +25,19 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
     const [lastInfo, setLastInfo] = useState(allDeptInfo?.slice(-4) || []);
 
     useEffect(() => {
-        // if (allDeptInfo?.length > 10) {
-        //     remainder = parseFloat(allDeptInfo?.length) % 3;
-        // } else {
-        //     remainder = parseFloat(allDeptInfo?.length) % 2;
-        // }
+        setFirstFive(popularDoctors?.slice(0, 5) || []);
+        setDoctors6To10(popularDoctors?.slice(5, 10) || []);
+        setDoctors11To15(popularDoctors?.slice(10, 15) || []);
+        setDoctors16To20(popularDoctors?.slice(15, 20) || []);
+        setDoctors21To25(popularDoctors?.slice(20, 25) || []);
 
-        // if (remainder === 2) {
-        //     const lastTwoElements = allDeptInfo?.slice(-2);
-        //     setLastInfo(lastTwoElements);
-        //     const remainingElements = allDeptInfo?.slice(0, (allDeptInfo?.length - 2));
-        //     setReamainingInfo(remainingElements);
-        // }
+        setFirstTwelve(allDeptInfo?.slice(0, 12) || []);
+        setElements13To16(allDeptInfo?.slice(12, 16) || []);
+        setElements17To20(allDeptInfo?.slice(16, 20) || []);
+        setElements21To29(allDeptInfo?.slice(20, 29) || []);
+        setLastInfo(allDeptInfo?.slice(-4) || []);
 
-        // if (remainder === 1) {
-
-        //     const lastElement = allDeptInfo?.slice(-1);
-        //     setLastInfo(lastElement);
-        //     const remainingElements = allDeptInfo?.slice(0, (allDeptInfo?.length - 1));
-        //     setReamainingInfo(remainingElements);
-        //     //const lastElement = allDeptInfo?[allDeptInfo?.length - 1];
-        //     //console.log('Length : ', allDeptInfo?.length, 'Remailder :', remainder, 'lastTwoElements', lastElement);
-        // }
-
-        // if (remainder === 0) {
-        //     setReamainingInfo(allDeptInfo);
-        //     setLastInfo([]);
-        // }
-        // setSubtype(allDeptInfo?);
-    }, []);
+    }, [allDeptInfo]);
 
 
 

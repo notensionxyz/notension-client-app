@@ -34,9 +34,10 @@ import SharedElementExample from "../screens/sharedElementTransitions";
 import FoodShopNavigation from "../screens/food-shop/FoodShopNavigation";
 import ExploreFindDoctors from "../screens/doctor-portal/ExploreFindDoctors";
 import DoctorsInformation from "../screens/doctor-portal/DoctorsInformation";
-import NearestCenterInfo from "../screens/doctor-portal/NearestCenterInfo"
-import CenterInformation from "../screens/doctor-portal/CenterInformation"
-import ExploreConsultationCenter from "../screens/doctor-portal/ExploreConsultationCenter"
+import NearestCenterInfo from "../screens/doctor-portal/NearestCenterInfo";
+import CenterInformation from "../screens/doctor-portal/CenterInformation";
+import ExploreConsultationCenter from "../screens/doctor-portal/ExploreConsultationCenter";
+import ProfileOfDoctor from "../screens/doctor-portal/ProfileOfDoctor";
 import FindAmbulance from "../screens/ambulance-service/FindAmbulance";
 
 const Stack = createStackNavigator();
@@ -301,6 +302,14 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="ExploreConsultationCenter"
                 component={ExploreConsultationCenter}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ProfileOfDoctor"
+                component={ProfileOfDoctor}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

@@ -7,6 +7,9 @@ import { ScrollView } from 'react-native-virtualized-view';
 import HeaderFoodModule from '../../components/header/HeaderFoodModule';
 import { useCenter } from '../../hooks/fetch-data-by-module/health-care/useCenter';
 import ManageListView from '../../components/screens-components/HealthCare/DeptInfoByCenter/ManageListView';
+import { useFavouriteStore } from '../../hooks/user/favorite-shop';
+import { storageImageUrl } from '../../helpers/imageUrl';
+import { health_careImages } from '../../helpers/Constants';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -16,14 +19,16 @@ function ExploreConsultationCenter({ route }) {
     const centerInfo = route.params.data;
     const navigation = useNavigation();
     const [exploreInfo, setExploreInfo] = useState([]);
-    const { customstore_id, merchantId, allDeptInfo, popularDoctors } = useSelector((state) => state.doctorInfo);
 
     const { exploreConsultationCenter, progressing } = useCenter();
+    const {
+        isAddedToFavouriteList,
+        addToFavouriteList,
+        visible
+    } = useFavouriteStore();
+
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
-    const [firstFive, setFirstTwelve] = useState(popularDoctors?.slice(0, 5) || []);
-    const [doctors6To110, setElements13To16] = useState(popularDoctors?.slice(5, 10) || []);
-    const [doctors11To115, setElements17To20] = useState(popularDoctors?.slice(10, 15) || []);
-    const [doctors16To120, setElements21To29] = useState(popularDoctors?.slice(15, 20) || []);
+    
 
     useEffect(() => {
         exploreConsultationCenter(centerInfo?._id, setExploreInfo);
@@ -52,23 +57,59 @@ function ExploreConsultationCenter({ route }) {
             findNearestDoctors: false,
             findDoctorsByDept: false,
             findDoctorsByCenter: true,
-            Title: `Doctors Info (${selected?.dept_name})`,
-            deptId: '303030303030303030303030',
-            centerId: '303030303030303030303030',
+            Title: `Doctors Info (${selected?.deptInfo?.dept_name})`,
+            deptId: selected?.deptInfo?._id,
+            centerId: centerInfo?._id,
         };
-        //console.log('again - pressss');
+
 
         navigation.navigate('DoctorsInformation', { options });
     }, []);
 
+    const checkIsLoggedinAndProcess = (action) => {
+        if (isLoggedin) {
+            addToFavouriteList(visitedFoodStore, merchantType);
+        } else {
+            navigation.navigate('Login')
+        }
+    }
+
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#f9f9f9', alignItems: 'center' }}>
-            <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
+            <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
                 <HeaderFoodModule toggleDrawer={navigation} />
                 <ProgressStyle2 visible={progressing} />
                 <ScrollView>
                     <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
-                        <ManageListView allDeptInfo={exploreInfo?.departmentsInfoByCenter} popularDoctors={exploreInfo?.popularDoctorsByCenter} findDoctors={findDoctorsByDept} />
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                            <View style={{ height: screenWidth / 2, width: screenWidth, alignItems: 'center', justifyContent: 'center' }}>
+                                <Image source={{ uri: storageImageUrl(health_careImages, centerInfo?.medical_center_banner_app) }} style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }} />
+                            </View>
+                        </View>
+                        <View style={{ width: screenWidth - 8, padding: 10, backgroundColor: 'white' }}>
+                            <Text style={{ fontSize: 18, color: '#006400', fontWeight: 'bold', paddingLeft: 5 }}>{centerInfo?.center_name}</Text>
+                            <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                                <Image source={require('../../assets/icon/ic_place_blue.png')}
+                                    style={{ width: 25, height: 25, tintColor: 'blue', resizeMode: 'contain' }} />
+                                <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>{centerInfo?.address}</Text>
+                            </View>
+                        </View>
+                        {!isAddedToFavouriteList(centerInfo?._id, 'ConsultationCenter') &&
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    right: screenWidth / 30,
+                                    top: screenWidth / 30,
+                                }}>
+                                <Pressable onPress={() => { checkIsLoggedinAndProcess('addToFavourite'); }}>
+                                    <Image source={require('../../assets/icon/add_favourite.png')}
+                                        style={{ width: 100, height: 50, resizeMode: 'contain' }} />
+                                </Pressable>
+                            </View>
+                        }
+                        {exploreInfo?.departmentsInfoByCenter?.length > 0 &&
+                            <ManageListView allDeptInfo={exploreInfo?.departmentsInfoByCenter} popularDoctors={exploreInfo?.popularDoctorsByCenter} findDoctors={findDoctorsByDept} />
+                        }
                     </View>
                 </ScrollView>
             </View>

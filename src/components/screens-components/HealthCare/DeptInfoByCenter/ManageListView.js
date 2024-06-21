@@ -115,7 +115,7 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                             contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
                             horizontal
                             data={doctors6To10}
-                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#f5dfeb'} />}
+                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#f5dfeb'} showCenter={false}/>}
                             keyExtractor={item => item._id}
                         />
                     </View>
@@ -145,7 +145,7 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                             contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
                             horizontal
                             data={doctors11To15}
-                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#e5dff5'} />}
+                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#e5dff5'} showCenter={false}/>}
                             keyExtractor={item => item._id}
                         />
                     </View>
@@ -175,7 +175,7 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                             contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
                             horizontal
                             data={doctors16To20}
-                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#daf5e1'} />}
+                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#daf5e1'} showCenter={false}/>}
                             keyExtractor={item => item._id}
                         />
                     </View>

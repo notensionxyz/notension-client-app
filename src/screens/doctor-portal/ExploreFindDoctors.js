@@ -168,47 +168,4 @@ function ExploreFindDoctors() {
     );
 }
 
-function ItemNews({ data }) {
-    let demo_doctor_pic = require('../../assets/gallery/services/male.jpg');
-    if (data?.doctorprofile?.gender === "Female") {
-        demo_doctor_pic = require('../../assets/gallery/services/female.jpg');
-    }
-    return (
-        <View style={{ width: screenWidth * 0.85 }}>
-            <View style={{
-                height: (screenWidth * 0.50),
-                marginHorizontal: 5,
-                // marginTop: 5,
-                padding: 6,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                shadowRadius: 10,
-                elevation: 3,
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.3,
-            }}>
-                <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                    <Image source={demo_doctor_pic}
-                        style={{ height: (screenWidth * 0.28), width: (screenWidth * 0.21), resizeMode: 'cover', borderRadius: 6, }} />
-                    <View style={{ paddingLeft: 15, flex: 1 }}>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#616161' }}>{data?.doctorprofile?.doctor_name}</Text>
-                        <Text style={{ fontSize: 14, marginTop: 3, color: '#616161', lineHeight: 18 }} numberOfLines={3} ellipsizeMode="tail">{data?.doctorprofile?.qualifications}</Text>
-                    </View>
-                </View>
-                <View style={{
-                    marginTop: 5,
-                    //width: screenWidth * 0.75,
-                    paddingLeft: 5,
-                    backgroundColor: logoColor_1,
-                    //alignItems: 'center',
-                    //justifyContent: 'center'
-                }}>
-                    <Text style={{ fontSize: 16, color: 'white', padding: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">{data?.doctorprofile?.speciality}</Text>
-                </View>
-                <Text adjustsFontSizeToFit style={{ fontSize: 16, marginTop: 5, paddingLeft: 5, color: '#616161', fontWeight: 'bold', lineHeight: 22 }} numberOfLines={1} ellipsizeMode="tail">{data?.consultationcenter?.center_name}</Text>
-            </View>
-        </View>
-    );
-}
-
 export default ExploreFindDoctors;
