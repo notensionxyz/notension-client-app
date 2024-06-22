@@ -59,6 +59,7 @@ export default function FooterExploreStore(props) {
                     marginTop: -2,
                 }}>Call Us</Text>
             </TouchableOpacity>
+            
             <TouchableOpacity onPress={() => { navigateTo(); }}
                 style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

@@ -11,7 +11,6 @@ import { useFavouriteStore } from '../../hooks/user/favorite-shop';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import { health_careImages } from '../../helpers/Constants';
 
-
 const screenWidth = Dimensions.get('window').width;
 
 function ExploreConsultationCenter({ route }) {
@@ -28,10 +27,9 @@ function ExploreConsultationCenter({ route }) {
     } = useFavouriteStore();
 
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
-    
 
     useEffect(() => {
-        exploreConsultationCenter(centerInfo?._id, setExploreInfo);
+        exploreConsultationCenter(centerInfo, setExploreInfo);
         const backAction = () => {
             navigation.goBack();
             return true;
@@ -62,7 +60,6 @@ function ExploreConsultationCenter({ route }) {
             centerId: centerInfo?._id,
         };
 
-
         navigation.navigate('DoctorsInformation', { options });
     }, []);
 
@@ -73,7 +70,7 @@ function ExploreConsultationCenter({ route }) {
             navigation.navigate('Login')
         }
     }
-
+    
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
             <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
@@ -108,7 +105,11 @@ function ExploreConsultationCenter({ route }) {
                             </View>
                         }
                         {exploreInfo?.departmentsInfoByCenter?.length > 0 &&
-                            <ManageListView allDeptInfo={exploreInfo?.departmentsInfoByCenter} popularDoctors={exploreInfo?.popularDoctorsByCenter} findDoctors={findDoctorsByDept} />
+                            <ManageListView
+                                allDeptInfo={exploreInfo?.departmentsInfoByCenter}
+                                popularDoctors={exploreInfo?.popularDoctorsByCenter}
+                                findDoctors={findDoctorsByDept}
+                            />
                         }
                     </View>
                 </ScrollView>

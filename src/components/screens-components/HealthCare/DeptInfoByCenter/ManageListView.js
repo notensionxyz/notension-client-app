@@ -9,7 +9,7 @@ let remainder = 0;
 
 const screenWidth = Dimensions.get('window').width;
 
-function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
+function ManageListView({ allDeptInfo, popularDoctors, findDoctors, centerInfo }) {
     const navigation = useNavigation();
     const [firstFive, setFirstFive] = useState([]);
     const [doctors6To10, setDoctors6To10] = useState([]);
@@ -115,7 +115,7 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                             contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
                             horizontal
                             data={doctors6To10}
-                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#f5dfeb'} showCenter={false}/>}
+                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#f5dfeb'} showCenter={false} />}
                             keyExtractor={item => item._id}
                         />
                     </View>
@@ -145,7 +145,7 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                             contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
                             horizontal
                             data={doctors11To15}
-                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#e5dff5'} showCenter={false}/>}
+                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#e5dff5'} showCenter={false} />}
                             keyExtractor={item => item._id}
                         />
                     </View>
@@ -175,7 +175,7 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                             contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
                             horizontal
                             data={doctors16To20}
-                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#daf5e1'} showCenter={false}/>}
+                            renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#daf5e1'} showCenter={false} />}
                             keyExtractor={item => item._id}
                         />
                     </View>

@@ -120,26 +120,24 @@ export const useCenter = () => {
         }, 10000);
     }
 
-    const exploreConsultationCenter = (centerID, setExploreInfo) => {
-        //console.log('exploreFindDoctor');
-        // resetReducer();
+    const exploreConsultationCenter = (centerInfo, setExploreInfo) => {
+        dispatch(
+            handleDoctorReducer({
+                type: 'SAVE_CENTER_INFO',
+                data: centerInfo,
+            })
+        );
         setProgressing(true);
         AxiosTest
             .get(EXPLORE_CONSULTATION_CENTER,
                 {
                     params: {
-                        CenterID: centerID,
+                        CenterID: centerInfo?._id,
                     }
                 }
             )
             .then((res) => {
                 setExploreInfo(res?.data?.result);
-                // dispatch(
-                //     handleDoctorReducer({
-                //         type: 'SAVE_DEPT_INFO',
-                //         data: res?.data?.result,
-                //     })
-                // );
                 setProgressing(false);
             })
             .catch((error) => {

@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import SearchField from '../../components/screens-components/Common/SearchField';
-import FooterCommon from '../../components/footer/FooterCommon';
-
+import FastImage from 'react-native-fast-image';
 import { useCenter } from '../../hooks/fetch-data-by-module/health-care/useCenter';
 import { MemoizedVerticalListView } from '../../components/screens-components/HealthCare/ConsultationCenter/VerticalListView';
 
@@ -99,7 +98,40 @@ function CenterInformation({ route }) {
                 <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
                     <FlatList
                         ListHeaderComponent={
-                            null
+                            <Pressable onPress={() => { findCenter(); }}>
+                                <View style={{
+                                    height: (((screenWidth / 8) * 3) - 3),
+                                    width: screenWidth - 10,
+                                    borderRadius: 8,
+                                    justifyContent: 'center',
+                                    marginBottom: 5,
+                                    marginTop: 3
+                                }}>
+                                    <View style={{
+                                        borderRadius: 8,
+                                        shadowRadius: 8,
+                                        elevation: 3,
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.3,
+                                        backgroundColor: 'white',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}>
+                                        <FastImage
+                                            source={require('../../assets/banner/consultation_center.jpg')}
+                                            resizeMode={FastImage.resizeMode.contain}
+                                            style={{
+                                                height: '100%',
+                                                width: '100%',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                padding: 10,
+                                                borderRadius: 8,
+                                                overflow: 'hidden'
+                                            }} />
+                                    </View>
+                                </View>
+                            </Pressable>
                         }
                         ListFooterComponent={
                             <View>

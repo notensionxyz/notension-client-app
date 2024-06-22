@@ -46,6 +46,7 @@ const doctorReducer = createSlice({
                     nearestHospitalInfo: [],
                     topHospitalInCountry: [],
                     hospitalInfoByDistrict: [],
+                    currentCenter:{},
                     pageNoForPopular: 2,
                 };
             }
@@ -166,6 +167,9 @@ const doctorReducer = createSlice({
             else if (payload.type == 'SAVE_POPULAR_PRODUCT_INFO') {
                 state.popularItem = [...state.popularItem, ...payload.data];
                 state.pageNoForPopular = parseFloat(state.pageNoForPopular) + 1
+            }
+            else if (payload.type == 'SAVE_CENTER_INFO') {
+                state.currentCenter = payload.data;
             }
             else {
                 return {

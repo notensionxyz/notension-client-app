@@ -13,6 +13,7 @@ import HeaderFoodModule from '../../components/header/HeaderFoodModule';
 import { useDoctor } from '../../hooks/fetch-data-by-module/health-care/useDoctor';
 import ManageListView from '../../components/screens-components/HealthCare/FilterOptionByDept/ManageListView';
 import { logoColor_1 } from '../../helpers/Constants';
+import HeaderCommon from '../../components/header/HeaderCommon';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -95,69 +96,71 @@ function ExploreFindDoctors() {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f9f9f9', alignItems: 'center' }}>
-            <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                <HeaderFoodModule toggleDrawer={navigation} />
+            <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
+                <HeaderCommon toggleDrawer={navigation} title="Find Doctor" connectionStatus={false} isReachable={false} />
                 <ProgressStyle2 visible={progressing} />
                 <ScrollView>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Pressable onPress={() => { findDoctors() }}>
-                            <View style={{ height: ((screenWidth / 2) - 6), width: ((screenWidth / 2) - 6), padding: 3 }}>
-                                <View style={{
-                                    justifyContent: 'space-between',
-                                    borderRadius: 6,
-                                    shadowRadius: 6,
-                                    elevation: 3,
-                                    shadowOffset: { width: 0, height: 2 },
-                                    shadowOpacity: 0.3,
-                                    backgroundColor: 'white'
-                                }}>
-                                    <FastImage
-                                        source={require('../../assets/gallery/services/nearest.jpg')}
-                                        resizeMode={FastImage.resizeMode.contain}
-                                        style={{
-                                            height: '100%',
-                                            width: '100%',
-                                            justifyContent: 'flex-end',
-                                            padding: 10,
-                                            borderRadius: 6,
-                                            shadowRadius: 6,
-                                            shadowOffset: { width: 0, height: 2 },
-                                            shadowOpacity: 0.3,
-                                            overflow: 'hidden'
-                                        }} />
+                    <View style={{ flex: 1, screenWidth: screenWidth, backgroundColor: '#cce6ff', paddingTop: 10, paddingBottom: 10, marginBottom: 5, alignItems: 'center', }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#cce6ff' }}>
+                            <Pressable onPress={() => { findDoctors() }}>
+                                <View style={{ height: ((screenWidth / 2) - 6), width: ((screenWidth / 2) - 6), padding: 5 }}>
+                                    <View style={{
+                                        justifyContent: 'space-between',
+                                        borderRadius: 6,
+                                        shadowRadius: 6,
+                                        elevation: 3,
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.3,
+                                        backgroundColor: 'white'
+                                    }}>
+                                        <FastImage
+                                            source={require('../../assets/gallery/services/nearest.jpg')}
+                                            resizeMode={FastImage.resizeMode.contain}
+                                            style={{
+                                                height: '100%',
+                                                width: '100%',
+                                                justifyContent: 'flex-end',
+                                                padding: 10,
+                                                borderRadius: 6,
+                                                shadowRadius: 6,
+                                                shadowOffset: { width: 0, height: 2 },
+                                                shadowOpacity: 0.3,
+                                                overflow: 'hidden'
+                                            }} />
 
+                                    </View>
                                 </View>
-                            </View>
-                        </Pressable>
-                        <Pressable onPress={() => { findCenter() }}>
-                            <View style={{ height: (screenWidth / 2) - 6, width: ((screenWidth / 2)) - 6, padding: 3 }}>
-                                <View style={{
-                                    justifyContent: 'space-between',
-                                    borderRadius: 6,
-                                    shadowRadius: 6,
-                                    elevation: 3,
-                                    shadowOffset: { width: 0, height: 2 },
-                                    shadowOpacity: 0.3,
-                                    backgroundColor: 'white'
-                                }}>
-                                    <FastImage
-                                        source={require('../../assets/gallery/services/consultation-center.jpg')}
-                                        resizeMode={FastImage.resizeMode.contain}
-                                        style={{
-                                            height: '100%',
-                                            width: '100%',
-                                            justifyContent: 'flex-end',
-                                            padding: 10,
-                                            borderRadius: 6,
-                                            shadowRadius: 6,
-                                            shadowOffset: { width: 0, height: 2 },
-                                            shadowOpacity: 0.3,
-                                            overflow: 'hidden'
-                                        }} />
+                            </Pressable>
+                            <Pressable onPress={() => { findCenter() }}>
+                                <View style={{ height: (screenWidth / 2) - 6, width: ((screenWidth / 2)) - 6, padding: 5 }}>
+                                    <View style={{
+                                        justifyContent: 'space-between',
+                                        borderRadius: 6,
+                                        shadowRadius: 6,
+                                        elevation: 3,
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.3,
+                                        backgroundColor: 'white'
+                                    }}>
+                                        <FastImage
+                                            source={require('../../assets/gallery/services/consultation-center.jpg')}
+                                            resizeMode={FastImage.resizeMode.contain}
+                                            style={{
+                                                height: '100%',
+                                                width: '100%',
+                                                justifyContent: 'flex-end',
+                                                padding: 10,
+                                                borderRadius: 6,
+                                                shadowRadius: 6,
+                                                shadowOffset: { width: 0, height: 2 },
+                                                shadowOpacity: 0.3,
+                                                overflow: 'hidden'
+                                            }} />
 
+                                    </View>
                                 </View>
-                            </View>
-                        </Pressable>
+                            </Pressable>
+                        </View>
                     </View>
                     <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
                         <ManageListView allDeptInfo={allDeptInfo} popularDoctors={popularDoctors} findDoctors={findDoctorsByDept} />
