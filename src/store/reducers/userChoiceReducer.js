@@ -16,8 +16,7 @@ const userChoiceReducer = createSlice({
         favouriteFoodItems: [],
         favouriteDoctors: [],
         kownNurse: [],
-        favouriteHospital: [],
-        favouriteDiagnosticCentre: [],
+        favouriteConsultationCentre: [],
         kownAmbulanceProvider: [],
     },
     reducers: {
@@ -38,9 +37,19 @@ const userChoiceReducer = createSlice({
 
                     state.favouriteMedicineStore = [...state.favouriteMedicineStore, ...payload.data.storeInfo];
 
-                } else {
+                } else if (payload?.data?.merchantType === 2) {
 
                     state.favouriteFoodShop = [...state.favouriteFoodShop, ...payload.data.storeInfo];
+
+                }
+                else if (payload?.data?.merchantType === 3) {
+
+                    state.favouriteConsultationCentre = [...state.favouriteConsultationCentre, ...payload.data.favouriteList];
+
+                }
+                else if (payload?.data?.merchantType === 4) {
+
+                    state.favouriteDoctors = [...state.favouriteDoctors, ...payload.data.favouriteList];
 
                 }
             }
@@ -57,10 +66,22 @@ const userChoiceReducer = createSlice({
                     newState = state.favouriteMedicineStore.filter((info) => info?.storeId !== payload?.data?.storeId);
                     state.favouriteMedicineStore = newState;
 
-                } else {
+                } else if (payload?.data?.merchantType === 2) {
 
                     newState = state.favouriteFoodShop.filter((info) => info?.storeId !== payload?.data?.storeId);
                     state.favouriteFoodShop = newState;
+
+                }
+                else if (payload?.data?.merchantType === 3) {
+
+                    newState = state.favouriteConsultationCentre.filter((info) => info?.mongodbId !== payload?.data?.mongodbId);
+                    state.favouriteConsultationCentre = newState;
+
+                }
+                else if (payload?.data?.merchantType === 4) {
+
+                    newState = state.favouriteDoctors.filter((info) => info?.mongodbId !== payload?.data?.mongodbId);
+                    state.favouriteDoctors = newState;
 
                 }
             }
@@ -106,8 +127,9 @@ const userChoiceReducer = createSlice({
                     favouriteFoodItems: [],
                     favouriteDoctors: [],
                     kownNurse: [],
-                    favouriteHospital: [],
-                    favouriteDiagnosticCentre: [],
+                    favouriteDoctors: [],
+                    kownNurse: [],
+                    favouriteConsultationCentre: [],
                     kownAmbulanceProvider: [],
                 }
             } else {

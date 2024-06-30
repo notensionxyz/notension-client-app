@@ -1,38 +1,44 @@
 import React from 'react';
 import { Dimensions, StyleSheet, Text, Pressable, View, Image } from "react-native";
 import FastImage from 'react-native-fast-image';
-import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { storageImageUrl } from '../../../../helpers/imageUrl';
-import { health_careImages, logoColor_1, logoColor_2 } from '../../../../helpers/Constants';
-
+import { health_careImages } from '../../../../helpers/Constants';
 
 const screenWidth = Dimensions.get('window').width;
 
-export const MemoizedVerticalListView = React.memo(VerticalListView);
+export const MemoizedConsultationCenter = React.memo(ConsultationCenter);
 
-function VerticalListView({ data, showDistance }) {
+function ConsultationCenter({ info, removeInformation }) {
     const navigation = useNavigation();
     let cardMargin = 2;
     let cardWidth = screenWidth - (cardMargin * 3);
 
+    const data = {
+        _id: info?.mongodbId,
+        center_name: info?.center_name,
+        address: info?.address,
+        medical_center_banner_app: info?.medical_center_banner_app
+    };
+
     return (
         <React.Fragment key={data?._id}>
-            <Pressable onPress={() => { navigation.navigate('ExploreConsultationCenter', { data }); }}>
-                <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', justifyContent: 'center' }}>
-                    <View style={{
-                        //height: screenWidth * 0.60,
-                        width: cardWidth,
-                        margin: cardMargin,
-                        backgroundColor: 'white',
-                        borderRadius: 5,
-                        shadowRadius: 3,
-                        elevation: 1,
-                        shadowOffset: { width: 0, height: 1 },
-                        shadowOpacity: 0.1,
-                        backgroundColor: 'white',
-                        padding: 8
-                    }}>
+
+            <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{
+                    //height: screenWidth * 0.60,
+                    width: cardWidth,
+                    margin: cardMargin,
+                    backgroundColor: 'white',
+                    borderRadius: 5,
+                    shadowRadius: 3,
+                    elevation: 1,
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.1,
+                    backgroundColor: 'white',
+                    padding: 8
+                }}>
+                    <Pressable onPress={() => { navigation.navigate('ExploreConsultationCenter', { data }); }}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{
                                 height: screenWidth * 0.40,
@@ -53,17 +59,24 @@ function VerticalListView({ data, showDistance }) {
                             </View>
                             <View style={{ paddingLeft: 15, flex: 1 }}>
                                 <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#ad3257' }} numberOfLines={2} ellipsizeMode="tail">{data?.center_name}</Text>
-                                {/* <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'red' }} >{data?.center_type}</Text> */}
                                 <Text style={{ fontSize: 15, marginTop: 4, color: '#616161', lineHeight: 22 }} numberOfLines={4} ellipsizeMode="tail">{data?.address}</Text>
-                                {showDistance &&
-                                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#8884fa' }} >দূরত্ব : {((data?.distance) / 1000).toFixed(2)} কিলোমিটার</Text>
-                                }
                             </View>
                         </View>
-
+                    </Pressable>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            right: screenWidth / 30,
+                            top: screenWidth / 3.2,
+                        }}>
+                        <Pressable onPress={() => { removeInformation(info); }}>
+                            <Image source={require('../../../../assets/icon/remove.png')}
+                                style={{ width: 100, height: 50, resizeMode: 'contain' }} />
+                        </Pressable>
                     </View>
                 </View>
-            </Pressable>
+            </View>
+
         </React.Fragment >
     );
 }
@@ -92,4 +105,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default VerticalListView;
+export default ConsultationCenter;

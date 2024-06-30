@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, Text, BackHandler, View, Pressable, ImageBackground } from "react-native";
 import { Linking } from 'react-native';
-import { Camera } from 'react-native-vision-camera'
+import { Camera } from 'react-native-vision-camera';
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../helpers/imageUrl';

@@ -8,6 +8,10 @@ import SearchField from '../../components/screens-components/Common/SearchField'
 import FastImage from 'react-native-fast-image';
 import { useCenter } from '../../hooks/fetch-data-by-module/health-care/useCenter';
 import { MemoizedVerticalListView } from '../../components/screens-components/HealthCare/ConsultationCenter/VerticalListView';
+import { health_careImages } from '../../helpers/Constants';
+import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
+import { storageImageUrl } from '../../helpers/imageUrl';
+import HeaderExploreService from '../../components/header/HeaderExploreService';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -17,7 +21,9 @@ const screenHeight = Dimensions.get('window').height;
 function CenterInformation({ route }) {
     const ref = useRef(null);
     const navigation = useNavigation();
-    const options = route.params.options;
+    const option = route.params.options;
+    const [slider, setSlider] = useState([]);
+    const [centerBanner, setCenterBanner] = useState('');
     const [centerInfo, setCenterInfo] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [pageNo, setPageNo] = useState(1);
@@ -28,12 +34,13 @@ function CenterInformation({ route }) {
         allLoaded,
         itemNotfound,
         progressing,
+        banner,
         setLoadingMore,
         getCenterInfoByDistrict
     } = useCenter();
 
     useEffect(() => {
-        getCenterInfoByDistrict(options?.centerType, setCenterInfo, pageNo, setPageNo);
+        getCenterInfoByDistrict(option?.centerType, setCenterInfo, pageNo, setPageNo);
 
         const backAction = () => {
             navigation.goBack();
@@ -45,6 +52,11 @@ function CenterInformation({ route }) {
         );
         return () => backHandler.remove();
     }, []);
+
+    useEffect(() => {
+        setSlider(banner?.slice(0, (banner.length - 1)));
+        setCenterBanner(banner[banner.length - 1]);
+    }, [banner]);
 
     const onPress = () => { handleSearch(searchText, 1, setPageNo); }
 
@@ -58,109 +70,121 @@ function CenterInformation({ route }) {
         setLoadingMore(true);
 
         setTimeout(() => {
-            if (options.searchProduct) {
+            if (option.searchProduct) {
                 //handleSearch(searchText, pageNo, setPageNo);
             } else {
-                getCenterInfoByDistrict(options?.centerType, setCenterInfo, pageNo, setPageNo);
+                getCenterInfoByDistrict(option?.centerType, setCenterInfo, pageNo, setPageNo);
             }
         }, 500);
     }
 
-    const findCenter = React.useCallback(() => {
+    const findCenter = () => {
         const options = {
             searchCenter: false,
             findNearestCenter: true,
             findCenterByDistrict: false,
-            centerType: 'ConsultationCenter',
-            Title: 'Nearest Consultation Center',
+            centerType: option?.centerType,
+            Title: `Nearest ${option?.centerType} Info`,
         };
-        //console.log('again - pressss');
-
         navigation.navigate('NearestCenterInfo', { options });
-    }, []);
+    };
 
-    const exploreCenter = React.useCallback((data) => {
-        //console.log(data);
-
-        navigation.navigate('ExploreConsultationCenter', { data });
-    }, []);
-
+    let nearest_pic = require('../../assets/banner/consultation_center.jpg');
+    if (option?.centerType === "Hospital") {
+        nearest_pic = require('../../assets/banner/hospital.jpg');
+    }
+    if (option?.centerType === "Diagnostic Centre") {
+        nearest_pic = require('../../assets/banner/diagnostic_center.jpg');
+    }
 
     return (
         <>
             <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', }}>
-                <HeaderCommon title={options.Title} />
+                {/* <HeaderCommon title={option.Title} /> */}
+                <HeaderExploreService
+                    Title='Search here.......'
+                    centerType={option?.centerType} />
                 {/* {options?.searchProduct &&
                     <SearchField searchText={searchText} setSearchText={setSearchText} onPress={onPress} />
                 } */}
-
-                <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
-                    <FlatList
-                        ListHeaderComponent={
-                            <Pressable onPress={() => { findCenter(); }}>
-                                <View style={{
-                                    height: (((screenWidth / 8) * 3) - 3),
-                                    width: screenWidth - 10,
-                                    borderRadius: 8,
-                                    justifyContent: 'center',
-                                    marginBottom: 5,
-                                    marginTop: 3
-                                }}>
-                                    <View style={{
-                                        borderRadius: 8,
-                                        shadowRadius: 8,
-                                        elevation: 3,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.3,
-                                        backgroundColor: 'white',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}>
-                                        <FastImage
-                                            source={require('../../assets/banner/consultation_center.jpg')}
-                                            resizeMode={FastImage.resizeMode.contain}
-                                            style={{
-                                                height: '100%',
-                                                width: '100%',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                padding: 10,
+                {centerInfo.length > 0 &&
+                    <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
+                        <FlatList
+                            ListHeaderComponent={
+                                <>
+                                    <SliderMedium data={slider} folder_name={health_careImages} />
+                                    <Pressable onPress={() => { findCenter(); }}>
+                                        <View style={{
+                                            height: (((screenWidth / 8) * 3) - 3),
+                                            width: screenWidth - 10,
+                                            borderRadius: 8,
+                                            justifyContent: 'center',
+                                            marginBottom: 5,
+                                            marginTop: 10
+                                        }}>
+                                            <View style={{
                                                 borderRadius: 8,
-                                                overflow: 'hidden'
-                                            }} />
-                                    </View>
+                                                shadowRadius: 8,
+                                                elevation: 3,
+                                                shadowOffset: { width: 0, height: 2 },
+                                                shadowOpacity: 0.3,
+                                                backgroundColor: 'white',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                            }}>
+                                                <FastImage
+                                                    source={centerBanner?.file_name && centerBanner?.file_name !== '' && centerBanner?.file_name !== null ?
+                                                        {
+                                                            uri: storageImageUrl(health_careImages, centerBanner?.file_name)
+                                                        }
+                                                        :
+                                                        nearest_pic
+                                                    }
+                                                    resizeMode={FastImage.resizeMode.contain}
+                                                    style={{
+                                                        height: '100%',
+                                                        width: '100%',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        padding: 10,
+                                                        borderRadius: 8,
+                                                        overflow: 'hidden'
+                                                    }} />
+                                            </View>
+                                        </View>
+                                    </Pressable>
+                                </>
+                            }
+                            ListFooterComponent={
+                                <View>
+                                    {!allLoaded &&
+                                        <ActivityIndicator size='large' color="#111d5e" style={{ marginTop: pageNo === 1 ? screenHeight / 3 : 0 }} />
+                                    }
+                                    {itemNotfound &&
+                                        <Text style={{ fontSize: 17, color: '#111d5e', alignSelf: 'flex-start', marginTop: 20, fontWeight: "bold" }}> No Doctor found </Text>
+                                    }
                                 </View>
-                            </Pressable>
-                        }
-                        ListFooterComponent={
-                            <View>
-                                {!allLoaded &&
-                                    <ActivityIndicator size='large' color="#111d5e" style={{ marginTop: pageNo === 1 ? screenHeight / 3 : 0 }} />
-                                }
-                                {itemNotfound &&
-                                    <Text style={{ fontSize: 17, color: '#111d5e', alignSelf: 'flex-start', marginTop: 20, fontWeight: "bold" }}> No Doctor found </Text>
-                                }
-                            </View>
-                        }
-                        initialNumToRender={20}
-                        windowSize={6}
-                        maxToRenderPerBatch={20}
-                        updateCellsBatchingPeriod={20}
-                        removeClippedSubviews={false}
-                        scrollEventThrottle={200}
-                        onEndReachedThreshold={1.4}
-                        onEndReached={() => {
-                            loadMoreResults();
-                        }}
-                        contentContainerStyle={{ padding: 5 }}
-                        data={centerInfo}
-                        // keyExtractor={(item, index) => index.toString()}
-                        keyExtractor={item => item?._id}
-                        renderItem={({ item, index }) =>
-                            <MemoizedVerticalListView data={item} showDistance={options?.findNearestCenter} exploreCenter={exploreCenter} />}
-                    />
-                </View>
+                            }
+                            initialNumToRender={20}
+                            windowSize={6}
+                            maxToRenderPerBatch={20}
+                            updateCellsBatchingPeriod={20}
+                            removeClippedSubviews={false}
+                            scrollEventThrottle={200}
+                            onEndReachedThreshold={1.4}
+                            onEndReached={() => {
+                                loadMoreResults();
+                            }}
+                            contentContainerStyle={{ padding: 5 }}
+                            data={centerInfo}
+                            // keyExtractor={(item, index) => index.toString()}
+                            keyExtractor={item => item?._id}
+                            renderItem={({ item, index }) =>
+                                <MemoizedVerticalListView data={item} showDistance={false} />}
+                        />
+                    </View>
+                }
             </View>
         </>
     );

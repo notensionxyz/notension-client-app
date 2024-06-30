@@ -24,6 +24,7 @@ import PlaceOrderGrocery from "../screens/grocery-shop/PlaceOrderGrocery";
 import ChangeDefaultLocation from "../screens/user/ChangeDefaultLocation";
 import FavouriteStore from "../screens/user/FavouriteStore";
 import FavouriteItems from "../screens/user/FavouriteItems";
+import FavouriteServiceProvider from "../screens/user/FavouriteServiceProvider";
 import ChangeCurrentLocation from "../screens/user/ChangeCurrentLocation";
 //import ExploreFoodShop from "../screens/food-shop/ExploreFoodShop";
 //import FoodProductList from "../screens/food-shop/FoodProductList";
@@ -38,6 +39,8 @@ import NearestCenterInfo from "../screens/doctor-portal/NearestCenterInfo";
 import CenterInformation from "../screens/doctor-portal/CenterInformation";
 import ExploreConsultationCenter from "../screens/doctor-portal/ExploreConsultationCenter";
 import ProfileOfDoctor from "../screens/doctor-portal/ProfileOfDoctor";
+import ExploreMedicalService from "../screens/medical-service/ExploreMedicalService";
+import MedicalServiceProvider from "../screens/medical-service/MedicalServiceProvider";
 import FindAmbulance from "../screens/ambulance-service/FindAmbulance";
 
 const Stack = createStackNavigator();
@@ -260,6 +263,14 @@ const MainStackNavigator = () => {
                 }}
             />
             <Stack.Screen
+                name="FavouriteServiceProvider"
+                component={FavouriteServiceProvider}
+                options={{
+                    ...TransitionPresets.SlideFromRightIOS,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
                 name="ChangeCurrentLocation"
                 component={ChangeCurrentLocation}
                 options={{
@@ -310,6 +321,22 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="ProfileOfDoctor"
                 component={ProfileOfDoctor}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ExploreMedicalService"
+                component={ExploreMedicalService}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="MedicalServiceProvider"
+                component={MedicalServiceProvider}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

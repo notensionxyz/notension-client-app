@@ -14,9 +14,6 @@ import { useDoctor } from '../../hooks/fetch-data-by-module/health-care/useDocto
 import ManageListView from '../../components/screens-components/HealthCare/FilterOptionByDept/ManageListView';
 import FlatListThreeColumns from '../../components/screens-components/HealthCare/FilterOptionByDept/FlatListThreeColumns';
 import FlatListTwoColumns from '../../components/screens-components/HealthCare/FilterOptionByDept/FlatListTwoColumns';
-import HeaderCommon from '../../components/header/HeaderCommon';
-import NotificationSuccess from '../../components/popup-notification/NotificationSuccess';
-import { useAmbulanceService } from '../../hooks/fetch-data-by-module/health-care/useAmbulanceService';
 
 const screenWidth = Dimensions.get('window').width;
 let merchantType = 2;
@@ -26,17 +23,11 @@ function FindAmbulance() {
     const navigation = useNavigation();
     const { customstore_id, merchantId, allDeptInfo, popularDoctors } = useSelector((state) => state.doctorInfo);
 
-    const {
-        message,
-        showSuccessMessage,
-        setShowSuccessMessage,
-        getAmbulanceServiceProvider,
-        progressing } = useAmbulanceService();
-        
+    const { exploreFindDoctor, progressing } = useDoctor();
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
 
     useEffect(() => {
-        getAmbulanceServiceProvider();
+        exploreFindDoctor();
     }, []);
 
     useFocusEffect(
@@ -72,18 +63,17 @@ function FindAmbulance() {
             backgroundColor: '#f9f9f9',
         }}>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                <HeaderCommon title={'Ambulance Information'} />
+                <HeaderFoodModule toggleDrawer={navigation} />
                 <ProgressStyle2 visible={progressing} />
 
-                {/* <ScrollView>
+                <ScrollView>
                     <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                         <FlatListThreeColumns listInfo={allDeptInfo.allDepartments} navigateTo={subtypeByselectedType} />
                         <FlatListTwoColumns listInfo={allDeptInfo.allDepartments} TopPadding={5} navigateTo={subtypeByselectedType} />
                     </View>
-                </ScrollView> */}
+                </ScrollView>
                 {/* <FooterExploreStore module='Food' contact={visitedFoodStore?.contact_no} /> */}
             </View>
-            <NotificationSuccess visible={showSuccessMessage} setVisible={setShowSuccessMessage} message={message} />
         </SafeAreaView>
     );
 }

@@ -55,7 +55,7 @@ export const CodeScanner: React.FC<Props> = ({ searchText, setSearchText, search
 
     const findShop = (value: string, callback: () => void): void => {
         let contact: string = value?.slice(-11);
-        console.log(`Scanned codes:`, contact);
+        //console.log(`Scanned codes:`, contact);
         setSearchText(contact);
         searchStore(contact);
         callback(); // Execute the callback function

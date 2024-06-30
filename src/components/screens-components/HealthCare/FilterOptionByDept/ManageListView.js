@@ -39,24 +39,24 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
 
     }, [allDeptInfo]);
 
-
-
     return (
         <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
-
-            <View style={{ flex: 1, backgroundColor: '#daf5e1', paddingBottom: 10, marginTop: 10, marginBottom: 15 }}>
-                <View style={{ flexDirection: 'row', backgroundColor: '#daf5e1' }}>
-                    <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
-                        {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+            {firstFive.length > 0 &&
+                <View style={{ flex: 1, backgroundColor: '#daf5e1', paddingBottom: 10, marginTop: 10, marginBottom: 15 }}>
+                    <View style={{ flexDirection: 'row', backgroundColor: '#daf5e1' }}>
+                        <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
+                            {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+                    </View>
+                    <FlatList
+                        contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
+                        horizontal
+                        data={firstFive}
+                        renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#daf5e1'} />}
+                        keyExtractor={item => item._id}
+                    />
                 </View>
-                <FlatList
-                    contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
-                    horizontal
-                    data={firstFive}
-                    renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#daf5e1'} />}
-                    keyExtractor={item => item._id}
-                />
-            </View>
+            }
+
 
             <View style={{ flex: 1, screenWidth: screenWidth, backgroundColor: '#f5e1bc', paddingBottom: 10, marginBottom: 15, alignItems: 'center', }}>
                 <View style={{ flexDirection: 'row', backgroundColor: '#f5e1bc' }}>
@@ -66,19 +66,21 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                 <FlatListThreeColumns listInfo={firstTwelve} navigateTo={findDoctors} />
             </View>
 
-            <View style={{ flex: 1, backgroundColor: '#f5dfeb', paddingBottom: 10, alignItems: 'center', marginBottom: 15 }}>
-                <View style={{ flexDirection: 'row', backgroundColor: '#f5dfeb' }}>
-                    <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
-                        {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+            {doctors6To10.length > 0 &&
+                <View style={{ flex: 1, backgroundColor: '#f5dfeb', paddingBottom: 10, alignItems: 'center', marginBottom: 15 }}>
+                    <View style={{ flexDirection: 'row', backgroundColor: '#f5dfeb' }}>
+                        <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
+                            {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+                    </View>
+                    <FlatList
+                        contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
+                        horizontal
+                        data={doctors6To10}
+                        renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#f5dfeb'} />}
+                        keyExtractor={item => item._id}
+                    />
                 </View>
-                <FlatList
-                    contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
-                    horizontal
-                    data={doctors6To10}
-                    renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#f5dfeb'} />}
-                    keyExtractor={item => item._id}
-                />
-            </View>
+            }
 
             <View style={{ flex: 1, screenWidth: screenWidth, backgroundColor: '#f7d2cb', paddingBottom: 10, marginBottom: 15, alignItems: 'center', }}>
                 <View style={{ flexDirection: 'row', backgroundColor: '#f7d2cb' }}>
@@ -88,19 +90,21 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                 <FlatListTwoColumns listInfo={elements13To16} TopPadding={0} navigateTo={findDoctors} />
             </View>
 
-            <View style={{ flex: 1, backgroundColor: '#e5dff5', paddingBottom: 10, marginBottom: 15, }}>
-                <View style={{ flexDirection: 'row', backgroundColor: '#e5dff5' }}>
-                    <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
-                        {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+            {doctors11To15.length > 0 &&
+                <View style={{ flex: 1, backgroundColor: '#e5dff5', paddingBottom: 10, marginBottom: 15, }}>
+                    <View style={{ flexDirection: 'row', backgroundColor: '#e5dff5' }}>
+                        <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
+                            {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+                    </View>
+                    <FlatList
+                        contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
+                        horizontal
+                        data={doctors11To15}
+                        renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#e5dff5'} />}
+                        keyExtractor={item => item._id}
+                    />
                 </View>
-                <FlatList
-                    contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
-                    horizontal
-                    data={doctors11To15}
-                    renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#e5dff5'} />}
-                    keyExtractor={item => item._id}
-                />
-            </View>
+            }
 
             <View style={{ flex: 1, screenWidth: screenWidth, backgroundColor: '#f7dff4', paddingBottom: 10, marginBottom: 15, alignItems: 'center', }}>
                 <View style={{ flexDirection: 'row', backgroundColor: '#f7dff4' }}>
@@ -110,19 +114,21 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                 <FlatListTwoColumns listInfo={elements17To20} TopPadding={0} navigateTo={findDoctors} />
             </View>
 
-            <View style={{ flex: 1, backgroundColor: '#daf5e1', paddingBottom: 10, marginBottom: 15, }}>
-                <View style={{ flexDirection: 'row', backgroundColor: '#daf5e1' }}>
-                    <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
-                        {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+            {doctors16To20.length > 0 &&
+                <View style={{ flex: 1, backgroundColor: '#daf5e1', paddingBottom: 10, marginBottom: 15, }}>
+                    <View style={{ flexDirection: 'row', backgroundColor: '#daf5e1' }}>
+                        <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
+                            {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+                    </View>
+                    <FlatList
+                        contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
+                        horizontal
+                        data={doctors16To20}
+                        renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#daf5e1'} />}
+                        keyExtractor={item => item._id}
+                    />
                 </View>
-                <FlatList
-                    contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
-                    horizontal
-                    data={doctors16To20}
-                    renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#daf5e1'} />}
-                    keyExtractor={item => item._id}
-                />
-            </View>
+            }
 
             <View style={{ flex: 1, screenWidth: screenWidth, backgroundColor: '#d7e9f7', paddingBottom: 10, marginBottom: 15, alignItems: 'center', }}>
                 <View style={{ flexDirection: 'row', backgroundColor: '#d7e9f7' }}>
@@ -132,19 +138,21 @@ function ManageListView({ allDeptInfo, popularDoctors, findDoctors }) {
                 <FlatListThreeColumns listInfo={elements21To29} navigateTo={findDoctors} />
             </View>
 
-            <View style={{ flex: 1, backgroundColor: '#f7d2cb', paddingBottom: 10, marginBottom: 15, }}>
-                <View style={{ flexDirection: 'row', backgroundColor: '#f7d2cb' }}>
-                    <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
-                        {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+            {doctors21To25.length > 0 &&
+                <View style={{ flex: 1, backgroundColor: '#f7d2cb', paddingBottom: 10, marginBottom: 15, }}>
+                    <View style={{ flexDirection: 'row', backgroundColor: '#f7d2cb' }}>
+                        <Text style={{ flex: 1, color: logoColor_2, paddingVertical: 10, fontSize: 18, fontWeight: 'bold', paddingLeft: 20, width: '100%' }}>
+                            {'জনপ্রিয় বিশেষজ্ঞ'}</Text>
+                    </View>
+                    <FlatList
+                        contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
+                        horizontal
+                        data={doctors21To25}
+                        renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#f7d2cb'} />}
+                        keyExtractor={item => item._id}
+                    />
                 </View>
-                <FlatList
-                    contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
-                    horizontal
-                    data={doctors21To25}
-                    renderItem={({ item }) => <MemoizedHorizontalListView data={item} backgroundColor={'#f7d2cb'} />}
-                    keyExtractor={item => item._id}
-                />
-            </View>
+            }
 
             <View style={{ flex: 1, screenWidth: screenWidth, backgroundColor: '#d7f7f4', paddingBottom: 10, marginBottom: 15, alignItems: 'center', }}>
                 <View style={{ flexDirection: 'row', backgroundColor: '#d7f7f4' }}>

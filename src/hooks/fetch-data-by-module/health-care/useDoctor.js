@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
 import { Alert } from 'react-native';
-import { EXPLORE_FIND_DOCTOR, FIND_DOCTOR_BY_CONSULTATION_CENTER, FIND_DOCTOR_BY_DEPT, FIND_NEAREST_DOCTOR } from '../../../helpers/Constants';
+import { EXPLORE_FIND_DOCTOR, FIND_DOCTOR_BY_CONSULTATION_CENTER, FIND_DOCTOR_BY_DEPT, FIND_NEAREST_DOCTOR, GET_DOCTOR_PROFILE } from '../../../helpers/Constants';
 import { handleDoctorReducer } from '../../../store/reducers/health-care/doctorReducer';
 
 axios.defaults.withCredentials = true;
@@ -53,7 +53,7 @@ export const useDoctor = () => {
         //console.log('exploreFindDoctor');
         // resetReducer();
         setProgressing(true);
-        AxiosTest
+        Axios
             .get(EXPLORE_FIND_DOCTOR,
                 {
                     params: {
@@ -86,7 +86,7 @@ export const useDoctor = () => {
             districtId: districtId
         };
 
-        AxiosTest
+        Axios
             .post(FIND_NEAREST_DOCTOR, props)
             .then(response => {
                 //console.log(response.data);
@@ -116,7 +116,7 @@ export const useDoctor = () => {
             districtId: districtId
         };
 
-        AxiosTest
+        Axios
             .post(FIND_DOCTOR_BY_DEPT, props)
             .then(response => {
                 if (response?.data?.result.length > 0) {
@@ -157,7 +157,7 @@ export const useDoctor = () => {
             centerId: centerId
         };
 
-        AxiosTest
+        Axios
             .post(FIND_DOCTOR_BY_CONSULTATION_CENTER, props)
             .then(response => {
                 if (response?.data?.result.length > 0) {
@@ -189,6 +189,28 @@ export const useDoctor = () => {
         }, 10000);
     }
 
+    const getProfileOfDoctor = (doctorId, setProfileInfo) => {
+
+        setProgressing(true);
+        Axios
+            .get(GET_DOCTOR_PROFILE,
+                {
+                    params: {
+                        doctorId: doctorId,
+                    }
+                }
+            )
+            .then((res) => {
+                //console.log(res?.data?.result.length);
+                setProfileInfo(res?.data?.result);
+                setProgressing(false);
+            })
+            .catch((error) => {
+                setProgressing(false);
+                console.log(error);
+            });
+    };
+
     useEffect(() => {
         if (error) {
             //userLogOut();
@@ -215,6 +237,7 @@ export const useDoctor = () => {
         getNearestDoctorsInfo,
         getDoctorsInfoByDistrict,
         getDoctorsInfoByCenter,
+        getProfileOfDoctor
         // resetReducer,
         // setCurrentModule
     };

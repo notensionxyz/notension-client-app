@@ -7,11 +7,14 @@ import { ScrollView } from 'react-native-virtualized-view';
 import HeaderFoodModule from '../../components/header/HeaderFoodModule';
 import { useCenter } from '../../hooks/fetch-data-by-module/health-care/useCenter';
 import ManageListView from '../../components/screens-components/HealthCare/DeptInfoByCenter/ManageListView';
-import { useFavouriteStore } from '../../hooks/user/favorite-shop';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import { health_careImages } from '../../helpers/Constants';
+import { useFavouriteList } from '../../hooks/user/favorite-list';
+import HeaderCommon from '../../components/header/HeaderCommon';
 
 const screenWidth = Dimensions.get('window').width;
+
+let merchantType = 3;
 
 function ExploreConsultationCenter({ route }) {
     const ref = useRef(null);
@@ -24,7 +27,7 @@ function ExploreConsultationCenter({ route }) {
         isAddedToFavouriteList,
         addToFavouriteList,
         visible
-    } = useFavouriteStore();
+    } = useFavouriteList();
 
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
 
@@ -49,7 +52,7 @@ function ExploreConsultationCenter({ route }) {
     //     }
     // }
 
-    const findDoctorsByDept = React.useCallback((selected) => {
+    const findDoctorsByDept = (selected) => {
         const options = {
             searchDoctors: false,
             findNearestDoctors: false,
@@ -59,22 +62,21 @@ function ExploreConsultationCenter({ route }) {
             deptId: selected?.deptInfo?._id,
             centerId: centerInfo?._id,
         };
-
         navigation.navigate('DoctorsInformation', { options });
-    }, []);
+    };
 
-    const checkIsLoggedinAndProcess = (action) => {
+    const checkIsLoggedinAndProcess = () => {
         if (isLoggedin) {
-            addToFavouriteList(visitedFoodStore, merchantType);
+            addToFavouriteList(centerInfo, merchantType);
         } else {
             navigation.navigate('Login')
         }
     }
-    
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
             <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
-                <HeaderFoodModule toggleDrawer={navigation} />
+                <HeaderCommon toggleDrawer={navigation} title="Consultation Center Details" connectionStatus={false} isReachable={false} />
                 <ProgressStyle2 visible={progressing} />
                 <ScrollView>
                     <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
@@ -91,14 +93,14 @@ function ExploreConsultationCenter({ route }) {
                                 <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>{centerInfo?.address}</Text>
                             </View>
                         </View>
-                        {!isAddedToFavouriteList(centerInfo?._id, 'ConsultationCenter') &&
+                        {(!isAddedToFavouriteList(centerInfo?._id, merchantType) && centerInfo?.is_paid) &&
                             <View
                                 style={{
                                     position: 'absolute',
                                     right: screenWidth / 30,
                                     top: screenWidth / 30,
                                 }}>
-                                <Pressable onPress={() => { checkIsLoggedinAndProcess('addToFavourite'); }}>
+                                <Pressable onPress={() => { checkIsLoggedinAndProcess(); }}>
                                     <Image source={require('../../assets/icon/add_favourite.png')}
                                         style={{ width: 100, height: 50, resizeMode: 'contain' }} />
                                 </Pressable>

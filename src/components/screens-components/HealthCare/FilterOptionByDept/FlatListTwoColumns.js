@@ -7,7 +7,9 @@ import { storageImageUrl } from '../../../../helpers/imageUrl';
 import { food_sliderTypeSubtypeImagesFolderName, health_careImages } from '../../../../helpers/Constants';
 
 const screenWidth = Dimensions.get('window').width;
+
 let customPadding = 4;
+
 function FlatListTwoColumns({ listInfo, TopPadding, navigateTo }) {
     return (
 
@@ -22,7 +24,6 @@ function FlatListTwoColumns({ listInfo, TopPadding, navigateTo }) {
         />
     );
 }
-
 
 function ItemData({ data, navigateTo }) {
     const navigation = useNavigation();

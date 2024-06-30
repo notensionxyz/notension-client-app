@@ -8,13 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleUserReducer } from '../store/reducers/userReducer';
 import { PRIVACY_URL } from '../helpers/Constants';
 import { openUrl } from '../helpers/imageUrl';
+import { useUser } from '../hooks/useUser';
 
 export default function DrawerContent({ navigation }) {
   const dispatch = useDispatch();
   const { isLoggedin, userInfo } = useSelector((state) => state.user);
   const currentModule = useSelector((state) => state.dashboard.currentModule);
   const [selected, setSelected] = useState(0);
-
+  const { resetUserCurrentLocation } = useUser();
   const logoutUser = () => {
     dispatch(
       handleUserReducer({
@@ -81,7 +82,7 @@ export default function DrawerContent({ navigation }) {
             paddingVertical: 10,
             paddingHorizontal: 20,
             backgroundColor: 'transparent'
-          }} onPress={() => { navigation.navigate('Home') }}>
+          }} onPress={() => { navigation.navigate('Dashboard') }}>
           <Image source={require('../assets/icon/home.png')}
             style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
           <Text style={{
@@ -172,6 +173,23 @@ export default function DrawerContent({ navigation }) {
             paddingVertical: 10,
             paddingHorizontal: 20,
             backgroundColor: 'transparent'
+          }} onPress={() => { resetUserCurrentLocation(); }}>
+          <Image source={require('../assets/icon/ic_place_blue.png')}
+            style={{ height: 32, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+          <Text style={{
+            fontSize: 18,
+            color: '#212121',
+            fontWeight: 'bold',
+            marginLeft: 11
+          }}>Change Location</Text>
+        </TouchableOpacity>
+        {/* <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            backgroundColor: 'transparent'
           }} onPress={() => { navogateTo('location'); }}>
           <Image source={require('../assets/icon/ic_place_blue.png')}
             style={{ height: 32, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
@@ -181,7 +199,7 @@ export default function DrawerContent({ navigation }) {
             fontWeight: 'bold',
             marginLeft: 11
           }}>Update Location</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {isLoggedin ?
           <>
 

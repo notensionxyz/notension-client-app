@@ -6,7 +6,9 @@ const doctorReducer = createSlice({
         merchantId: '',
         customstore_id: '',
         typeName: '',
-        findDoctorSlider: [],
+        findDoctorBanner: [],
+        consultationCenterBanner: [],
+        nearestDoctorsSlider: [],
         allDeptInfo: [],
         doctorsByDept: [],
         nearestDoctors: [],
@@ -31,7 +33,9 @@ const doctorReducer = createSlice({
                     merchantId: '',
                     customstore_id: '',
                     typeName: '',
-                    findDoctorSlider: [],
+                    findDoctorBanner: [],
+                    consultationCenterBanner: [],
+                    nearestDoctorsSlider: [],
                     allDeptInfo: [],
                     doctorsByDept: [],
                     nearestDoctors: [],
@@ -46,12 +50,14 @@ const doctorReducer = createSlice({
                     nearestHospitalInfo: [],
                     topHospitalInCountry: [],
                     hospitalInfoByDistrict: [],
-                    currentCenter:{},
+                    currentCenter: {},
                     pageNoForPopular: 2,
                 };
             }
             else if (payload.type == 'SAVE_DEPT_INFO') {
-                state, findDoctorSlider = payload.data.sliders;
+                state.findDoctorBanner = payload?.data?.banner[0]?.find_doctor_banner || [];
+                state.consultationCenterBanner = payload?.data?.banner[0]?.consultation_center_banner || [];
+                state.nearestDoctorsSlider = payload?.data?.banner[0]?.nearest_doctor_banner || [];
                 state.allDeptInfo = payload.data.allDepartments;
                 state.popularDoctors = payload.data.popularDoctors;
             }

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Text, Pressable, View } from "react-native";
-import FastImage from 'react-native-fast-image'
-import { useSelector } from 'react-redux';
+import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { storageImageUrl } from '../../../../helpers/imageUrl';
-import { food_sliderTypeSubtypeImagesFolderName, health_careImages } from '../../../../helpers/Constants';
+import { health_careImages } from '../../../../helpers/Constants';
 
 const screenWidth = Dimensions.get('window').width;
+
 let customPadding = 4;
+
 function FlatListTwoColumns({ listInfo, TopPadding, navigateTo }) {
     return (
 
@@ -22,7 +23,6 @@ function FlatListTwoColumns({ listInfo, TopPadding, navigateTo }) {
         />
     );
 }
-
 
 function ItemData({ data, navigateTo }) {
     const navigation = useNavigation();
@@ -40,7 +40,7 @@ function ItemData({ data, navigateTo }) {
                 }}>
                     <FastImage
                         source={{
-                            uri: storageImageUrl(health_careImages,  data?.deptInfo?.banner_1),
+                            uri: storageImageUrl(health_careImages, data?.deptInfo?.banner_2),
                             priority: FastImage.priority.normal,
                         }}
                         resizeMode={FastImage.resizeMode.contain}

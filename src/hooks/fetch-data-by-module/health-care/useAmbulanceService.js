@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { HEALTH_CARE_URL, HEALTH_CARE_URL_LOCAL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { CONSULTATION_CENTER_BY_DISTRICT, EXPLORE_CONSULTATION_CENTER, EXPLORE_FIND_DOCTOR, FIND_DOCTOR_BY_DEPT, NEAREST_CONSULTATION_CENTER, SEARCH_CONSULTATION_CENTER } from '../../../helpers/Constants';
+import { CONSULTATION_CENTER_BY_DISTRICT, EXPLORE_CONSULTATION_CENTER, EXPLORE_FIND_DOCTOR, EXPLORE_MEDICAL_SERVICE_PROVIDER, FIND_AMBULANCE_SERVICE_PROVIDER, FIND_DOCTOR_BY_DEPT, NEAREST_CONSULTATION_CENTER } from '../../../helpers/Constants';
 import { handleDoctorReducer } from '../../../store/reducers/health-care/doctorReducer';
 
 axios.defaults.withCredentials = true;
 
-export const useCenter = () => {
+export const useAmbulanceService = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
@@ -40,6 +40,39 @@ export const useCenter = () => {
         },
     });
 
+
+    const getAmbulanceServiceProvider = (setProviderInfo) => {
+
+        setProgressing(true);
+        Axios
+            .get(FIND_AMBULANCE_SERVICE_PROVIDER,
+                {
+                    params: {
+                        district_id: districtId
+                    }
+                }
+            )
+            .then((res) => {
+                if (res?.data?.result?.length < 1) {
+                    setMessage('This Service not available in your region!!');
+                } else {
+                    setMessage('Please update or remove and reinstall App!!');
+                }
+                setShowSuccessMessage(true);
+                //setProviderInfo(res?.data?.result[0]?.medical_service_banner);
+                setProgressing(false);
+            })
+            .catch((error) => {
+                setProgressing(false);
+                console.log(error);
+            });
+        setTimeout(() => {
+            if (progressing) {
+                setProgressing(false);
+            }
+        }, 10000);
+    };
+
     const getNearestCenterInfo = (centerType, setCenterInfo) => {
 
         setProgressing(true);
@@ -60,6 +93,7 @@ export const useCenter = () => {
             .catch(error => {
                 console.log('Error : ', error.response.data)
                 setProgressing(false);
+
             })
         setTimeout(() => {
             if (progressing) {
@@ -82,7 +116,6 @@ export const useCenter = () => {
         Axios
             .post(CONSULTATION_CENTER_BY_DISTRICT, props)
             .then(response => {
-                //console.log(response?.data?.result?.consultationCenterInfo);
                 if (response?.data?.result?.consultationCenterInfo.length > 0) {
                     setPageNo(pageNo + 1);
                     setCenterInfo((prevInfo) => [...prevInfo, ...response?.data?.result?.consultationCenterInfo]);
@@ -92,12 +125,13 @@ export const useCenter = () => {
                     setAllLoaded(true);
                 }
 
+                //console.log('response?.data?.result?.consultationCenterInfo.length : ', response?.data?.result?.consultationCenterInfo.length);
                 if (pageNo === 1 && response?.data?.result?.consultationCenterInfo.length < 1) {
                     setItemNotfound(true);
                 }
 
                 if (pageNo === 1) {
-                    //console.log(response?.data?.result?.banners.length);
+
                     if (response?.data?.result?.banners.length > 0) {
                         if (centerType === "Hospital") {
                             setBanner(response?.data?.result?.banners[0]?.hospital_banner);
@@ -122,32 +156,6 @@ export const useCenter = () => {
                 setAllLoaded(true);
             }
         }, 10000);
-    }
-
-    const searchConsultationCenter = (centerType, searchText, setCenterInfo) => {
-        if (searchText.length > 1) {
-            setProgressing(true);
-            const props = {
-                centerType: centerType,
-                search: searchText,
-            };
-            Axios
-                .post(SEARCH_CONSULTATION_CENTER, props)
-                .then((res) => {
-                    setCenterInfo(res.data.result);
-                    setProgressing(false);
-                })
-                .catch((error) => {
-                    setProgressing(false);
-
-                });
-
-            setTimeout(() => {
-                if (progressing) {
-                    setProgressing(false);
-                }
-            }, 10000);
-        }
     }
 
     const exploreConsultationCenter = (centerInfo, setExploreInfo) => {
@@ -202,15 +210,9 @@ export const useCenter = () => {
         setShowErrorMessage,
         setShowSuccessMessage,
         setLoadingMore,
-        // saveItemsToReducer,
-        // getNearestGroceryStoreInfo,
-        // handleSearchStore,
         exploreConsultationCenter,
         getNearestCenterInfo,
         getCenterInfoByDistrict,
-        searchConsultationCenter
-        // resetLoadingStatus,
-        // resetReducer,
-        // setCurrentModule
+        getAmbulanceServiceProvider,
     };
 };

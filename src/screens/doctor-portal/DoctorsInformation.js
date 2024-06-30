@@ -9,6 +9,8 @@ import FooterCommon from '../../components/footer/FooterCommon';
 
 import VerticalListView, { MemoizedVerticalListView } from '../../components/screens-components/HealthCare/DoctorsInfo/VerticalListView';
 import { useDoctor } from '../../hooks/fetch-data-by-module/health-care/useDoctor';
+import { health_careImages } from '../../helpers/Constants';
+import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -21,6 +23,7 @@ function DoctorsInformation({ route }) {
     const options = route.params.options;
     const [visible, setVisible] = useState(true);
     const [doctorsInfo, setDoctorsInfo] = useState([]);
+    const { consultationCenterBanner, nearestDoctorsSlider } = useSelector((state) => state.doctorInfo);
     //const dispatch = useDispatch();
     //const { productInfoByShop } = useSelector((state) => state.itemsByStoreReducer);
     const [searchText, setSearchText] = useState('');
@@ -108,7 +111,14 @@ function DoctorsInformation({ route }) {
                 <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
                     <FlatList
                         ListHeaderComponent={
-                            null
+                            <>
+                                {
+                                    !options?.findDoctorsByCenter ?
+                                        <SliderMedium data={nearestDoctorsSlider} folder_name={health_careImages} />
+                                        :
+                                        null
+                                }
+                            </>
                         }
                         ListFooterComponent={
                             <View>
@@ -135,7 +145,7 @@ function DoctorsInformation({ route }) {
                         // keyExtractor={(item, index) => index.toString()}
                         keyExtractor={item => item?._id}
                         renderItem={({ item, index }) =>
-                            <VerticalListView data={item} showDept={true} showCenter={visible}/>}
+                            <VerticalListView data={item} showDept={true} showCenter={visible} />}
                     />
                 </View>
             </View>

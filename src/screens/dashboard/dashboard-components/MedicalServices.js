@@ -4,29 +4,55 @@ import FastImage from 'react-native-fast-image';
 import { storageImageUrl } from '../../../helpers/imageUrl';
 import NotificationSuccess from '../../../components/popup-notification/NotificationSuccess';
 import { useNavigation } from '@react-navigation/native';
+import { handleDashboardReducer } from '../../../store/reducers/dashboardReducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 const screenWidth = Dimensions.get('window').width;
 const viewHeight = (screenWidth / 2);
 const viewWidth = ((viewHeight / 2) * 3);
 
 function MedicalServices({ data }) {
+    const dispatch = useDispatch();
     const navigation = useNavigation();
+    const isLoggedin = useSelector((state) => state.user.isLoggedin);
     let newData = data.slice(0, data.length - 1);
     let ambulance = data[data.length - 1];
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [message, setMessage] = useState('Coming soon');
-    
+
     const navigate = (data) => {
-        if (data?.id === "1") {
-            navigation.navigate('ExploreFindDoctors');
-        } else if (data?.id === "2") {
-            setShowSuccessMessage(true);
-        } else if (data?.id === "3") {
-            setShowSuccessMessage(true);
-        } else if (data?.id === "4") {
-            setShowSuccessMessage(true);
-        } else if (data?.id === "5") {
-            setShowSuccessMessage(true);
+        if (isLoggedin) {
+            if (data?.id === "1") {
+                navigation.navigate('ExploreFindDoctors');
+            } else if (data?.id === "2") {
+                const options = {
+                    centerType: 'Hospital',
+                    Title: 'Hospital Info',
+                };
+                navigation.navigate('CenterInformation', { options });
+            } else if (data?.id === "3") {
+                navigation.navigate('ExploreMedicalService');
+            } else if (data?.id === "4") {
+                const options = {
+                    centerType: 'Diagnostic Centre',
+                    Title: 'Diagnostic Centre Info',
+                };
+                navigation.navigate('CenterInformation', { options });
+                //setShowSuccessMessage(true);
+            } else if (data?.id === "5") {
+                //console.log(data?.id);
+                setShowSuccessMessage(true);
+            } else if (data?.id === "6") {
+                setShowSuccessMessage(true);
+            }
+        } else {
+            dispatch(
+                handleDashboardReducer({
+                    type: 'SET_CURRENT_MODULE',
+                    data: 'dashboard',
+                })
+            );
+            navigation.navigate('Login')
         }
     }
 

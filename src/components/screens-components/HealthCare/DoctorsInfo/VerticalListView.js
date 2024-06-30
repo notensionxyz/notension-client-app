@@ -65,7 +65,7 @@ function VerticalListView({ data, showDept, showCenter }) {
                             </View>
                         }
                         {showCenter &&
-                            <Text adjustsFontSizeToFit style={{ fontSize: 16, marginTop: 2, paddingLeft: 15, color: '#5a9e67', fontWeight: 'bold', lineHeight: 22 }} numberOfLines={1} ellipsizeMode="tail">{data?.consultationcenter?.center_name}</Text>
+                            <Text adjustsFontSizeToFit style={{ fontSize: 16, marginTop: 2, paddingLeft: 15, color: '#5a9e67', fontWeight: 'bold', lineHeight: 22 }} numberOfLines={1} ellipsizeMode="tail">{data?.consultationCenterInfo?.center_name}</Text>
                         }
                     </View>
                 </View>

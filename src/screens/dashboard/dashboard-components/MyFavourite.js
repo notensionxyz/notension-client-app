@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Pressable, Text, View } from "react-native";
+import { Alert, FlatList, Pressable, Text, View } from "react-native";
 import { logoColor_1, logoColor_2 } from '../../../helpers/Constants';
 import { storageImageUrl } from '../../../helpers/imageUrl';
 import FastImage from 'react-native-fast-image';
@@ -17,10 +17,14 @@ function MyFavourite({ title, data, height }) {
             navigation.navigate('FavouriteStore', { merchantType: 1 });
         } else if (id === '3') {
             navigation.navigate('FavouriteStore', { merchantType: 2 });
+        } else if (id === '4') {
+            navigation.navigate('FavouriteServiceProvider', { merchantType: 4 });
+        } else if (id === '5') {
+            navigation.navigate('FavouriteServiceProvider', { merchantType: 3 });
         } else {
-            setShowSuccessMessage(true);
+            console.log(id);
+            //setShowSuccessMessage(true);
         }
-
     }
     return (
         <>

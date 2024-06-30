@@ -145,8 +145,6 @@ function ListItem({ data, removeFromfavoriteList, merchantType, shopBannerFolder
         }
     }
 
-
-
     const removeStore = () => {
 
         Alert.alert("Hold on!!", "Do you want to delete this store from your favourite list?", [

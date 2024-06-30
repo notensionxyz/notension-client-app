@@ -40,7 +40,7 @@ const SliderSmall = ({ data }) => {
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <SwiperFlatList
                 autoplay
-                autoplayDelay={3}
+                autoplayDelay={10}
                 autoplayLoop
                 index={0}
                 data={data}

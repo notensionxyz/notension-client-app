@@ -17,26 +17,27 @@ import FlatListTwoColumns from '../../components/screens-components/HealthCare/F
 import HeaderCommon from '../../components/header/HeaderCommon';
 import NotificationSuccess from '../../components/popup-notification/NotificationSuccess';
 import { useAmbulanceService } from '../../hooks/fetch-data-by-module/health-care/useAmbulanceService';
+import { useServiceProvider } from '../../hooks/fetch-data-by-module/health-care/useServiceProvider';
 
 const screenWidth = Dimensions.get('window').width;
 let merchantType = 2;
 
-function FindAmbulance() {
+function MedicalServiceProvider({ route }) {
     const ref = useRef(null);
     const navigation = useNavigation();
     const { customstore_id, merchantId, allDeptInfo, popularDoctors } = useSelector((state) => state.doctorInfo);
-
+    const option = route.params.options;
     const {
         message,
         showSuccessMessage,
         setShowSuccessMessage,
-        getAmbulanceServiceProvider,
-        progressing } = useAmbulanceService();
+        getMedicalServiceProvider,
+        progressing } = useServiceProvider();
         
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
 
     useEffect(() => {
-        getAmbulanceServiceProvider();
+        getMedicalServiceProvider();
     }, []);
 
     useFocusEffect(
@@ -72,7 +73,7 @@ function FindAmbulance() {
             backgroundColor: '#f9f9f9',
         }}>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                <HeaderCommon title={'Ambulance Information'} />
+                <HeaderCommon title={option.Title} />
                 <ProgressStyle2 visible={progressing} />
 
                 {/* <ScrollView>
@@ -88,4 +89,4 @@ function FindAmbulance() {
     );
 }
 
-export default FindAmbulance;
+export default MedicalServiceProvider;
