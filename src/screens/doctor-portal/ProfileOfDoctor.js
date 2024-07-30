@@ -6,7 +6,7 @@ import HTML from 'react-native-render-html';
 import FastImage from 'react-native-fast-image';
 import { useDispatch, useSelector } from "react-redux"
 import { makeCall, storageImageUrl } from '../../helpers/imageUrl';
-import { health_careImages } from '../../helpers/Constants';
+import { health_careImages, logoColor_1, logoColor_2 } from '../../helpers/Constants';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { useFavouriteList } from '../../hooks/user/favorite-list';
@@ -182,6 +182,28 @@ export default function ProfileOfDoctor({ route }) {
                                                 <Text style={{ fontSize: 16, color: '#b800e6', marginLeft: 10, marginRight: 13 }}>{(data?.chamber_onDay_time_slot_3).trim()}</Text>
                                             </View>
                                         }
+
+                                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 3 }}>
+                                            <TouchableOpacity style={{
+                                                height: screenWidth * 0.15,
+                                                width: screenWidth * 0.45,
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                paddingHorizontal: 11,
+                                               
+                                            
+                                                borderRadius: 4,
+                                                paddingLeft: 8,
+                                                marginTop: 20
+                                            }} onPress={() => {
+                                                navigation.navigate('PatientInfo');
+                                            }}>
+                                                <Image style={{ width: screenWidth * 0.39, height: screenWidth * 0.13 }}
+                                                    resizeMode={'contain'}
+                                                    source={require('../../assets/banner/book_appoinment_2.png')} />
+                                            </TouchableOpacity>
+                                        </View>
 
                                         <View style={{
                                             marginTop: 10,

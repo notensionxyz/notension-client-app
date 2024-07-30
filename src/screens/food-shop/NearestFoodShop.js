@@ -157,7 +157,8 @@ function ListItem({ data }) {
     const dispatch = useDispatch();
     const navigateToExploreShop = () => {
         if (!data?.is_closed) {
-            navigation.navigate('FoodShopNavigation');
+            //navigation.navigate('FoodShopNavigation');
+            navigation.navigate('ExploreFoodShop');
             dispatch(
                 handleDashboardReducer({
                     type: 'VISITED_FOOD_STORE',

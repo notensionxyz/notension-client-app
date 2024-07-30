@@ -40,7 +40,7 @@ function FindStore({ resetUserLocation, getNearestStoreInfo, setNearestInfo, mer
                             }} />
                     </View>
                 </Pressable>
-                <Pressable onPress={() => { resetUserLocation(); }}>
+                {/* <Pressable onPress={() => { resetUserLocation(); }}>
                     <View style={{
                         marginTop: 10,
                         backgroundColor: 'white',
@@ -65,7 +65,7 @@ function FindStore({ resetUserLocation, getNearestStoreInfo, setNearestInfo, mer
                                 overflow: 'hidden'
                             }} />
                     </View>
-                </Pressable>
+                </Pressable> */}
                 <Pressable onPress={() => { getNearestStoreInfo(setNearestInfo, 1000); setIsFindPress(true); }}>
                     <View style={{
                         marginTop: 10,

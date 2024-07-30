@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, ScrollView, View, BackHandler, Alert } from "react-native";
+import { Dimensions, ScrollView, View, BackHandler, Alert, Image, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import NetInfo from "@react-native-community/netinfo";
 import { useDispatch, useSelector } from "react-redux"
@@ -16,13 +16,15 @@ import { useGlobal } from '../../hooks/global';
 import DistrictName from '../../components/screens-components/HomeScreen/DistrictName';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
+import { logoColor_2 } from '../../helpers/Constants';
+import { useUser } from '../../hooks/useUser';
+import GooglePlacesInput from '../../components/screens-components/Common/GooglePlacesAutocomplete';
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 
 let connectionStatus = true;
 let isReachable = true;
-
-
 
 function Dashboard() {
     const navigation = useNavigation();
@@ -37,7 +39,7 @@ function Dashboard() {
         free_services_slider,
         ad_slider_by_district
     } = useSelector((state) => state.dashboard);
-
+    const { resetUserCurrentLocation } = useUser();
     const { defaultUserLocation, districtInfo } = useSelector((state) => state.user);
 
     const { getDistrictInfo, getDasboardInfo, saveConnectionStatus, progressing, setProgressing } = useGlobal();
@@ -68,7 +70,7 @@ function Dashboard() {
 
     useEffect(() => {
         if (districtInfo?.length < 1) {
-            getDistrictInfo(setFilteredInfo);
+            getDistrictInfo();
             //console.log('getDistrictInfo()');
         } else {
             setFilteredInfo(districtInfo);
@@ -151,32 +153,32 @@ function Dashboard() {
                         <SplashScreen />
                         :
                         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                            {!defaultUserLocation?.districtId || defaultUserLocation?.districtId === '00' ?
+                            {/* {!defaultUserLocation?.districtId || defaultUserLocation?.districtId === '00' ?
                                 <>
                                     <HeaderCommon title="search" onInputText={searchDistrict} toggleDrawer={navigation} />
                                     <DistrictName filteredInfo={filteredInfo} setFilteredInfo={setFilteredInfo} />
                                 </>
                                 :
+                                <> */}
+                            {!defaultUserLocation?.userLatitude || defaultUserLocation?.userLatitude === '00' ?
+                                <ConfirmLocation />
+                                :
                                 <>
-                                    {defaultUserLocation?.userLatitude && defaultUserLocation?.userLatitude === '00' ?
-                                        <ConfirmLocation />
-                                        :
-                                        <>
-                                            <HeaderDashboard toggleDrawer={navigation} connectionStatus={connectionStatus} isReachable={isReachable} />
-                                            <ScrollView>
-                                                <FreeServicesSlider data={starting_slider} />
-                                                <MyFavourite title='My Favourite' data={favourite_banner} height={100} />
-                                                <BusinessModules data={business_type_banner} />
-                                                <AddSlider data={ad_slider_by_district?.first_slider} />
-                                                <MedicalServices data={medical_services_banner} />
-                                                <AddSlider data={ad_slider_by_district?.second_slider} />
-                                                {/* <FreeServicesSlider data={free_services_slider} />
+                                    <HeaderDashboard toggleDrawer={navigation} connectionStatus={connectionStatus} isReachable={isReachable} />
+                                    <ScrollView>
+                                        <LocationInfo />
+                                        <FreeServicesSlider data={starting_slider} />
+                                        <MyFavourite title='My Favourite' data={favourite_banner} height={100} />
+                                        <BusinessModules data={business_type_banner} />
+                                        <AddSlider data={ad_slider_by_district?.first_slider} />
+                                        <MedicalServices data={medical_services_banner} />
+                                        <AddSlider data={ad_slider_by_district?.second_slider} />
+                                        {/* <FreeServicesSlider data={free_services_slider} />
                                                 <FreeServices /> */}
-                                            </ScrollView>
-                                        </>
-                                    }
+                                    </ScrollView>
                                 </>
                             }
+
                         </View>
                     }
                 </>

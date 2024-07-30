@@ -39,35 +39,36 @@ export const useGlobal = () => {
                 })
             );
         }
-        
-        //console.log('districtId', districtId);
 
-        axiosInstance
-            .get(GET_DASHBOARD_INFO,
-                {
-                    params: {
-                        district_id: districtId
+        //console.log('districtId', districtId, 'userLatitude', userLatitude);
+        setTimeout(() => {
+            axiosInstance
+                .get(GET_DASHBOARD_INFO,
+                    {
+                        params: {
+                            district_id: districtId
+                        }
                     }
-                }
-            ).then(response => {
-                //console.log(response.data.result);
-                dispatch(
-                    handleDashboardReducer({
-                        type: 'SAVE_DASHBOARD_INFO',
-                        data: response.data.result,
-                    })
-                );
+                ).then(response => {
+                    //console.log(response.data.result);
+                    dispatch(
+                        handleDashboardReducer({
+                            type: 'SAVE_DASHBOARD_INFO',
+                            data: response.data.result,
+                        })
+                    );
 
-                setProgressing(false);
+                    setProgressing(false);
 
-                if (response?.data?.result?.allAppDashboard[0]) {
-                    compareVersion(response?.data?.result?.allAppDashboard[0]);
-                }
+                    if (response?.data?.result?.allAppDashboard[0]) {
+                        compareVersion(response?.data?.result?.allAppDashboard[0]);
+                    }
 
-            }).catch(error => {
-                console.log('Error getDasboardInfo : ', error?.response?.data)
-                setProgressing(false);
-            });
+                }).catch(error => {
+                    console.log('Error getDasboardInfo : ', error?.response?.data)
+                    setProgressing(false);
+                });
+        }, 600);
 
         setTimeout(() => {
             if (progressing) {
@@ -76,13 +77,11 @@ export const useGlobal = () => {
         }, 10000);
     }
 
-    const getDistrictInfo = (setFilteredInfo) => {
+    const getDistrictInfo = () => {
         setProgressing(true);
         axiosInstance
             .get(GET_DISTRICT_INFO)
             .then(res => {
-
-                setFilteredInfo(res?.data?.result);
                 dispatch(
                     handleUserReducer({
                         type: 'SAVE_DISTRICT_INFO',

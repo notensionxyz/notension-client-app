@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 import ExploreFoodShop from './ExploreFoodShop';
 import FoodProductList from './FoodProductList';
-import FoodProductDetails from './FoodProductDetails';
+import FoodProductDetails from './FoodProductDetails_Old';
 const Stack = createNativeStackNavigator();
 
 export default function FoodShopNavigation() {
     return (
+
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen
                 name="ExploreFoodShop"
@@ -21,6 +23,7 @@ export default function FoodShopNavigation() {
                 component={FoodProductDetails}
             />
         </Stack.Navigator>
+
     );
 }
 

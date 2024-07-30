@@ -18,6 +18,7 @@ const screenWidth = Dimensions.get('window').width;
 let merchantType = 2;
 
 function ExploreFoodShop() {
+
     const ref = useRef(null);
     const navigation = useNavigation();
     const visitedFoodStore = useSelector((state) => state.dashboard.visitedFoodStore);
@@ -38,23 +39,32 @@ function ExploreFoodShop() {
         if (visitedFoodStore?._id && visitedFoodStore?.custom_store_id) {
             exploreStore(visitedFoodStore)
         }
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+        return () => backHandler.remove();
     }, []);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            const onBackPress = () => {
-                navigation.goBack();
-                return true;
-            };
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         const onBackPress = () => {
+    //             navigation.goBack();
+    //             return true;
+    //         };
 
-            const subscription = BackHandler.addEventListener(
-                'hardwareBackPress',
-                onBackPress
-            );
+    //         const subscription = BackHandler.addEventListener(
+    //             'hardwareBackPress',
+    //             onBackPress
+    //         );
 
-            return () => subscription.remove();
-        }, [navigation])
-    );
+    //         return () => subscription.remove();
+    //     }, [navigation])
+    // );
 
     const checkIsLoggedinAndProcess = (action) => {
         if (isLoggedin) {
@@ -103,7 +113,7 @@ function ExploreFoodShop() {
                                 </Pressable>
                             </View>
                         }
-                        
+
                         {productCategory.length > 0 &&
                             <>
 

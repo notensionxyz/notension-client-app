@@ -10,6 +10,7 @@ import { useServiceProvider } from '../../hooks/fetch-data-by-module/health-care
 import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
 import { health_careImages } from '../../helpers/Constants';
 import { storageImageUrl } from '../../helpers/imageUrl';
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -84,7 +85,7 @@ function ExploreMedicalService() {
             <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', }}>
                 <HeaderCommon title={'Medical Service Provider'} />
-
+                <LocationInfo />
                 <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', justifyContent: 'center' }}>
                     <SliderMedium data={slider} folder_name={health_careImages} />
                     <FlatList

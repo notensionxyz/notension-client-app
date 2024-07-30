@@ -15,7 +15,7 @@ import ManageListView from '../../components/screens-components/HealthCare/Filte
 import { health_careImages, logoColor_1 } from '../../helpers/Constants';
 import HeaderCommon from '../../components/header/HeaderCommon';
 import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
-
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -94,6 +94,7 @@ function ExploreFindDoctors() {
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f9f9f9', alignItems: 'center' }}>
             <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
                 <HeaderCommon toggleDrawer={navigation} title="Find Doctor" connectionStatus={false} isReachable={false} />
+                <LocationInfo />
                 <ProgressStyle2 visible={progressing} />
                 <ScrollView>
                     <SliderMedium data={slider} folder_name={health_careImages} />
@@ -132,7 +133,6 @@ function ExploreFindDoctors() {
                                                         shadowOpacity: 0.3,
                                                         overflow: 'hidden'
                                                     }} />
-
                                             </View>
                                         </View>
                                     </Pressable>
@@ -167,7 +167,6 @@ function ExploreFindDoctors() {
                                                         shadowOpacity: 0.3,
                                                         overflow: 'hidden'
                                                     }} />
-
                                             </View>
                                         </View>
                                     </Pressable>

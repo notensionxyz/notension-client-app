@@ -166,7 +166,7 @@ export default function DrawerContent({ navigation }) {
             marginLeft: 17
           }}>Privacy Policy</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -182,8 +182,8 @@ export default function DrawerContent({ navigation }) {
             fontWeight: 'bold',
             marginLeft: 11
           }}>Change Location</Text>
-        </TouchableOpacity>
-        {/* <TouchableOpacity
+        </TouchableOpacity> */}
+        <TouchableOpacity
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -198,8 +198,8 @@ export default function DrawerContent({ navigation }) {
             color: '#212121',
             fontWeight: 'bold',
             marginLeft: 11
-          }}>Update Location</Text>
-        </TouchableOpacity> */}
+          }}>Update Address</Text>
+        </TouchableOpacity>
         {isLoggedin ?
           <>
 

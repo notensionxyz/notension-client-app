@@ -5,7 +5,7 @@ import { BackgroundColor_1, logoColor_1, logoColor_2 } from '../../helpers/Const
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function HeaderFoodModule(props) {
+export default function HeaderFoodModule() {
     const navigation = useNavigation();
     return (
         <View style={{

@@ -18,6 +18,7 @@ import HeaderCommon from '../../components/header/HeaderCommon';
 import NotificationSuccess from '../../components/popup-notification/NotificationSuccess';
 import { useAmbulanceService } from '../../hooks/fetch-data-by-module/health-care/useAmbulanceService';
 import { useServiceProvider } from '../../hooks/fetch-data-by-module/health-care/useServiceProvider';
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 let merchantType = 2;
@@ -33,7 +34,7 @@ function MedicalServiceProvider({ route }) {
         setShowSuccessMessage,
         getMedicalServiceProvider,
         progressing } = useServiceProvider();
-        
+
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
 
     useEffect(() => {
@@ -74,6 +75,7 @@ function MedicalServiceProvider({ route }) {
         }}>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                 <HeaderCommon title={option.Title} />
+                <LocationInfo />
                 <ProgressStyle2 visible={progressing} />
 
                 {/* <ScrollView>

@@ -26,22 +26,26 @@ import FavouriteStore from "../screens/user/FavouriteStore";
 import FavouriteItems from "../screens/user/FavouriteItems";
 import FavouriteServiceProvider from "../screens/user/FavouriteServiceProvider";
 import ChangeCurrentLocation from "../screens/user/ChangeCurrentLocation";
-//import ExploreFoodShop from "../screens/food-shop/ExploreFoodShop";
-//import FoodProductList from "../screens/food-shop/FoodProductList";
+import ExploreFoodShop from "../screens/food-shop/ExploreFoodShop";
+import FoodProductList from "../screens/food-shop/FoodProductList";
+import FoodProductDetails from "../screens/food-shop/FoodProductDetails";
 import FoodCartItems from "../screens/food-shop/FoodCartItems";
 import PlaceOrderFood from "../screens/food-shop/PlaceOrderFood";
-//import FoodProductDetails from "../screens/food-shop/FoodProductDetails";
 import SharedElementExample from "../screens/sharedElementTransitions";
-import FoodShopNavigation from "../screens/food-shop/FoodShopNavigation";
+//import FoodShopNavigation from "../screens/food-shop/FoodShopNavigation";
 import ExploreFindDoctors from "../screens/doctor-portal/ExploreFindDoctors";
 import DoctorsInformation from "../screens/doctor-portal/DoctorsInformation";
 import NearestCenterInfo from "../screens/doctor-portal/NearestCenterInfo";
 import CenterInformation from "../screens/doctor-portal/CenterInformation";
 import ExploreConsultationCenter from "../screens/doctor-portal/ExploreConsultationCenter";
 import ProfileOfDoctor from "../screens/doctor-portal/ProfileOfDoctor";
+import OnlineBooking from "../screens/doctor-portal/OnlineBooking";
+import PatientProfile from "../screens/patient-portal/PatientProfile";
+import PatientInfo from "../screens/patient-portal/PatientInfo";
 import ExploreMedicalService from "../screens/medical-service/ExploreMedicalService";
 import MedicalServiceProvider from "../screens/medical-service/MedicalServiceProvider";
 import FindAmbulance from "../screens/ambulance-service/FindAmbulance";
+import ResetLocation from "../screens/user/ResetLocation";
 
 const Stack = createStackNavigator();
 //const Stack = createNativeStackNavigator();
@@ -55,6 +59,14 @@ const MainStackNavigator = () => {
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="ResetLocation"
+                component={ResetLocation}
+                options={{
+                    ...TransitionPresets.SlideFromRightIOS,
+                    headerShown: false
                 }}
             />
             <Stack.Screen
@@ -186,13 +198,37 @@ const MainStackNavigator = () => {
                 }}
             />
             <Stack.Screen
+                name="ExploreFoodShop"
+                component={ExploreFoodShop}
+                options={{
+                    ...TransitionPresets.SlideFromRightIOS,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="FoodProductList"
+                component={FoodProductList}
+                options={{
+                    ...TransitionPresets.SlideFromRightIOS,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="FoodProductDetails"
+                component={FoodProductDetails}
+                options={{
+                    ...TransitionPresets.SlideFromRightIOS,
+                    headerShown: false
+                }}
+            />
+            {/* <Stack.Screen
                 name="FoodShopNavigation"
                 component={FoodShopNavigation}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false
                 }}
-            />
+            /> */}
             <Stack.Screen
                 name="FoodCartItems"
                 component={FoodCartItems}
@@ -321,6 +357,30 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="ProfileOfDoctor"
                 component={ProfileOfDoctor}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="OnlineBooking"
+                component={OnlineBooking}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="PatientProfile"
+                component={PatientProfile}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="PatientInfo"
+                component={PatientInfo}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

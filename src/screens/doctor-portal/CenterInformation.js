@@ -12,6 +12,7 @@ import { health_careImages } from '../../helpers/Constants';
 import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderExploreService from '../../components/header/HeaderExploreService';
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -90,9 +91,11 @@ function CenterInformation({ route }) {
     };
 
     let nearest_pic = require('../../assets/banner/consultation_center.jpg');
+
     if (option?.centerType === "Hospital") {
         nearest_pic = require('../../assets/banner/hospital.jpg');
     }
+    
     if (option?.centerType === "Diagnostic Centre") {
         nearest_pic = require('../../assets/banner/diagnostic_center.jpg');
     }
@@ -108,6 +111,7 @@ function CenterInformation({ route }) {
                 {/* {options?.searchProduct &&
                     <SearchField searchText={searchText} setSearchText={setSearchText} onPress={onPress} />
                 } */}
+                <LocationInfo />
                 {centerInfo.length > 0 &&
                     <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
                         <FlatList

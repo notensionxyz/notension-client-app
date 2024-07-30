@@ -6,9 +6,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 import store, { persistor } from './src/store';
 import RootNavigator from './src/navigation';
 import { logoColor_1, logoColor_2 } from './src/helpers/Constants';
-import { enableLatestRenderer } from 'react-native-maps';
+// import { enableLatestRenderer } from 'react-native-maps';
 
-enableLatestRenderer();
+// enableLatestRenderer();
 const screenWidth = Dimensions.get('window').width;
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
 const HEADER_HEIGHT = Platform.OS === "ios" ? 44 : 56;

@@ -66,6 +66,7 @@ const itemsByStoreReducer = createSlice({
             else if (payload.type == 'EXPLORE_FOOD_STORE_ITEMS') {
                 let productByCategory = [];
                 payload?.data?.allProductCategory?.forEach((info, i) => {
+                    console.log('info?.categoryInfo?._id : ',info?.categoryInfo?._id);
                     productByCategory.push({
                         _id: info?.categoryInfo?._id,
                         catagory: info?.categoryName,

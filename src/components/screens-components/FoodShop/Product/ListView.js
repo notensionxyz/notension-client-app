@@ -7,13 +7,14 @@ import { food_itemsImages } from '../../../../helpers/Constants';
 import { storageImageUrl } from '../../../../helpers/imageUrl';
 import PurchaseBtn from './PurchaseBtn';
 import { handleFoodItems } from '../../../../hooks/cart-handler/handleFoodItems';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
 const screenWidth = Dimensions.get('window').width;
 
 export const MemoizedListView = React.memo(ListView);
 
 function ListView({ data, index }) {
+
     const navigation = useNavigation();
     const dispatch = useDispatch();
     let cardMargin = 4;
@@ -42,7 +43,7 @@ function ListView({ data, index }) {
             //padding: 5
         }}>
             <Pressable onPress={() => { navigation.navigate('FoodProductDetails', { data: data, tagName: `sharedTag${index}`, }) }}>
-                <Animated.Image
+                {/* <Animated.Image
                     style={{
                         height: screenWidth / 2.8,
                         width: screenWidth / 2.8,
@@ -56,8 +57,18 @@ function ListView({ data, index }) {
                     source={{
                         uri: storageImageUrl(food_itemsImages, data?.app_image),
                     }}
-                />
-                {/* <FastImage
+                /> */}
+                 <View style={{
+                        height: screenWidth / 3,
+                        width: screenWidth / 3,
+                        overflow: 'hidden',
+                        borderTopLeftRadius: 5,
+                        borderBottomLeftRadius: 5,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 5
+                    }}>
+                        <FastImage
                             style={{
                                 height: '100%', width: '100%'
                             }}
@@ -66,7 +77,8 @@ function ListView({ data, index }) {
                                 priority: FastImage.priority.normal,
                             }}
                             resizeMode={FastImage.resizeMode.contain}
-                        /> */}
+                        />
+                    </View>
 
                 {parseFloat(data?.less) > 0 && parseFloat(data?.max_retail_price) > 0 ?
                     <View
@@ -101,7 +113,7 @@ function ListView({ data, index }) {
                     null
                 }
             </Pressable>
-            <Animated.View style={{ flex: 1, padding: 5, margin: 10 }}>
+            <View style={{ flex: 1, padding: 5, margin: 10 }}>
                 <Pressable onPress={() => { navigation.navigate('FoodProductDetails', { data }) }}>
                     <Text style={{ fontSize: 18, color: '#003B95', }} numberOfLines={2} ellipsizeMode="tail">
                         {title.split('\n').map((line, index) => (
@@ -142,7 +154,7 @@ function ListView({ data, index }) {
                         qtyIncart={getQty(data._id)}
                     />
                 </View>
-            </Animated.View>
+            </View>
         </View>
     );
 }

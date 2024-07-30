@@ -11,6 +11,7 @@ import { ScrollView } from 'react-native-virtualized-view';
 import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
 import SliderLarge from '../../components/screens-components/Common/slider/slider-large';
 import HeaderFoodModule from '../../components/header/HeaderFoodModule';
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -22,39 +23,26 @@ export default function ExploreFoodModule() {
     useEffect(() => {
         resetReducer();
         exploreFoodModule();
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+        return () => backHandler.remove();
     }, []);
-
-    useFocusEffect(
-        React.useCallback(() => {
-
-            const onBackPress = () => {
-                navigation.goBack();
-                return true;
-            };
-
-            const subscription = BackHandler.addEventListener(
-                'hardwareBackPress',
-                onBackPress
-            );
-
-            return () => subscription.remove();
-        }, [navigation])
-    );
-
-    // useEffect(() => {
-    //     const unsubscribe = navigation.addListener('focus', () => {
-
-    //     });
-    //     return unsubscribe;
-    // }, [navigation]);
 
     return (
         <>
             <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', marginBottom: 8 }}>
                 <HeaderFoodModule toggleDrawer={navigation} />
+
                 <ScrollView>
                     <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
+                        <LocationInfo />
                         <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={food_sliderTypeSubtypeImagesFolderName} />
                         <View style={{ flexDirection: 'row' }}>
                             <Pressable onPress={() => { navigation.navigate('NearestFoodShop', { data: shopCategory[0] }) }}>

@@ -23,6 +23,7 @@ const userReducer = createSlice({
         groceryOrderInfo: [],
         medicineOrderInfo: [],
         foodOrderInfo: [],
+        patientInfo: [],
     },
     reducers: {
         handleUserReducer: (state = initialState, { payload }) => {
@@ -97,6 +98,9 @@ const userReducer = createSlice({
             else if (payload.type == "SAVE_USER_DEFAULT_LOCATION") {
                 //console.log('payload?.data : ', payload?.data);
                 state.defaultUserLocation = payload?.data;
+                state.userLatitude = payload?.data?.userLatitude;
+                state.userLongitude = payload?.data?.userLongitude;
+                state.districtId = payload?.data?.districtId;
             }
             else if (payload.type == "SAVE_GROCERY_ORDER_INFO") {
                 state.groceryOrderInfo = payload?.data;
@@ -106,6 +110,9 @@ const userReducer = createSlice({
             }
             else if (payload.type == "SAVE_FOOD_ORDER_INFO") {
                 state.foodOrderInfo = payload.data;
+            }
+            else if (payload.type == "SAVE_PATIENT_INFO") {
+                state.patientInfo = payload.data;
             }
             else if (payload.type == "RESET_USER_LOCATION") {
                 state.setCurrentLocation = false;
@@ -144,6 +151,7 @@ const userReducer = createSlice({
                     groceryOrderInfo: [],
                     medicineOrderInfo: [],
                     foodOrderInfo: [],
+                    patientInfo: [],
                 }
             } else {
                 return {

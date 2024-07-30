@@ -16,6 +16,7 @@ import { logoColor_1, logoColor_2 } from '../../helpers/Constants';
 import { Camera } from 'react-native-vision-camera';
 import QrCodeScannerBtn from '../../components/screens-components/Common/QrCodeScannerBtn';
 import { QrCodeScanner } from '../../components/screens-components/Common/QrCodeScanner';
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 const cardMargin = 4;
@@ -87,6 +88,7 @@ function NearestMedicineShop(props) {
             <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                 <HeaderCommon title="Medicine Store Info" toggleDrawer={props.navigation} />
+                <LocationInfo />
                 <View style={{
                     backgroundColor: '#FFF',
                     paddingHorizontal: 15,

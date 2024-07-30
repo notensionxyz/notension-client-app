@@ -5,6 +5,7 @@ import StaticSafeAreaInsets from 'react-native-static-safe-area-insets'
 export const PRIVACY_URL = 'https://www.notension.com.bd/privacy'
 export const STORAGE_URL = 'https://we-care-base.sgp1.cdn.digitaloceanspaces.com';
 export const ACCESS_KEY = 'ba8dd74c-5844-4d83-8523b4a5f50d-a128-4190';
+export const GOOGLE_PLACES_API_KEY = 'AIzaSyAdznG_wpszIuufRum1dmkkucPAZtiL2V8';
 export const logoColor_1 = '#F68F1E';
 export const logoColor_2 = '#003B95';
 export const BackgroundColor_1 = '#FFFFFF';
@@ -74,6 +75,11 @@ export const CONSULTATION_CENTER_BY_DISTRICT = '/client-app-api/v1/health-care/g
 export const EXPLORE_CONSULTATION_CENTER = '/client-app-api/v1/health-care/explore-consultation-certer';
 export const FIND_DOCTOR_BY_CONSULTATION_CENTER = '/client-app-api/v1/health-care/get-doctors-by-center';
 export const GET_DOCTOR_PROFILE = '/client-app-api/v1/health-care/get-doctor-profile';
+
+export const GET_PATIENTS = '/client-app-api/v1/health-care/get-patients-info';
+export const REGISTER_PATIENT = '/client-app-api/v1/health-care/register-patient';
+export const MANAGE_PATIENT = '/client-app-api/v1/health-care/manage-patient';
+
 export const EXPLORE_MEDICAL_SERVICE_PROVIDER = '/client-app-api/v1/health-care/explore-medical-service-provider';
 export const FIND_MEDICAL_SERVICE_PROVIDER = '/client-app-api/v1/health-care/get-medical-service-provider';
 export const FIND_AMBULANCE_SERVICE_PROVIDER = '/client-app-api/v1/health-care/get-ambulance-service-provider';

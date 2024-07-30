@@ -11,6 +11,7 @@ import VerticalListView, { MemoizedVerticalListView } from '../../components/scr
 import { useDoctor } from '../../hooks/fetch-data-by-module/health-care/useDoctor';
 import { health_careImages } from '../../helpers/Constants';
 import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -107,7 +108,7 @@ function DoctorsInformation({ route }) {
                 {/* {options?.searchProduct &&
                     <SearchField searchText={searchText} setSearchText={setSearchText} onPress={onPress} />
                 } */}
-
+                <LocationInfo />
                 <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
                     <FlatList
                         ListHeaderComponent={

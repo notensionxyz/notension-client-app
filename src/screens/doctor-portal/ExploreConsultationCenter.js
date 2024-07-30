@@ -11,6 +11,7 @@ import { storageImageUrl } from '../../helpers/imageUrl';
 import { health_careImages } from '../../helpers/Constants';
 import { useFavouriteList } from '../../hooks/user/favorite-list';
 import HeaderCommon from '../../components/header/HeaderCommon';
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -78,6 +79,7 @@ function ExploreConsultationCenter({ route }) {
             <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
                 <HeaderCommon toggleDrawer={navigation} title="Consultation Center Details" connectionStatus={false} isReachable={false} />
                 <ProgressStyle2 visible={progressing} />
+                <LocationInfo />
                 <ScrollView>
                     <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

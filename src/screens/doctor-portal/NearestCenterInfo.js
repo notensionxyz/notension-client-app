@@ -9,6 +9,7 @@ import SearchField from '../../components/screens-components/Common/SearchField'
 import QrCodeScannerBtn from '../../components/screens-components/Common/QrCodeScannerBtn';
 import { QrCodeScanner } from '../../components/screens-components/Common/QrCodeScanner';
 import { Camera } from 'react-native-vision-camera';
+import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
 const hight = (screenWidth / 3) - 7;
@@ -84,6 +85,7 @@ function NearestCenterInfo({ route }) {
             <ProgressStyle2 visible={progressing} />
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', }}>
                 <HeaderCommon title={options.Title} />
+                <LocationInfo />
                 {!options?.findNearestCenter &&
                     <>
                         <SearchField
@@ -103,7 +105,7 @@ function NearestCenterInfo({ route }) {
                         }
                     </>
                 }
-                
+
                 <View style={{ flex: 1, backgroundColor: '#f1f5f7' }}>
                     <FlatList
                         contentContainerStyle={{ padding: 5 }}
