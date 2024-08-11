@@ -53,7 +53,7 @@ export const useDoctor = () => {
         //console.log('exploreFindDoctor');
         // resetReducer();
         setProgressing(true);
-        Axios
+        AxiosTest
             .get(EXPLORE_FIND_DOCTOR,
                 {
                     params: {
@@ -157,7 +157,7 @@ export const useDoctor = () => {
             centerId: centerId
         };
 
-        Axios
+        AxiosTest
             .post(FIND_DOCTOR_BY_CONSULTATION_CENTER, props)
             .then(response => {
                 if (response?.data?.result.length > 0) {

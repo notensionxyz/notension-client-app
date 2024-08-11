@@ -161,7 +161,7 @@ const OnlineBooking = () => {
                     },
                 ]);
             }
-        }, 800);
+        }, 500);
     }
 
     const saveInformation = () => {

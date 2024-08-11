@@ -24,6 +24,7 @@ const userReducer = createSlice({
         medicineOrderInfo: [],
         foodOrderInfo: [],
         patientInfo: [],
+        bookedAppoinmentInfo: [],
     },
     reducers: {
         handleUserReducer: (state = initialState, { payload }) => {
@@ -114,6 +115,50 @@ const userReducer = createSlice({
             else if (payload.type == "SAVE_PATIENT_INFO") {
                 state.patientInfo = payload.data;
             }
+            else if (payload.type == 'UPDATE_PATIENT_INFO') {
+                const { action, patientData } = payload.data;
+
+                let newState = [...state.patientInfo];
+
+                const existingIndex = state.patientInfo.findIndex(
+                    (info) => info?._id === patientData?._id
+                );
+
+                if (existingIndex > -1) {
+                    if (action === 'delete') {
+                        newState = state.patientInfo.filter(
+                            (info) => info?._id !== patientData?._id
+                        );
+                    } else if (action === 'update') {
+                        newState[existingIndex] = patientData;
+                    }
+                } else if (action === 'add') {
+                    newState = [...state.patientInfo, patientData];
+                }
+
+                return {
+                    ...state,
+                    patientInfo: newState,
+                };
+            }
+            else if (payload.type == 'UPDATE_BOOKED_APPOINTMENT_INFO') {
+                const { action, appoinmentData } = payload.data;
+
+                let newState = [...state.bookedAppoinmentInfo];
+
+                if (action === 'delete') {
+                    newState = state.bookedAppoinmentInfo.filter(
+                        (info) => info?._id !== appoinmentData?._id
+                    );
+                } else if (action === 'add') {
+                    newState = [...state.bookedAppoinmentInfo, appoinmentData];
+                }
+
+                return {
+                    ...state,
+                    bookedAppoinmentInfo: newState,
+                };
+            }
             else if (payload.type == "RESET_USER_LOCATION") {
                 state.setCurrentLocation = false;
                 state.setDefaultLocation = true;
@@ -152,6 +197,7 @@ const userReducer = createSlice({
                     medicineOrderInfo: [],
                     foodOrderInfo: [],
                     patientInfo: [],
+                    bookedAppoinmentInfo: [],
                 }
             } else {
                 return {

@@ -79,6 +79,12 @@ export default function ProfileOfDoctor({ route }) {
     let cardMargin = 6;
     let cardWidth = screenWidth - (cardMargin * 8);
 
+    const bookAppoinment = (data) => {
+        
+        //navigation.navigate('BookAppointment', { data })
+        navigation.navigate('PatientInfo', { data })
+    }
+
     return (
 
         <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
@@ -134,114 +140,9 @@ export default function ProfileOfDoctor({ route }) {
                             }}>
                                 <Text style={{ fontSize: 16, color: 'white', padding: 5, paddingLeft: 10, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">{doctorSpeciality}</Text>
                             </View>
-                            {
-                                profileInfo?.map((data, index) => (
-                                    <View key={index} style={{
-                                        marginTop: 3,
-                                        padding: 5,
-                                        marginBottom: 10,
-                                        borderColor: '#263238',
-                                        borderWidth: 1,
-                                        borderRadius: 15,
-                                    }}>
-                                        <View style={{
-                                            marginBottom: 3,
-                                            paddingLeft: 5,
-                                            // backgroundColor: '#0943d6',
-                                        }}>
-                                            <Text style={{ fontSize: 17, color: '#0943d6', padding: 5, paddingLeft: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">পরামর্শ কেন্দ্র :</Text>
-                                            <Text style={{ fontSize: 18, color: '#006400', fontWeight: 'bold', paddingLeft: 5 }}>{data?.consultationCenterInfo?.center_name}</Text>
-                                            <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                                                <Image source={require('../../assets/icon/ic_place_blue.png')}
-                                                    style={{ width: 25, height: 25, tintColor: 'blue', resizeMode: 'contain' }} />
-                                                <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>{data?.consultationCenterInfo?.address}</Text>
-                                            </View>
-                                        </View>
-
-                                        <Text style={{ fontSize: 17, color: '#0943d6', padding: 5, paddingLeft: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">পরামর্শের সময় :</Text>
-                                        {data?.chamber_onDay_time_slot_1 &&
-                                            <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                                                <Image source={require('../../assets/icon/clock.png')}
-                                                    style={{ width: 25, height: 25, marginTop: 8, tintColor: '#660663', resizeMode: 'contain' }} />
-                                                <Text style={{ fontSize: 16, color: '#a10a53', marginLeft: 10, marginRight: 13 }}>{(data?.chamber_onDay_time_slot_1).trim()}</Text>
-                                            </View>
-                                        }
-
-                                        {data?.chamber_onDay_time_slot_2 &&
-                                            <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                                                <Image source={require('../../assets/icon/clock.png')}
-                                                    style={{ width: 25, height: 25, marginTop: 8, tintColor: '#8a1b0f', resizeMode: 'contain' }} />
-                                                <Text style={{ fontSize: 16, color: '#4d4d00', marginLeft: 10, marginRight: 13 }}>{(data?.chamber_onDay_time_slot_2).trim()}</Text>
-                                            </View>
-                                        }
-
-                                        {data?.chamber_onDay_time_slot_3 &&
-                                            <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                                                <Image source={require('../../assets/icon/clock.png')}
-                                                    style={{ width: 25, height: 25, marginTop: 8, tintColor: '#c47008', resizeMode: 'contain' }} />
-                                                <Text style={{ fontSize: 16, color: '#b800e6', marginLeft: 10, marginRight: 13 }}>{(data?.chamber_onDay_time_slot_3).trim()}</Text>
-                                            </View>
-                                        }
-
-                                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 3 }}>
-                                            <TouchableOpacity style={{
-                                                height: screenWidth * 0.15,
-                                                width: screenWidth * 0.45,
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                paddingHorizontal: 11,
-                                               
-                                            
-                                                borderRadius: 4,
-                                                paddingLeft: 8,
-                                                marginTop: 20
-                                            }} onPress={() => {
-                                                navigation.navigate('PatientInfo');
-                                            }}>
-                                                <Image style={{ width: screenWidth * 0.39, height: screenWidth * 0.13 }}
-                                                    resizeMode={'contain'}
-                                                    source={require('../../assets/banner/book_appoinment_2.png')} />
-                                            </TouchableOpacity>
-                                        </View>
-
-                                        <View style={{
-                                            marginTop: 10,
-                                            marginBottom: 3,
-                                            paddingLeft: 5,
-                                            backgroundColor: '#cc5200',
-                                        }}>
-                                            <Text style={{ fontSize: 16, color: 'white', padding: 5, paddingLeft: 10, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">সিরিয়ালের জন্য :</Text>
-                                        </View>
-
-                                        {(data?.consultationCenterInfo?.apointment_contact_1 || data?.person_1_contact_number) &&
-                                            <CallButton
-                                                onPress={() => { makeCall(data?.person_1_contact_number ? data?.person_1_contact_number : data?.consultationCenterInfo?.apointment_contact_1) }}
-                                                cardWidth={cardWidth}
-                                                cardMargin={cardMargin}
-                                                contact_number={data?.person_1_contact_number ? data?.person_1_contact_number : data?.consultationCenterInfo?.apointment_contact_1}
-                                            />
-                                        }
-
-                                        {(data?.person_2_contact_number || data?.consultationCenterInfo?.apointment_contact_2) &&
-                                            <CallButton
-                                                onPress={() => { makeCall(data?.person_2_contact_number ? data?.person_2_contact_number : data?.consultationCenterInfo?.apointment_contact_2) }}
-                                                cardWidth={cardWidth}
-                                                cardMargin={cardMargin}
-                                                contact_number={data?.person_2_contact_number ? data?.person_2_contact_number : data?.consultationCenterInfo?.apointment_contact_2}
-                                            />
-                                        }
-
-                                        {(data?.person_3_contact_number || data?.consultationCenterInfo?.apointment_contact_3) &&
-                                            <CallButton
-                                                onPress={() => { makeCall(data?.person_3_contact_number ? data?.person_3_contact_number : data?.consultationCenterInfo?.apointment_contact_2) }}
-                                                cardWidth={cardWidth}
-                                                cardMargin={cardMargin}
-                                                contact_number={data?.person_3_contact_number ? data?.person_3_contact_number : data?.consultationCenterInfo?.apointment_contact_3}
-                                            />
-                                        }
-                                    </View>
-                                ))}
+                            {profileInfo?.map((data, index) => (
+                                <ChamberDetails index={index} data={data} cardWidth={cardWidth} cardMargin={cardMargin} bookAppoinment={bookAppoinment} />
+                            ))}
                         </View>
                     </View >
                 </View>
@@ -269,6 +170,129 @@ const CallButton = ({ onPress, cardWidth, cardMargin, contact_number }) => {
                     style={{ width: 35, height: 35, tintColor: '#c47008', resizeMode: 'contain' }} />
             </View>
         </TouchableOpacity>
+    );
+}
+
+const ChamberDetails = ({ index, data, cardWidth, cardMargin, bookAppoinment }) => {
+
+    let appoinmentData = {
+        doctorId: data?.doctorInfo?._id,
+        doctor_name: data?.doctorInfo?.doctor_name,
+        qualifications: data?.doctorInfo?.qualifications,
+        speciality: data?.doctorInfo?.speciality,
+        consultationCenterId: data?.consultationCenterInfo?._id,
+        center_name: data?.consultationCenterInfo?.center_name,
+        chamber_schedule: data?.chamber_schedule || [],
+        appointment_scheduling: data?.appointment_scheduling || {},
+        slot_limit: data?.consultation_limit_per_slot,
+    }
+
+    return (
+        <View key={index} style={{
+            marginTop: 3,
+            padding: 5,
+            marginBottom: 10,
+            borderColor: '#263238',
+            borderWidth: 1,
+            borderRadius: 15,
+        }}>
+            <View style={{
+                marginBottom: 3,
+                paddingLeft: 5,
+                // backgroundColor: '#0943d6',
+            }}>
+                <Text style={{ fontSize: 17, color: '#0943d6', padding: 5, paddingLeft: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">পরামর্শ কেন্দ্র :</Text>
+                <Text style={{ fontSize: 18, color: '#006400', fontWeight: 'bold', paddingLeft: 5 }}>{data?.consultationCenterInfo?.center_name}</Text>
+                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <Image source={require('../../assets/icon/ic_place_blue.png')}
+                        style={{ width: 25, height: 25, tintColor: 'blue', resizeMode: 'contain' }} />
+                    <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>{data?.consultationCenterInfo?.address}</Text>
+                </View>
+            </View>
+
+            <Text style={{ fontSize: 17, color: '#0943d6', padding: 5, paddingLeft: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">পরামর্শের সময় :</Text>
+            {data?.chamber_onDay_time_slot_1 &&
+                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <Image source={require('../../assets/icon/clock.png')}
+                        style={{ width: 25, height: 25, marginTop: 8, tintColor: '#660663', resizeMode: 'contain' }} />
+                    <Text style={{ fontSize: 16, color: '#a10a53', marginLeft: 10, marginRight: 13 }}>{(data?.chamber_onDay_time_slot_1).trim()}</Text>
+                </View>
+            }
+
+            {data?.chamber_onDay_time_slot_2 &&
+                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <Image source={require('../../assets/icon/clock.png')}
+                        style={{ width: 25, height: 25, marginTop: 8, tintColor: '#8a1b0f', resizeMode: 'contain' }} />
+                    <Text style={{ fontSize: 16, color: '#4d4d00', marginLeft: 10, marginRight: 13 }}>{(data?.chamber_onDay_time_slot_2).trim()}</Text>
+                </View>
+            }
+
+            {data?.chamber_onDay_time_slot_3 &&
+                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <Image source={require('../../assets/icon/clock.png')}
+                        style={{ width: 25, height: 25, marginTop: 8, tintColor: '#c47008', resizeMode: 'contain' }} />
+                    <Text style={{ fontSize: 16, color: '#b800e6', marginLeft: 10, marginRight: 13 }}>{(data?.chamber_onDay_time_slot_3).trim()}</Text>
+                </View>
+            }
+
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 3 }}>
+                <TouchableOpacity style={{
+                    height: screenWidth * 0.15,
+                    width: screenWidth * 0.45,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingHorizontal: 11,
+
+
+                    borderRadius: 4,
+                    paddingLeft: 8,
+                    marginTop: 20
+                }} onPress={() => {
+                    bookAppoinment(appoinmentData);
+                }}>
+                    <Image style={{ width: screenWidth * 0.39, height: screenWidth * 0.13 }}
+                        resizeMode={'contain'}
+                        source={require('../../assets/banner/book_appoinment_2.png')} />
+                </TouchableOpacity>
+            </View>
+
+            <View style={{
+                marginTop: 10,
+                marginBottom: 3,
+                paddingLeft: 5,
+                backgroundColor: '#cc5200',
+            }}>
+                <Text style={{ fontSize: 16, color: 'white', padding: 5, paddingLeft: 10, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">সিরিয়ালের জন্য :</Text>
+            </View>
+
+            {(data?.consultationCenterInfo?.apointment_contact_1 || data?.person_1_contact_number) &&
+                <CallButton
+                    onPress={() => { makeCall(data?.person_1_contact_number ? data?.person_1_contact_number : data?.consultationCenterInfo?.apointment_contact_1) }}
+                    cardWidth={cardWidth}
+                    cardMargin={cardMargin}
+                    contact_number={data?.person_1_contact_number ? data?.person_1_contact_number : data?.consultationCenterInfo?.apointment_contact_1}
+                />
+            }
+
+            {(data?.person_2_contact_number || data?.consultationCenterInfo?.apointment_contact_2) &&
+                <CallButton
+                    onPress={() => { makeCall(data?.person_2_contact_number ? data?.person_2_contact_number : data?.consultationCenterInfo?.apointment_contact_2) }}
+                    cardWidth={cardWidth}
+                    cardMargin={cardMargin}
+                    contact_number={data?.person_2_contact_number ? data?.person_2_contact_number : data?.consultationCenterInfo?.apointment_contact_2}
+                />
+            }
+
+            {(data?.person_3_contact_number || data?.consultationCenterInfo?.apointment_contact_3) &&
+                <CallButton
+                    onPress={() => { makeCall(data?.person_3_contact_number ? data?.person_3_contact_number : data?.consultationCenterInfo?.apointment_contact_2) }}
+                    cardWidth={cardWidth}
+                    cardMargin={cardMargin}
+                    contact_number={data?.person_3_contact_number ? data?.person_3_contact_number : data?.consultationCenterInfo?.apointment_contact_3}
+                />
+            }
+        </View>
     );
 }
 

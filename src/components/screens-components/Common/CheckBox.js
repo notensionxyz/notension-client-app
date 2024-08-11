@@ -32,11 +32,11 @@ export default function ({ data, callback, style, checked_color = '#4d9dff' }) {
                         <TouchableOpacity onPress={onCheck(x, y)} key={y}
                             style={[{ flexDirection: 'row', marginBottom: 20 }, style]}>
                             <View style={{
-                                height: 35,
-                                width: 35,
-                                borderColor: '#d9d9d9',
-                                backgroundColor: x.checked ? checked_color : '#FFF',
-                                borderRadius: 5,
+                                height: 24,
+                                width: 24,
+                                borderRadius: 12,
+                                borderColor: '#FFFFF',
+                                //backgroundColor: x.checked ? checked_color : '#FFF',
                                 borderWidth: 1,
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -44,12 +44,13 @@ export default function ({ data, callback, style, checked_color = '#4d9dff' }) {
                                 {
                                     x.checked
                                     &&
-                                    <Image style={{ width: 20, height: 20, tintColor: '#FFF' }}
-                                        source={require('../../../assets/icon/ic_check.png')} />
+                                    <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: '#ff9800' }} />
+                                    // <Image style={{ width: 20, height: 20, tintColor: '#FFF' }}
+                                    //     source={require('../../../assets/icon/ic_check.png')} />
                                 }
                             </View>
-                            <View style={{ height: 35, justifyContent: 'center', paddingLeft: 10 }}>
-                                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{x.title}</Text>
+                            <View style={{ height: 24, justifyContent: 'center', paddingLeft: 10 }}>
+                                <Text style={{ fontSize: 18, fontWeight: 500 }}>{x.title}</Text>
                             </View>
                         </TouchableOpacity>
                     );

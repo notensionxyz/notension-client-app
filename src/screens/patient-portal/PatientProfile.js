@@ -40,7 +40,10 @@ let initialValue = '';
 
 let initialCustomType = 'Select Gender';
 
-const PatientProfile = () => {
+const PatientProfile = ({ route }) => {
+    //console.log(route?.params?.data)
+    const data = route?.params?.data;
+    const action = route?.params?.action;
     const timerRef = useRef(null);
     const navigation = useNavigation();
     const [date, setDate] = useState(new Date());
@@ -49,27 +52,21 @@ const PatientProfile = () => {
     const [errors, setErrors] = useState([]);
     const [clickOnSubmit, setClickOnSubmit] = useState(false);
 
-    const initialInformation = {
-        patient_name: '',
-        contact: '',
-        alternative_contact: '',
-        address: '',
-        email: '',
-        gender: '',
-        date_of_birth: new Date(),
-    };
-
-    let [information, setInformation] = useState(initialInformation);
+    let [information, setInformation] = useState(data);
 
     const {
         progressing,
         setProgressing,
         registerPatient,
-        getPatientInfo
+        updatePatientProfile,
     } = usePatient();
 
     useEffect(() => {
-        getPatientInfo();
+        initialValue = data?.gender;
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const formattedDate = new Date(data?.date_of_birth).toLocaleDateString('en-GB', options);
+        setDateOfBirth(formattedDate);
+
         const backAction = () => {
             navigation.goBack();
             return true;
@@ -111,34 +108,10 @@ const PatientProfile = () => {
     let cardMargin = 4;
     let cardWidth = screenWidth - (cardMargin * 3);
 
-    const dataArr = [
-        {
-            title: 'Air Conditioner',
-            value: 'air_conditioner',
-            checked: false,
-        },
-        {
-            title: 'Breakfast',
-            value: 'breafast',
-            checked: false,
-        },
-        {
-            title: 'Parking',
-            value: 'parking',
-            checked: true,
-        },
-    ];
-
-    const combobox_callback = () => {
-        return (e) => {
-            console.log('======> ', e);
-        };
-    };
-
     const { validatePatientInformation } = useValidation();
 
     const getConnectionStatus = () => {
-        //setProgressing(true);
+        setProgressing(true);
         setClickOnSubmit(true);
         const isInputValid = validatePatientInformation(information, setErrors);
         NetInfo.fetch().then(state => {
@@ -163,7 +136,11 @@ const PatientProfile = () => {
 
     const saveInformation = () => {
         if (connectionStatus && isReachable) {
-            registerPatient(information);
+            if (action === 'register') {
+                registerPatient(information);
+            } else {
+                updatePatientProfile(information);
+            }
         } else {
             setProgressing(false);
             Alert.alert("Hold on!", "Internet Connection Lost", [
@@ -182,6 +159,19 @@ const PatientProfile = () => {
             <HeaderCommon toggleDrawer={navigation} title="Patient's Profile" connectionStatus={false} isReachable={false} />
             <ScrollView>
                 <View style={styles.body}>
+                    <View style={{
+                        backgroundColor: '#7903d1',
+                        //paddingHorizontal: 15,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 10,
+                        marginBottom: 10
+                    }}>
+                        <View style={{ flex: 1, paddingTop: 5 }}>
+                            <Text style={{ color: '#FFF', fontSize: 15, textAlign: 'justify', fontWeight: '600' }}>## রোগীর জন্ম তারিখ নিশ্চিত করা কেন গুরুত্বপূর্ণ?</Text>
+                            <Text style={{ color: '#FFF', fontSize: 14, textAlign: 'justify' }}>রোগীর যত্নের সাথে সঠিক চিকিৎসা, ওষুধ এবং সম্ভাব্য সমস্যা এড়াতে রোগীর বয়স গুরুত্বপূর্ণ। রোগীর বয়সও বহুলাংশে নির্ধারণ করতে পারে যে ধরনের মেডিকেল পরীক্ষাগুলি প্রয়োজনীয় এবং ফলাফলের জন্য প্রভাব রয়েছে। বয়স্ক রোগীদের আরও গভীরভাবে পরীক্ষার প্রয়োজন হতে পারে।</Text>
+                        </View>
+                    </View>
                     <View style={{ marginHorizontal: 8 }}>
                         <Text>
                             <Text style={styles.level}>Patient Name ( রোগীর নাম )</Text><Text style={styles.alert}> *</Text>
@@ -244,14 +234,16 @@ const PatientProfile = () => {
                                 setDate(date);
 
                                 const originalDate = date.toISOString().split('T')[0];
-
-                                const [year, month, day] = originalDate.split('-');
-
-                                // Rearrange the components to DD-MM-YYYY format
-                                const formattedDate = `${day}-${month}-${year}`;
-                                setDateOfBirth(formattedDate);
-                                //console.log(formattedDate); // Output: '29-07-2018'
                                 //console.log(date.toISOString().split('T')[0])
+                                //const [year, month, day] = originalDate.split('-');
+                                // Rearrange the components to DD-MM-YYYY format
+                                //const formattedDate = `${day}-${month}-${year}`;
+
+                                const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                                const formattedDate = new Date(date).toLocaleDateString('en-GB', options);
+                                //console.log(formattedDate);
+                                setDateOfBirth(formattedDate);
+
                                 handleDataChange({
                                     target: {
                                         name: 'date_of_birth',

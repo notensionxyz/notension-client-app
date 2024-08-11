@@ -11,9 +11,10 @@ const screenWidth = Dimensions.get('window').width;
 let cardMargin = 4;
 let cardWidth = screenWidth - (cardMargin * 4);
 
-export default function PatientInfo() {
+export default function PatientInfo({ route }) {
     const navigation = useNavigation();
     const patientInfo = useSelector((state) => state.user.patientInfo);
+    let appoinmentData = route.params.data;
 
     const {
         progressing,
@@ -37,14 +38,23 @@ export default function PatientInfo() {
     }, []);
 
     const initialInformation = {
+        _id: '303030303030303030303030',
         patient_name: '',
         contact: '',
         alternative_contact: '',
         address: '',
         email: '',
         gender: '',
-        date_of_birth: '',
+        date_of_birth: new Date(),
     };
+
+    const bookAppoinment = (data) => {
+        appoinmentData.patientId = data?._id;
+        appoinmentData.patient_name = data?.patient_name;
+        appoinmentData.patient_contact = data?.contact;
+        //console.log(appoinmentData);
+        navigation.navigate('BookAppointment', { data: appoinmentData })
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
@@ -60,7 +70,7 @@ export default function PatientInfo() {
                         null
                     }
                     ListFooterComponent={
-                        <TouchableOpacity onPress={() => { navigation.navigate('PatientProfile', { initialInformation: initialInformation, action: 'add' }) }}
+                        <TouchableOpacity onPress={() => { navigation.navigate('PatientProfile', { data: initialInformation, action: 'register' }); }}
                             style={{
 
                                 justifyContent: 'center',
@@ -99,7 +109,7 @@ export default function PatientInfo() {
                     }
                     contentContainerStyle={{ padding: 5 }}
                     data={patientInfo}
-                    renderItem={({ item }) => <ListItem data={item} />}
+                    renderItem={({ item }) => <ListItem data={item} bookAppoinment={bookAppoinment} />}
                     keyExtractor={item => item._id}
                 />
 
@@ -108,14 +118,15 @@ export default function PatientInfo() {
     );
 }
 
-function ListItem({ data }) {
+function ListItem({ data, bookAppoinment }) {
     const navigation = useNavigation();
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
     const formattedDate = new Date(data?.date_of_birth).toLocaleDateString('en-GB', options);
 
     return (
         <TouchableOpacity onPress={() => {
-            //navigation.navigate('OrderDetails', { data: data, status: status })
+            //navigation.navigate('PatientProfile', { data: data, action: 'update' });
+            bookAppoinment(data);
         }}>
             <View style={{
                 backgroundColor: 'white',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet, Pressable, View } from "react-native";
+import { Dimensions, StyleSheet, FlatList, Pressable, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { storageImageUrl } from "../../../helpers/imageUrl";
@@ -11,137 +11,63 @@ export default function BusinessModules({ data }) {
     const navigation = useNavigation();
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [message, setMessage] = useState('Coming soon');
-    const navigate = () => {
-        setShowSuccessMessage(true);
+    
+    const navigateTo = (data) => {
+        if (data?.id === "1") {
+            navigation.navigate('NearestGroceryShop');
+        } else if (data?.id === "2") {
+            navigation.navigate('NearestMedicineShop');
+        } else if (data?.id === "3") {
+            navigation.navigate('ExploreFoodModule');
+        }
     }
+
     return (
         <>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', marginBottom: 7 }}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Pressable onPress={() => { navigation.navigate('NearestGroceryShop') }}>
-                        <View style={{ height: ((screenWidth / 4) * 3) - 13, width: (screenWidth / 2) - 5, padding: 5, borderRadius: 10 }}>
-                            <View style={{
-                                justifyContent: 'space-between',
-                                borderRadius: 10,
-                                shadowRadius: 10,
-                                elevation: 3,
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.3,
-                                alignItems: 'center',
-                                backgroundColor: 'white'
-                            }}>
-                                <FastImage
-                                    source={{ uri: storageImageUrl('app-dashboard', data[0]?.file_name) }}
-                                    resizeMode={FastImage.resizeMode.contain}
-                                    style={{
-                                        height: '100%',
-                                        width: '100%',
-                                        justifyContent: 'flex-end',
-                                        //padding: 10,
-                                        borderRadius: 10,
-                                        shadowRadius: 10,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.3,
-                                        overflow: 'hidden'
-                                    }} />
-
-                            </View>
-                        </View>
-                    </Pressable>
-                    <Pressable onPress={() => { navigation.navigate('NearestMedicineShop') }}>
-                        <View style={{ height: ((screenWidth / 4) * 3) - 13, width: (screenWidth / 2) - 5, padding: 5, borderRadius: 10 }}>
-                            <View style={{
-                                justifyContent: 'space-between',
-                                borderRadius: 10,
-                                shadowRadius: 10,
-                                elevation: 3,
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.3,
-                                backgroundColor: 'white'
-                            }}>
-                                <FastImage
-                                    source={{ uri: storageImageUrl('app-dashboard', data[1]?.file_name) }}
-                                    resizeMode={FastImage.resizeMode.contain}
-                                    style={{
-                                        height: '100%',
-                                        width: '100%',
-                                        justifyContent: 'flex-end',
-                                        //padding: 10,
-                                        borderRadius: 10,
-                                        shadowRadius: 10,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.3,
-                                        overflow: 'hidden'
-                                    }} />
-
-                            </View>
-                        </View>
-                    </Pressable>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <Pressable onPress={() => { navigation.navigate('ExploreFoodModule') }}>
-                        <View style={{ height: (screenWidth / 3) - 7, width: ((screenWidth / 3) * 2) - 8, padding: 5, borderRadius: 10 }}>
-                            <View style={{
-                                justifyContent: 'space-between',
-                                borderRadius: 10,
-                                shadowRadius: 10,
-                                elevation: 3,
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.3,
-                                backgroundColor: 'white'
-                            }}>
-                                <FastImage
-                                    source={{ uri: storageImageUrl('app-dashboard', data[2]?.file_name) }}
-                                    resizeMode={FastImage.resizeMode.contain}
-                                    style={{
-                                        height: (screenWidth / 3) - 9,
-                                        width: ((screenWidth / 3) * 2) - 18,
-                                        justifyContent: 'flex-end',
-                                        //padding: 10,
-                                        borderRadius: 10,
-                                        shadowRadius: 10,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.3,
-                                        overflow: 'hidden'
-                                    }} />
-
-                            </View>
-                        </View>
-                    </Pressable>
-                    <Pressable onPress={() => { navigate() }}>
-                        <View style={{ height: (screenWidth / 3) - 7, width: (screenWidth / 3) - 2, padding: 5, borderRadius: 10 }}>
-                            <View style={{
-                                justifyContent: 'space-between',
-                                borderRadius: 10,
-                                shadowRadius: 10,
-                                elevation: 3,
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.3,
-                                backgroundColor: 'white'
-                            }}>
-                                <FastImage
-                                    source={{ uri: storageImageUrl('app-dashboard', data[3]?.file_name) }}
-                                    resizeMode={FastImage.resizeMode.contain}
-                                    style={{
-                                        height: (screenWidth / 3) - 9,
-                                        width: (screenWidth / 3) - 9,
-                                        justifyContent: 'flex-end',
-                                        //padding: 10,
-                                        borderRadius: 10,
-                                        shadowRadius: 10,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.3,
-                                        overflow: 'hidden'
-                                    }} />
-
-                            </View>
-                        </View>
-                    </Pressable>
-                </View>
+                <FlatList
+                    contentContainerStyle={{ paddingTop: 5, paddingBottom: 5 }}
+                    showsHorizontalScrollIndicator={false}
+                    numColumns={3}
+                    data={data?.slice(0, 3)}
+                    renderItem={({ item }) => <ItemData data={item} navigateTo={navigateTo} />}
+                    keyExtractor={(item, index) => index.toString()}
+                //keyExtractor={item => item._id}
+                />
             </View >
             <NotificationSuccess visible={showSuccessMessage} setVisible={setShowSuccessMessage} message={message} />
         </>
     );
+}
+
+function ItemData({ data, navigateTo }) {
+    let cardMargin = 5;
+    let cardWidth = (screenWidth / 3) - (cardMargin * 2.5);
+
+    return (
+        <Pressable onPress={() => { navigateTo(data); }}>
+            <View style={{
+                backgroundColor: 'white',
+                width: cardWidth,
+                margin: cardMargin,
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                borderRadius: 10,
+                elevation: 2,
+            }}>
+                <View style={{ height: screenWidth * 0.40, overflow: 'hidden', }}>
+                    <FastImage style={{ height: '100%', width: '100%', borderRadius: 6, }}
+                        source={{
+                            uri: storageImageUrl('app-dashboard', data?.file_name),
+                            priority: FastImage.priority.normal,
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
+                    />
+                </View>
+            </View>
+        </Pressable>
+    )
 }
 
 const styles = StyleSheet.create({

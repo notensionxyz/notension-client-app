@@ -37,7 +37,7 @@ const CustomPagination = (props: JSX.IntrinsicAttributes & PaginationProps) => {
 
 const FreeServicesSlider = ({ data }) => {
     return (
-        <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center'}}>
+        <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <SwiperFlatList
                 autoplay
                 autoplayDelay={3}
@@ -50,7 +50,7 @@ const FreeServicesSlider = ({ data }) => {
                             source={{ uri: storageImageUrl('app-dashboard', item.file_name) }}
                             resizeMode={FastImage.resizeMode.contain}
                             style={{
-                                height: (screenWidth / 2),
+                                height: ((screenWidth / 8) * 3),
                                 width: screenWidth,
                                 justifyContent: 'space-between',
                                 //padding: 5,                                

@@ -79,6 +79,7 @@ export const GET_DOCTOR_PROFILE = '/client-app-api/v1/health-care/get-doctor-pro
 export const GET_PATIENTS = '/client-app-api/v1/health-care/get-patients-info';
 export const REGISTER_PATIENT = '/client-app-api/v1/health-care/register-patient';
 export const MANAGE_PATIENT = '/client-app-api/v1/health-care/manage-patient';
+export const BOOK_APPOINTMENT = '/client-app-api/v1/health-care/book-appointment';
 
 export const EXPLORE_MEDICAL_SERVICE_PROVIDER = '/client-app-api/v1/health-care/explore-medical-service-provider';
 export const FIND_MEDICAL_SERVICE_PROVIDER = '/client-app-api/v1/health-care/get-medical-service-provider';

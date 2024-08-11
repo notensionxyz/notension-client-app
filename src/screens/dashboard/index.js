@@ -20,6 +20,7 @@ import { logoColor_2 } from '../../helpers/Constants';
 import { useUser } from '../../hooks/useUser';
 import GooglePlacesInput from '../../components/screens-components/Common/GooglePlacesAutocomplete';
 import LocationInfo from '../../components/screens-components/Common/LocationInfo';
+import FreeServices from './dashboard-components/FreeServices';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -173,8 +174,8 @@ function Dashboard() {
                                         <AddSlider data={ad_slider_by_district?.first_slider} />
                                         <MedicalServices data={medical_services_banner} />
                                         <AddSlider data={ad_slider_by_district?.second_slider} />
-                                        {/* <FreeServicesSlider data={free_services_slider} />
-                                                <FreeServices /> */}
+                                        {/* <FreeServicesSlider data={free_services_slider} /> */}
+                                        {/* <FreeServices /> */}
                                     </ScrollView>
                                 </>
                             }

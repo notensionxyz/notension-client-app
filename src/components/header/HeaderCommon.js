@@ -25,7 +25,15 @@ export default function HeaderCommon(props) {
             //shadowOffset: { width: 0, height: 5 },
             //shadowOpacity: 0.3
         }}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingLeft: 8, marginTop: 0 }}>
+            <TouchableOpacity style={{ paddingLeft: 8, marginTop: 0 }}
+                onPress={() => {
+                    if (props.title === 'অ্যাপয়েন্টমেন্টের তালিকা') {
+                        navigation.navigate('Dashboard');
+                    } else {
+                        navigation.goBack();
+                    }
+                }}
+            >
                 <Image source={require('../../assets/icon/ic_arrow_back.png')}
                     style={{ height: 25, width: 25, resizeMode: 'contain', tintColor: logoColor_2 }} />
             </TouchableOpacity>

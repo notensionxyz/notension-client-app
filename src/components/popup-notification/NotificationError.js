@@ -7,12 +7,12 @@ export default function ({ visible, setVisible, message }) {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <ModalContent visible={visible} onBackDropPress={() => setVisible(!visible)} style={{ padding: 40 }}>
                 <Card style={{ backgroundColor: '#FFF', minHeight: 350 }}>
-                    <View style={{ flex: 1, backgroundColor: '#ff7757', alignItems: 'center', paddingTop: 36 }}>
+                    <View style={{ flex: 1, backgroundColor: '#ff7757', alignItems: 'center', paddingTop: 30 }}>
                         <Image style={{ width: 100, height: 100 }} source={require('../../assets/icon/shield.png')} />
-                        <Text style={{ fontWeight: 'bold', color: '#FFF', paddingTop: 5, fontSize: 18, margin: 10, textAlign: 'center' }}>{message}</Text>
+                        <Text style={{ fontWeight: 'bold', color: '#FFF', padding: 8, fontSize: 18, margin: 10, textAlign: 'center' }}>{message}</Text>
                     </View>
-                    <View style={{ height: 140, paddingHorizontal: 20, justifyContent: 'center' }}>
-                        <View style={{ paddingHorizontal: 90 }}>
+                    <View style={{ height: 100, paddingHorizontal: 20, justifyContent: 'center' }}>
+                        <View style={{ paddingHorizontal: 80 }}>
                             <RoundButton onPress={() => setVisible(!visible)} style={{ backgroundColor: '#ff7757' }}
                                 textStyle={{ color: '#FFF' }}>
                                 Ok

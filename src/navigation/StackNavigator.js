@@ -42,6 +42,8 @@ import ProfileOfDoctor from "../screens/doctor-portal/ProfileOfDoctor";
 import OnlineBooking from "../screens/doctor-portal/OnlineBooking";
 import PatientProfile from "../screens/patient-portal/PatientProfile";
 import PatientInfo from "../screens/patient-portal/PatientInfo";
+import BookAppointment from "../screens/patient-portal/BookAppointment";
+import BookedAppointmentInfo from "../screens/patient-portal/BookedAppointmentInfo";
 import ExploreMedicalService from "../screens/medical-service/ExploreMedicalService";
 import MedicalServiceProvider from "../screens/medical-service/MedicalServiceProvider";
 import FindAmbulance from "../screens/ambulance-service/FindAmbulance";
@@ -381,6 +383,22 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="PatientInfo"
                 component={PatientInfo}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="BookAppointment"
+                component={BookAppointment}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="BookedAppointmentInfo"
+                component={BookedAppointmentInfo}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

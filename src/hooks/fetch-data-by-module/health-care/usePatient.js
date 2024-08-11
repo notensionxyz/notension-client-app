@@ -4,7 +4,7 @@ import { HEALTH_CARE_URL, HEALTH_CARE_URL_LOCAL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
-import { GET_PATIENTS, REGISTER_PATIENT } from '../../../helpers/Constants';
+import { GET_PATIENTS, MANAGE_PATIENT, REGISTER_PATIENT } from '../../../helpers/Constants';
 import { handleUserReducer } from '../../../store/reducers/userReducer';
 axios.defaults.withCredentials = true;
 
@@ -52,7 +52,48 @@ export const usePatient = () => {
             .post(REGISTER_PATIENT, patientData)
             .then(response => {
                 //console.log([...patientInfo, response?.data?.result]);
-                savePatientInfo([...patientInfo, response?.data?.result]);
+                savePatientInfo('add', response?.data?.result);
+                navigation.goBack();
+                setProgressing(false);
+            })
+            .catch(error => {
+                console.log('Error :: ', error?.response?.data)
+                setProgressing(false);
+            })
+
+        setTimeout(() => {
+            if (progressing) {
+                setProgressing(false);
+            }
+        }, 10000);
+    }
+
+    const updatePatientProfile = (patientData) => {
+        let updInfo = patientData;
+        setProgressing(true);
+        patientData.updatedBy = {
+            user_id: userInfo?._id,
+            user: userInfo?.contact_no.slice(-11),
+            user_type: 'Customer',
+        };
+
+        //console.log(patientData);
+
+        AxiosTest
+            .put(MANAGE_PATIENT, patientData)
+            .then(response => {
+                console.log(response?.data?.message);
+              
+                if (response?.data?.message === 'delete') {
+                    //console.log('response?.data?.result', response?.data?.result);
+                    savePatientInfo('delete', updInfo); // First delete existing data
+                    setTimeout(() => {
+                        savePatientInfo('add', response?.data?.result); // Then Save New One
+                    }, 500);
+                }
+                else if (response?.data?.message === 'update') {
+                    savePatientInfo('update', updInfo);
+                }
                 navigation.goBack();
                 setProgressing(false);
             })
@@ -69,7 +110,7 @@ export const usePatient = () => {
     }
 
     const getPatientInfo = () => {
-        savePatientInfo([]);
+        savePatientInfo('save_all', []);
         setProgressing(true);
         AxiosTest
             .get(GET_PATIENTS,
@@ -83,7 +124,7 @@ export const usePatient = () => {
             .then((res) => {
                 //console.log(res?.data?.result.length);
                 if (res?.data?.result.length > 0) {
-                    savePatientInfo(res?.data?.result);
+                    savePatientInfo('save_all', res?.data?.result);
                 }
                 setProgressing(false);
             })
@@ -99,13 +140,25 @@ export const usePatient = () => {
         }, 10000);
     };
 
-    const savePatientInfo = (patientInfo) => {
-        dispatch(
-            handleUserReducer({
-                type: 'SAVE_PATIENT_INFO',
-                data: patientInfo,
-            })
-        );
+    const savePatientInfo = (task, patientInfo) => {
+
+        if (task === 'save_all') {
+            // console.log('console.log(task);', task);
+            dispatch(
+                handleUserReducer({
+                    type: 'SAVE_PATIENT_INFO',
+                    data: patientInfo,
+                })
+            );
+        } else {
+            //console.log('console.log;', task);
+            dispatch(
+                handleUserReducer({
+                    type: 'UPDATE_PATIENT_INFO',
+                    data: { action: task, patientData: patientInfo },
+                })
+            );
+        }
     }
 
     useEffect(() => {
@@ -118,6 +171,7 @@ export const usePatient = () => {
         progressing,
         setProgressing,
         registerPatient,
+        updatePatientProfile,
         getPatientInfo
     };
 };
