@@ -58,7 +58,7 @@ export const useAppointment = () => {
 
         //console.log(patientData);
 
-        AxiosTest
+        Axios
             .post(BOOK_APPOINTMENT, bookAppoinmentInfo)
             .then(response => {
 
@@ -120,5 +120,6 @@ export const useAppointment = () => {
         setShowSuccessMessage,
         isAppointmentBooked,
         bookAppointment,
+        saveAppoinmentInfo
     };
 };

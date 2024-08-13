@@ -78,7 +78,7 @@ function ExploreConsultationCenter({ route }) {
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
             <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
                 <HeaderCommon toggleDrawer={navigation} title="Consultation Center Details" connectionStatus={false} isReachable={false} />
-                <ProgressStyle2 visible={progressing} />
+                <ProgressStyle2 visible={progressing || visible} />
                 <LocationInfo />
                 <ScrollView>
                     <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>

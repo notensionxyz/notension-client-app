@@ -32,13 +32,14 @@ function MedicalServices({ data }) {
                 };
                 navigation.navigate('CenterInformation', { options });
             } else if (data?.id === "3") {
-                navigation.navigate('ExploreMedicalService');
-            } else if (data?.id === "4") {
                 const options = {
                     centerType: 'Diagnostic Centre',
                     Title: 'Diagnostic Centre Info',
                 };
                 navigation.navigate('CenterInformation', { options });
+
+            } else if (data?.id === "4") {
+                navigation.navigate('ExploreMedicalService');
                 //setShowSuccessMessage(true);
             } else if (data?.id === "5") {
                 //console.log(data?.id);

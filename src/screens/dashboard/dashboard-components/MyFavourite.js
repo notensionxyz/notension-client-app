@@ -12,15 +12,15 @@ function MyFavourite({ title, data, height }) {
     const [message, setMessage] = useState('Coming soon');
     const navigate = (id) => {
         if (id === '1') {
-            navigation.navigate('FavouriteStore', { merchantType: 0 });
+            navigation.navigate('FavouriteServiceProvider', { merchantType: 4 });
         } else if (id === '2') {
-            navigation.navigate('FavouriteStore', { merchantType: 1 });
+            navigation.navigate('FavouriteServiceProvider', { merchantType: 3 });
         } else if (id === '3') {
             navigation.navigate('FavouriteStore', { merchantType: 2 });
         } else if (id === '4') {
-            navigation.navigate('FavouriteServiceProvider', { merchantType: 4 });
+            navigation.navigate('FavouriteStore', { merchantType: 0 });
         } else if (id === '5') {
-            navigation.navigate('FavouriteServiceProvider', { merchantType: 3 });
+            navigation.navigate('FavouriteStore', { merchantType: 1 });
         } else {
             console.log(id);
             //setShowSuccessMessage(true);

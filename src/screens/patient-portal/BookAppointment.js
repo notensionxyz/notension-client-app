@@ -18,14 +18,13 @@ const hight = Dimensions.get('window').height;
 
 let connectionStatus = 'true';
 let isReachable = 'true';
-let merchantType = 4;
-let demo_doctor_pic = '';
 let currentDate = '';
 
 export default function BookAppointment({ route }) {
     const navigation = useNavigation();
     const appoinmentData = route.params.data;
     const [isOffDay, setIsOffDay] = useState(false);
+    const [allowBooking, setAllowBooking] = useState(true);
     const [appointmentTime, setAppointmentTime] = useState([]);
     const [appointmentDay, setappointmentDay] = useState('');
     const formattedDate = new Date().toISOString().split('T')[0];
@@ -110,39 +109,26 @@ export default function BookAppointment({ route }) {
         return time >= slotStart && time <= slotEnd;
     };
 
-
-
     //console.log('current_day_name :', weekday[(new Date('2024-08-04T00:00:00.000+00:00').getDay() + 1) % 7]);
     const appointmentDays = [];
     const [Available_Booking_Day, setAvailable_Booking_Day] = useState('');
-
-    //const CurrentDay = new Date();
-
-    //const formattedTime = formatAMPM(CurrentDay);
-
-
 
     const formatDate = (date) => {
         const [year, month, day] = date.split('-');
         return `${day}/${month}/${year}`;
     };
 
-    let getDayName = (dateStr) => {
-        console.log(dateStr);
-        let date = new Date(dateStr.trim());
-        console.log('date', date);
-        //console.log(date.toLocaleDateString('en-GB', { weekday: 'long' }));
-        //return date.toLocaleDateString('en-GB', { weekday: 'long' });
-    };
-
     useEffect(() => {
         const today = new Date();
+
         let current_day_name = weekday[(today.getDay() + 1) % 7];
+
         const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
         currentDate = today.toLocaleDateString('en-GB', options);
+
         const formattedTime = formatAMPM(today);
-        const isAlloed = isTimeInSlot(formattedTime, appoinmentData?.appointment_scheduling?.start_time, appoinmentData?.appointment_scheduling?.end_time);
-        console.log('isAlloed ', isAlloed);
+        const isAllowed = isTimeInSlot(formattedTime, appoinmentData?.appointment_scheduling?.start_time, appoinmentData?.appointment_scheduling?.end_time);
+        setAllowBooking(isAllowed);
 
         if (appoinmentData?.appointment_scheduling?.scheduling_type === 'ScheduleForNextDay') {
             appoinmentData?.chamber_schedule?.map((day, i) => {
@@ -167,6 +153,7 @@ export default function BookAppointment({ route }) {
                 }
             });
         }
+
     }, []);
 
     const getAppointmentSchedule = (AppointmentDay) => {
@@ -206,6 +193,7 @@ export default function BookAppointment({ route }) {
     }
 
     const getNextAppointmentDay = (currentDay) => {
+        const today = new Date();
         const currentIndex = weekday.indexOf(currentDay);
         for (let i = 0; i <= 6; i++) {
             const nextIndex = (currentIndex + i) % 7;
@@ -302,7 +290,7 @@ export default function BookAppointment({ route }) {
             <ProgressStyle2 visible={progressing} />
             <ScrollView>
                 <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                    <View style={{ width: screenWidth, padding: 8, paddingRight: 15, justifyContent: 'space-between', backgroundColor: '#fff5e6' }}>
+                    <View style={{ width: screenWidth, padding: 8, paddingRight: 15, justifyContent: 'space-between'}}>
                         <Text style={{ fontSize: 15, color: '#a10a53', marginLeft: 10, marginRight: 13 }}>
                             তারিখ: {currentDate}
                         </Text>
@@ -310,7 +298,7 @@ export default function BookAppointment({ route }) {
                             সিরিয়াল নেওয়ার সময় : {appoinmentData?.appointment_scheduling?.start_time} {'--'} {appoinmentData?.appointment_scheduling?.end_time}
                         </Text>
                     </View>
-                    <View style={{ width: screenWidth, padding: 8, paddingRight: 15, justifyContent: 'space-between', backgroundColor: '#fff5e6' }}>
+                    <View style={{ width: screenWidth, padding: 8, paddingRight: 15, justifyContent: 'space-between', }}>
                         <Text style={{ fontSize: 17, color: '#a10a53', marginLeft: 10, marginRight: 13, fontWeight: 500 }}>
                             রোগীর নাম : {appoinmentData?.patient_name}
                         </Text>
@@ -318,6 +306,7 @@ export default function BookAppointment({ route }) {
                             মোবাইল নাম্বার : {appoinmentData?.patient_contact}
                         </Text>
                     </View>
+
                     <View style={{
                         width: screenWidth,
                         flexDirection: 'row',
@@ -328,50 +317,62 @@ export default function BookAppointment({ route }) {
                         justifyContent: 'center',
                     }}>
                         <View style={{ flex: 1, padding: 10 }}>
-
-                            <Text style={{ fontSize: 18, color: '#263238', fontWeight: 'bold' }}>{appoinmentData?.doctor_name}</Text>
-                            <Text style={{ fontSize: 16, color: '#263238' }}>{appoinmentData?.qualifications}</Text>
-
                             <View style={{
-                                marginTop: 2,
-                                marginBottom: 3,
-                                paddingLeft: 5,
-                                backgroundColor: '#ccb7f7',
+                                marginTop: 3,
+                                padding: 5,
+                                marginBottom: 10,
+                                borderColor: '#263238',
+                                borderWidth: 1,
+                                borderRadius: 15,
                             }}>
-                                <Text style={{ fontSize: 16, color: 'white', padding: 5, paddingLeft: 10, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">{appoinmentData?.speciality}</Text>
-                            </View>
+                                <Text style={{ fontSize: 18, color: '#263238', fontWeight: 'bold' }}>{appoinmentData?.doctor_name}</Text>
+                                <Text style={{ fontSize: 16, color: '#263238' }}>{appoinmentData?.qualifications}</Text>
 
-                            {!isOffDay &&
                                 <View style={{
-                                    marginTop: 3,
-                                    padding: 5,
-                                    marginBottom: 10,
-                                    borderColor: '#263238',
-                                    borderWidth: 1,
-                                    borderRadius: 15,
+                                    marginTop: 2,
+                                    marginBottom: 3,
+                                    paddingLeft: 5,
+                                    backgroundColor: '#ccb7f7',
                                 }}>
-                                    <View style={{
-                                        marginBottom: 3,
-                                        paddingLeft: 5,
-                                        // backgroundColor: '#0943d6',
-                                    }}>
-                                        <Text style={{ fontSize: 17, color: '#0943d6', padding: 5, paddingLeft: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">পরামর্শ কেন্দ্র :</Text>
-                                        <Text style={{ fontSize: 18, color: '#006400', fontWeight: 'bold', paddingLeft: 5 }}>{appoinmentData?.center_name}</Text>
-                                    </View>
-                                    <Text style={{ fontSize: 17, color: '#0943d6', padding: 5, paddingLeft: 5, fontWeight: 'bold' }}>পরামর্শের সময় : </Text>
-                                    <Text style={{ fontSize: 19, color: '#a10a53', paddingLeft: 5, fontWeight: 500, marginBottom: 8 }} numberOfLines={1} ellipsizeMode="tail">{formatDate(appointment_date)} - {appointmentDay}</Text>
-                                    <CheckBox callback={combobox_callback()} data={appointmentTime} />
+                                    <Text style={{ fontSize: 16, color: 'white', padding: 5, paddingLeft: 10, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">{appoinmentData?.speciality}</Text>
                                 </View>
-                            }
+
+                                {!isOffDay &&
+                                    <>
+                                        <View style={{
+                                            marginBottom: 3,
+                                            paddingLeft: 5,
+                                            // backgroundColor: '#0943d6',
+                                        }}>
+                                            <Text style={{ fontSize: 17, color: '#0943d6', padding: 5, paddingLeft: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">পরামর্শ কেন্দ্র :</Text>
+                                            <Text style={{ fontSize: 18, color: '#006400', fontWeight: 'bold', paddingLeft: 5 }}>{appoinmentData?.center_name}</Text>
+                                        </View>
+                                        <Text style={{ fontSize: 17, color: '#0943d6', padding: 5, paddingLeft: 5, fontWeight: 'bold' }}>পরামর্শের সময় : </Text>
+                                        <Text style={{ fontSize: 19, color: '#a10a53', paddingLeft: 5, fontWeight: 500, marginBottom: 8 }} numberOfLines={1} ellipsizeMode="tail">{formatDate(appointment_date)} - {appointmentDay}</Text>
+                                        <CheckBox callback={combobox_callback()} data={appointmentTime} />
+                                    </>
+                                }
+                            </View>
                             {!isOffDay ?
-                                <TouchableOpacity onPress={() => { getConnectionStatus(); }} style={styles.saveBtn} >
-                                    <Text style={{ fontSize: 17, color: 'white' }}>Book Now</Text>
-                                </TouchableOpacity>
+                                <>
+                                    {allowBooking ?
+                                        <TouchableOpacity onPress={() => { getConnectionStatus(); }} style={styles.saveBtn} >
+                                            <Text style={{ fontSize: 18, color: 'white' }}>Book Now</Text>
+                                        </TouchableOpacity>
+                                        :
+                                        <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff5e6' }}>
+                                            <Text style={{ fontSize: 18, color: '#a10a53', padding: 10, fontWeight: 500 }}>
+                                                {`${appoinmentData?.appointment_scheduling?.start_time} থেকে ${appoinmentData?.appointment_scheduling?.end_time} মধ্যে সিরিয়াল নিতে হবে।`}
+                                            </Text>
+                                        </View>
+                                    }
+                                </>
                                 :
                                 <TouchableOpacity style={styles.saveBtn} >
                                     <Text style={{ fontSize: 18, color: 'white', fontWeight: 500 }}>আজ চেম্বার বন্ধ।</Text>
                                 </TouchableOpacity>
                             }
+
                         </View>
                     </View >
                 </View>

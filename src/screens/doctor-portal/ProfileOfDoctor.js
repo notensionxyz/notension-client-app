@@ -23,6 +23,7 @@ let demo_doctor_pic = '';
 export default function ProfileOfDoctor({ route }) {
     const navigation = useNavigation();
     const { getProfileOfDoctor, progressing } = useDoctor();
+
     const infoDoctor = route.params.data;
     const [profileInfo, setProfileInfo] = useState([]);
     const [doctorName, setDoctorName] = useState(infoDoctor?.doctorInfo?.doctor_name || '');
@@ -80,7 +81,6 @@ export default function ProfileOfDoctor({ route }) {
     let cardWidth = screenWidth - (cardMargin * 8);
 
     const bookAppoinment = (data) => {
-        
         //navigation.navigate('BookAppointment', { data })
         navigation.navigate('PatientInfo', { data })
     }
@@ -89,7 +89,7 @@ export default function ProfileOfDoctor({ route }) {
 
         <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
             <HeaderCommon toggleDrawer={navigation} title="Doctor's Profile" connectionStatus={false} isReachable={false} />
-            <ProgressStyle2 visible={progressing} />
+            <ProgressStyle2 visible={progressing || visible} />
             <ScrollView>
                 <View style={{ height: screenWidth / 2, width: screenWidth, backgroundColor: 'white', alignItems: 'center', overflow: 'hidden', justifyContent: 'center' }}>
                     <FastImage source={doctorProfilePic && doctorProfilePic !== '' && doctorProfilePic !== null ? {
@@ -113,6 +113,19 @@ export default function ProfileOfDoctor({ route }) {
                                 resizeMode={'contain'}
                                 source={require('../../assets/icon/add_favourite.png')} />
                         </TouchableOpacity>
+                    </View>
+
+                }
+
+                {(isAddedToFavouriteList(infoDoctor?.doctorInfo?._id, merchantType) && infoDoctor?.consultationCenterInfo?.is_paid) &&
+                    <View style={{
+                        position: 'absolute',
+                        right: screenWidth / 20,
+                        top: screenWidth / 2.65,
+                    }}>
+                        <Image style={{ width: 30, height: 30, tintColor: 'red' }}
+                            resizeMode={'contain'}
+                            source={require('../../assets/icon/ic_love_red.png')} />
                     </View>
                 }
 
@@ -174,6 +187,9 @@ const CallButton = ({ onPress, cardWidth, cardMargin, contact_number }) => {
 }
 
 const ChamberDetails = ({ index, data, cardWidth, cardMargin, bookAppoinment }) => {
+    console.log('data', data?.book_an_appointment);
+    console.log('data/is_chamber_off', data?.is_chamber_off);
+    console.log('data/notice', data?.notice);
 
     let appoinmentData = {
         doctorId: data?.doctorInfo?._id,
@@ -235,27 +251,37 @@ const ChamberDetails = ({ index, data, cardWidth, cardMargin, bookAppoinment }) 
                 </View>
             }
 
-            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 3 }}>
-                <TouchableOpacity style={{
-                    height: screenWidth * 0.15,
-                    width: screenWidth * 0.45,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    paddingHorizontal: 11,
+            {data?.notice &&
+                <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff5e6', marginTop: 5 }}>
+                    <Text style={{ fontSize: 18, color: '#a10a53', padding: 10, fontWeight: 500 }}>
+                        {data?.notice}
+                    </Text>
+                </View>
+            }
+
+            {data?.book_an_appointment && !data?.is_chamber_off &&
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                    <TouchableOpacity style={{
+                        height: screenWidth * 0.15,
+                        width: screenWidth * 0.45,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        paddingHorizontal: 11,
 
 
-                    borderRadius: 4,
-                    paddingLeft: 8,
-                    marginTop: 20
-                }} onPress={() => {
-                    bookAppoinment(appoinmentData);
-                }}>
-                    <Image style={{ width: screenWidth * 0.39, height: screenWidth * 0.13 }}
-                        resizeMode={'contain'}
-                        source={require('../../assets/banner/book_appoinment_2.png')} />
-                </TouchableOpacity>
-            </View>
+                        borderRadius: 4,
+                        paddingLeft: 8,
+                        marginTop: 20
+                    }} onPress={() => {
+                        bookAppoinment(appoinmentData);
+                    }}>
+                        <Image style={{ width: screenWidth * 0.39, height: screenWidth * 0.13 }}
+                            resizeMode={'contain'}
+                            source={require('../../assets/banner/book_appoinment_2.png')} />
+                    </TouchableOpacity>
+                </View>
+            }
 
             <View style={{
                 marginTop: 10,
@@ -295,7 +321,6 @@ const ChamberDetails = ({ index, data, cardWidth, cardMargin, bookAppoinment }) 
         </View>
     );
 }
-
 
 const styles = StyleSheet.create({
     imageBanner: {

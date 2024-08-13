@@ -82,7 +82,7 @@ export default function DrawerContent({ navigation }) {
             paddingVertical: 10,
             paddingHorizontal: 20,
             backgroundColor: 'transparent'
-          }} onPress={() => { navigation.navigate('Dashboard') }}>
+          }} onPress={() => { navigation.navigate('Dashboard'); }}>
           <Image source={require('../assets/icon/home.png')}
             style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
           <Text style={{
@@ -148,6 +148,24 @@ export default function DrawerContent({ navigation }) {
             }}>My Order</Text>
           </TouchableOpacity>
         }
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            backgroundColor: 'transparent'
+          }} onPress={() => { navigation.navigate('BookedAppointmentInfo'); }}>
+          <Image source={require('../assets/icon/logo_menu.png')}
+            style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+          <Text style={{
+            fontWeight: 'bold',
+            fontSize: 18,
+            color: '#212121',
+            fontWeight: 'bold',
+            marginLeft: 17
+          }}>Booked Appoinment</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={{
             flexDirection: 'row',

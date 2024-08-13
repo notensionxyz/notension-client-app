@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { HEALTH_CARE_URL, HEALTH_CARE_URL_LOCAL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-
 import { Alert } from 'react-native';
 import { EXPLORE_FIND_DOCTOR, FIND_DOCTOR_BY_CONSULTATION_CENTER, FIND_DOCTOR_BY_DEPT, FIND_NEAREST_DOCTOR, GET_DOCTOR_PROFILE } from '../../../helpers/Constants';
 import { handleDoctorReducer } from '../../../store/reducers/health-care/doctorReducer';
@@ -53,7 +52,7 @@ export const useDoctor = () => {
         //console.log('exploreFindDoctor');
         // resetReducer();
         setProgressing(true);
-        AxiosTest
+        Axios
             .get(EXPLORE_FIND_DOCTOR,
                 {
                     params: {
@@ -157,7 +156,7 @@ export const useDoctor = () => {
             centerId: centerId
         };
 
-        AxiosTest
+        Axios
             .post(FIND_DOCTOR_BY_CONSULTATION_CENTER, props)
             .then(response => {
                 if (response?.data?.result.length > 0) {

@@ -48,7 +48,7 @@ export const usePatient = () => {
 
         //console.log(patientData);
 
-        AxiosTest
+        Axios
             .post(REGISTER_PATIENT, patientData)
             .then(response => {
                 //console.log([...patientInfo, response?.data?.result]);
@@ -79,7 +79,7 @@ export const usePatient = () => {
 
         //console.log(patientData);
 
-        AxiosTest
+        Axios
             .put(MANAGE_PATIENT, patientData)
             .then(response => {
                 console.log(response?.data?.message);
@@ -112,7 +112,7 @@ export const usePatient = () => {
     const getPatientInfo = () => {
         savePatientInfo('save_all', []);
         setProgressing(true);
-        AxiosTest
+        Axios
             .get(GET_PATIENTS,
                 {
                     params: {

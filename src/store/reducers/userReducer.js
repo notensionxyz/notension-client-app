@@ -152,6 +152,11 @@ const userReducer = createSlice({
                     );
                 } else if (action === 'add') {
                     newState = [...state.bookedAppoinmentInfo, appoinmentData];
+                } else if (action === 'update') {
+                    const secondDate = new Date().toISOString().split('T')[0];
+                    newState = state.bookedAppoinmentInfo.filter(
+                        (info) => new Date(info?.appointment_date).getTime() >= new Date(secondDate).getTime()
+                    );
                 }
 
                 return {
