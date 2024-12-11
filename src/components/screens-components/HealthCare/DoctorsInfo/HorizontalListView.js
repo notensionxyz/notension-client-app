@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { storageImageUrl } from '../../../../helpers/imageUrl';
 import { health_careImages, logoColor_1, logoColor_2 } from '../../../../helpers/Constants';
 
-
 const screenWidth = Dimensions.get('window').width;
 
 export const MemoizedHorizontalListView = React.memo(HorizontalListView);
@@ -17,6 +16,7 @@ function HorizontalListView({ data, showCenter = true }) {
     if (data?.doctorInfo?.gender === "Female") {
         demo_doctor_pic = require('../../../../assets/gallery/services/female.jpg');
     }
+    
     return (
         <Pressable onPress={() => { navigation.navigate('ProfileOfDoctor', { data }) }}>
             <View style={{ width: screenWidth * 0.85 }}>

@@ -40,7 +40,6 @@ export const useAmbulanceService = () => {
         },
     });
 
-
     const getAmbulanceServiceProvider = (setProviderInfo) => {
 
         setProgressing(true);

@@ -7,7 +7,6 @@ import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { makeCall } from '../../helpers/imageUrl';
 import { useNavigation } from '@react-navigation/native';
 
-
 const screenWidth = Dimensions.get('window').width;
 
 export default function OrderInfo() {

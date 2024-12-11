@@ -77,7 +77,7 @@ export default function PatientInfo({ route }) {
                                 alignItems: 'center',
                             }}
                         >
-                            <View style={{ height: ((screenWidth / 3) - 6), width: screenWidth - 17, borderRadius: 10, marginTop: cardMargin }}>
+                            <View style={{ height: ((screenWidth / 3) - 5), width: screenWidth - 16, borderRadius: 10, marginTop: cardMargin }}>
                                 <View style={{
                                     borderRadius: 10,
                                     shadowRadius: 10,

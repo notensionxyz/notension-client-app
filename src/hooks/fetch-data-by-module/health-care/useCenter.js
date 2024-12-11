@@ -101,8 +101,12 @@ export const useCenter = () => {
                     if (response?.data?.result?.banners.length > 0) {
                         if (centerType === "Hospital") {
                             setBanner(response?.data?.result?.banners[0]?.hospital_banner);
-                        } else {
+                        } else if (centerType === "Diagnostic Centre") {
                             setBanner(response?.data?.result?.banners[0]?.diagnostic_center_banner);
+                        } else if (centerType === "Eye Care Centre") {
+                            setBanner(response?.data?.result?.banners[0]?.eye_care_center_banner);
+                        } else if (centerType === "Deltal Care Centre") {
+                            setBanner(response?.data?.result?.banners[0]?.deltal_care_center_banner);
                         }
                     } else {
                         setBanner(consultationCenterBanner)
@@ -157,12 +161,14 @@ export const useCenter = () => {
                 data: centerInfo,
             })
         );
+
         setProgressing(true);
         Axios
             .get(EXPLORE_CONSULTATION_CENTER,
                 {
                     params: {
                         CenterID: centerInfo?._id,
+                        centerType: centerInfo?.center_type
                     }
                 }
             )

@@ -61,8 +61,6 @@ export default function SignUp({ route }) {
         return () => removeListener();
     }, []);
 
-
-
     const removeOtpListener = () => {
         RNOtpVerify.removeListener();
     };

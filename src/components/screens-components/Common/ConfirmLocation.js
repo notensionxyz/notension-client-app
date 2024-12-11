@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Dimensions, StyleSheet, Pressable, Text, TouchableOpacity, ScrollView, View, Image, Alert, Platform, PermissionsAndroid, ToastAndroid } from "react-native";
-import Geolocation from 'react-native-geolocation-service';
+import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE } from 'react-native-maps';
 import { debounce } from 'lodash';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
@@ -10,7 +11,6 @@ import HeaderForLocation from '../../header/HeaderForLocation';
 import { useGeoLocation } from '../../../hooks/findGeoLocation';
 import { useUser } from '../../../hooks/useUser';
 import { useNavigation } from '@react-navigation/native';
-import GooglePlacesInput from './GooglePlacesAutocomplete';
 import { GOOGLE_PLACES_API_KEY } from '../../../helpers/Constants';
 import { useGlobal } from '../../../hooks/global';
 import ProgressStyle2 from '../../progress-animation/ProgressStyle2';
@@ -20,16 +20,30 @@ const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient)
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-///Geolocation of Jatiya Sangsad Bhaban, Dhaka
+//Geolocation of Jatiya Sangsad Bhaban, Dhaka
 const LATITUDE = 23.7624709;
 const LONGITUDE = 90.3760062;
 const LATITUDE_DELTA = 0.006;
 
 function ConfirmLocation() {
-
-    const navigation = useNavigation();
-    const { districtInfo, defaultUserLocation, currentUserLocation, setCurrentLocation } = useSelector((state) => state.user);
     const mapRef = useRef();
+    const navigation = useNavigation();
+    const districtInfo = useSelector((state) => state.user.districtInfo);
+    // This hook returns `true` if the screen is focused, `false` otherwise
+    const isFocused = useIsFocused();
+    const currentUserLocation = useSelector((state) => state.user.currentUserLocation);
+    const [state, setState] = useState({
+        curLoc: {
+            latitude: currentUserLocation?.userLatitude || 23.7624709,
+            longitude: currentUserLocation?.userLongitude || 90.3760062,
+        },
+        isLocationFound: false,
+        isPanding: false,
+        accessLocation: false
+    });
+
+    const { curLoc, isLocationFound, accessLocation, isPanding } = state;
+
     const [viewWidth, setViewWidth] = useState(screenWidth);
     const [viewHeight, setViewHeight] = useState(screenHeight);
     const [latDelta, setLatDelta] = useState(LATITUDE_DELTA);
@@ -42,22 +56,51 @@ function ConfirmLocation() {
     const { saveSelectedInfo, saveCurrentInfo } = useUser();
     const { getDistrictInfo, progressing } = useGlobal();
 
-    const { curLoc, isLocationFound, accessLocation, isPanding, setState, getGeoLocation } = useGeoLocation();
+    const { getPermission, getGeoLocation } = useGeoLocation();
 
-    //const updateState = (data) => setState((state) => ({ ...state, ...data }));
     const updateState = (data) => {
         //console.log('data : ', data);
         setState((state) => ({ ...state, ...data }));
     }
 
+    //console.log('data : ', curLoc);
+
     useEffect(() => {
-        console.log('Now Here');
         if (districtInfo?.length < 1) {
-            //console.log('Now Here');
             getDistrictInfo();
         }
-        getGeoLocation();
+        getGeoLocation(setState);
     }, [accessLocation]);
+
+    useEffect(() => {
+        getPermission(setState);
+        if (districtInfo?.length > 1) {
+            setTimeout(() => {
+                if (!isLocationFound) {
+                    getGeoLocation(setState);
+                }
+            }, 1000);
+        }
+    }, [districtInfo]);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setTimeout(() => {
+                if (!isLocationFound) {
+                    getGeoLocation(setState);
+                }
+            }, 2000);
+        });
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
+
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         const unsubscribe = API.subscribe(getGeoLocation(setState));
+    //         return () => unsubscribe();
+    //     }, [isFocused])
+    // );
 
     const onChangeComplete = async (initialRegion) => {
         const { latitude, longitude } = initialRegion;
@@ -183,11 +226,12 @@ function ConfirmLocation() {
                     />
                 </ScrollView>
                 :
-                <View>
+
+                <>
                     <MapView
                         provider={PROVIDER_GOOGLE}
                         ref={mapRef}
-                        style={{ zIndex: -15, width: MAP_WIDTH, height: MAP_HEIGHT }}
+                        style={{ width: MAP_WIDTH, height: MAP_HEIGHT }}
                         //maxZoomLevel={22}
                         //showsUserLocation={true}
                         //followUserLocation={true}
@@ -219,7 +263,7 @@ function ConfirmLocation() {
 
                     <Pressable onPress={() => { confirmRetailerLocation(); }}
                         style={{
-                            zIndex: -3,
+                            zIndex: 10,
                             position: 'absolute',
                             bottom: 30,
                             left: 40,
@@ -239,7 +283,7 @@ function ConfirmLocation() {
                         <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', textAlign: 'center', padding: 5 }}>Confirm Location</Text>
 
                     </Pressable>
-                </View>
+                </>
             }
         </View>
     );
@@ -271,7 +315,7 @@ const styles = StyleSheet.create({
         marginTop: -48,
         position: 'absolute',
         top: '52%',
-        zIndex: -1,
+        zIndex: 4,
         height: 48,
         width: 48,
     },
@@ -285,7 +329,7 @@ const styles = StyleSheet.create({
         marginTop: -48,
         position: 'absolute',
         top: '52%',
-        zIndex: -2,
+        zIndex: 4,
         height: 48,
         width: 48,
     },
@@ -320,7 +364,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#ff5722',
         marginTop: 55,
         shadowOpacity: 0.3,
-        marginBottom: 45
+        marginBottom: 45,
+        zIndex: -10,
     }
 });
 

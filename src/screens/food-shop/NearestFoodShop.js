@@ -34,29 +34,22 @@ function NearestFoodShop({ route }) {
     const { getNearestFoodStoreInfo, progressing, handleSearchStore, setCurrentModule } = useFood();
     const { resetUserCurrentLocation } = useUser();
 
-    useFocusEffect(
-        React.useCallback(() => {
-            setCurrentModule();
-            const onBackPress = () => {
-                navigation.goBack();
-                return true;
-            };
-
-            const subscription = BackHandler.addEventListener(
-                'hardwareBackPress',
-                onBackPress
-            );
-
-            return () => subscription.remove();
-        }, [navigation])
-    );
-
     useEffect(() => {
         if (cameraPermission !== 'granted') {
             requestCameraPermission();
         } else {
             setCameraPermissionStatus(cameraPermission)
         }
+        setCurrentModule();
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+        return () => backHandler.remove();
     }, []);
 
     useEffect(() => {

@@ -95,7 +95,7 @@ function CenterInformation({ route }) {
     if (option?.centerType === "Hospital") {
         nearest_pic = require('../../assets/banner/hospital.jpg');
     }
-    
+
     if (option?.centerType === "Diagnostic Centre") {
         nearest_pic = require('../../assets/banner/diagnostic_center.jpg');
     }
@@ -118,14 +118,18 @@ function CenterInformation({ route }) {
                             ListHeaderComponent={
                                 <>
                                     <SliderMedium data={slider} folder_name={health_careImages} />
-                                    <Pressable onPress={() => { findCenter(); }}>
+                                    <Pressable
+                                        style={{
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }} onPress={() => { findCenter(); }}>
                                         <View style={{
-                                            height: (((screenWidth / 8) * 3) - 3),
-                                            width: screenWidth - 10,
+                                            height: ((((screenWidth * 0.94) / 8) * 3)),
+                                            width: screenWidth * 0.94,
                                             borderRadius: 8,
                                             justifyContent: 'center',
                                             marginBottom: 5,
-                                            marginTop: 10
+                                            marginTop: 5
                                         }}>
                                             <View style={{
                                                 borderRadius: 8,

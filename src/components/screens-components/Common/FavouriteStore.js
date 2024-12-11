@@ -4,15 +4,14 @@ import FastImage from 'react-native-fast-image'
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../../helpers/imageUrl';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { handleDashboardReducer } from '../../../store/reducers/dashboardReducer';
 import { useFavouriteStore } from '../../../hooks/user/favorite-shop';
-
 
 const screenWidth = Dimensions.get('window').width;
 
 function FavouriteStore({ merchantType }) {
-   
+   // console.log('merchantType353535 : ', merchantType);
     const navigation = useNavigation();
     const [shopBannerFolder, setShopBannerFolder] = useState('');
     const [title, setTitle] = useState('');
@@ -25,46 +24,35 @@ function FavouriteStore({ merchantType }) {
     const {
         visible,
         removeFromfavoriteList,
-        resetReducer,
-        setCurrentModule
     } = useFavouriteStore();
 
     useEffect(() => {
         if (merchantType === 0) {
-            resetReducer('Grocery');
             setShopBannerFolder('grocery-store-docs');
-            setTitle('Favourite Grocery Store Info');
             setFavouriteInfo(favouriteGroceryStore);
         } else if (merchantType === 1) {
-            resetReducer('Medicine');
             setShopBannerFolder('medicine-store-docs');
-            setTitle('Favourite Medicine Store Info');
             setFavouriteInfo(favouriteMedicineStore);
         } else {
-            resetReducer('Food');
             setShopBannerFolder('food-store-docs');
-            setTitle('Favourite Food Shop Info');
             setFavouriteInfo(favouriteFoodShop)
         }
+    }, []);
 
-    }, [favouriteGroceryStore, favouriteMedicineStore, favouriteFoodShop]);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            setCurrentModule();
-            const onBackPress = () => {
-                navigation.goBack();
-                return true;
-            };
+    useEffect(() => {
 
-            const subscription = BackHandler.addEventListener(
-                'hardwareBackPress',
-                onBackPress
-            );
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+        return () => backHandler.remove();
 
-            return () => subscription.remove();
-        }, [navigation])
-    );
+    }, []);
 
     return (
         <>
@@ -121,7 +109,8 @@ function ListItem({ data, removeFromfavoriteList, merchantType, shopBannerFolder
                 })
             );
         } else {
-            navigation.navigate('FoodShopNavigation');
+            //navigation.navigate('FoodShopNavigation');
+            navigation.navigate('ExploreFoodShop');
             dispatch(
                 handleDashboardReducer({
                     type: 'VISITED_FOOD_STORE',
@@ -190,7 +179,7 @@ function ListItem({ data, removeFromfavoriteList, merchantType, shopBannerFolder
                 </View>
             </View>
         </Pressable>
-    )
+    );
 }
 
 export default FavouriteStore;

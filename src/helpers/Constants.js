@@ -16,11 +16,17 @@ export const medicine_itemsImages = 'medicine-items-images';
 export const food_sliderTypeSubtypeImagesFolderName = 'food-slider-type-subtype-images';
 export const food_itemsImages = 'food-items-images';
 export const health_careImages = 'medical-service-provider-images';
+export const service_bannerImages = 'service_banner';
+export const service_providerImages = 'service_provider';
+export const service_profileImages = 'service_profile';
 
 export const GET_DASHBOARD_INFO = '/public-api/v1/admin/all-appdashboard-data';
 export const GET_DISTRICT_INFO = '/public-api/v1/admin/all-district';
 export const GET_DISTRICT_AREA_INFO = '/public-api/v1/admin/all-districtarea/:id';
-export const GET_DISTRICT_SUB_AREA_INFO = '/public-api/v1/admin/all-districtsubarea/:id';
+export const GET_DISTRICT_SUB_AREA_INFO = '/public-api/v1/admin/all-districtsubarea';
+export const GET_TUTORIAL_INFO = '/public-api/v1/admin/tutorial-info';
+export const REQUEST_TO_ADD = '/public-api/v1/admin/requested-store/create';
+export const GET_BANKING_OUTLET = '/public-api/v1/admin/nearest-banking-outlet';
 
 export const OTP_FOR_REGISTARTION = '/api/v1/customer/send-otp';
 export const USER_REGISTARTION = '/api/v1/customer/register';
@@ -84,6 +90,9 @@ export const BOOK_APPOINTMENT = '/client-app-api/v1/health-care/book-appointment
 export const EXPLORE_MEDICAL_SERVICE_PROVIDER = '/client-app-api/v1/health-care/explore-medical-service-provider';
 export const FIND_MEDICAL_SERVICE_PROVIDER = '/client-app-api/v1/health-care/get-medical-service-provider';
 export const FIND_AMBULANCE_SERVICE_PROVIDER = '/client-app-api/v1/health-care/get-ambulance-service-provider';
+
+export const EXPLORE_ALL_CARE_SERVICE = '/client-app-api/v1/all-care/explore-all-service';
+export const EXPLORE_CARE_PROVIDER = '/client-app-api/v1/all-care/explore-care-provider';
 
 export const MyFavouriteData = [
     { id: '1', image: require('../assets/gallery/favorite-1.jpg') },

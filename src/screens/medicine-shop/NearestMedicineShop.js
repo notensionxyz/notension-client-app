@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, Text, BackHandler, View, Pressable, ImageBackground } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
+import FastImage from 'react-native-fast-image';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderCommon from '../../components/header/HeaderCommon';
@@ -22,6 +23,7 @@ const screenWidth = Dimensions.get('window').width;
 const cardMargin = 4;
 const cardWidth = screenWidth - (cardMargin * 4.5);
 const merchantType = 1;
+let join_us_banner = require('../../assets/banner/join-us-seller.jpg');
 
 function NearestMedicineShop(props) {
     const navigation = useNavigation();
@@ -35,29 +37,23 @@ function NearestMedicineShop(props) {
     const { getNearestMedicineStoreInfo, progressing, handleSearchStore, setCurrentModule } = useMedicine();
     const { resetUserCurrentLocation } = useUser();
 
-    useFocusEffect(
-        React.useCallback(() => {
-            setCurrentModule();
-            const onBackPress = () => {
-                navigation.goBack();
-                return true;
-            };
-
-            const subscription = BackHandler.addEventListener(
-                'hardwareBackPress',
-                onBackPress
-            );
-
-            return () => subscription.remove();
-        }, [navigation])
-    );
-
     useEffect(() => {
         if (cameraPermission !== 'granted') {
             requestCameraPermission();
         } else {
             setCameraPermissionStatus(cameraPermission)
         }
+
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+        return () => backHandler.remove();
+
     }, []);
 
     useEffect(() => {
@@ -69,9 +65,9 @@ function NearestMedicineShop(props) {
     }, [searchText]);
 
     const requestCameraPermission = useCallback(async () => {
-        console.log('Requesting camera permission...')
+        //console.log('Requesting camera permission...')
         const permission = await Camera.requestCameraPermission();
-        console.log(`Camera permission status: ${permission}`)
+        //console.log(`Camera permission status: ${permission}`)
 
         if (permission === 'denied') await Linking.openSettings();
         setCameraPermissionStatus(permission)
@@ -89,6 +85,44 @@ function NearestMedicineShop(props) {
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                 <HeaderCommon title="Medicine Store Info" toggleDrawer={props.navigation} />
                 <LocationInfo />
+                <Pressable
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }} onPress={() => { null }}>
+                    <View style={{
+                        height: ((screenWidth * 0.96) / 4.5),
+                        width: screenWidth * 0.96,
+                        borderRadius: 8,
+                        justifyContent: 'center',
+                        marginTop: 10,
+                        marginBottom: 5,
+                    }}>
+                        <View style={{
+                            borderRadius: 8,
+                            shadowRadius: 8,
+                            elevation: 3,
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.3,
+                            backgroundColor: 'white',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            <FastImage
+                                source={join_us_banner}
+                                resizeMode={FastImage.resizeMode.contain}
+                                style={{
+                                    height: '100%',
+                                    width: '100%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    padding: 10,
+                                    borderRadius: 8,
+                                    overflow: 'hidden'
+                                }} />
+                        </View>
+                    </View>
+                </Pressable>
                 <View style={{
                     backgroundColor: '#FFF',
                     paddingHorizontal: 15,

@@ -48,6 +48,11 @@ import ExploreMedicalService from "../screens/medical-service/ExploreMedicalServ
 import MedicalServiceProvider from "../screens/medical-service/MedicalServiceProvider";
 import FindAmbulance from "../screens/ambulance-service/FindAmbulance";
 import ResetLocation from "../screens/user/ResetLocation";
+import BankingOutlet from "../screens/service-provider/BankingOutlet";
+import BankingOutletDetails from "../screens/service-provider/BankingOutletDetails";
+import ExploreAllService from "../screens/service-provider/ExploreAllService";
+import ExploreServideProvider from "../screens/service-provider/ExploreServideProvider";
+import AllCareServiceReg from "../screens/request-for-registration/AllCareServiceReg";
 
 const Stack = createStackNavigator();
 //const Stack = createNativeStackNavigator();
@@ -423,6 +428,46 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name="FindAmbulance"
                 component={FindAmbulance}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="BankingOutlet"
+                component={BankingOutlet}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="BankingOutletDetails"
+                component={BankingOutletDetails}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ExploreAllService"
+                component={ExploreAllService}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ExploreServideProvider"
+                component={ExploreServideProvider}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="AllCareServiceReg"
+                component={AllCareServiceReg}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

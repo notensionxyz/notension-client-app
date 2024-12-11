@@ -91,62 +91,54 @@ export default function ProfileOfDoctor({ route }) {
             <HeaderCommon toggleDrawer={navigation} title="Doctor's Profile" connectionStatus={false} isReachable={false} />
             <ProgressStyle2 visible={progressing || visible} />
             <ScrollView>
-                <View style={{ height: screenWidth / 2, width: screenWidth, backgroundColor: 'white', alignItems: 'center', overflow: 'hidden', justifyContent: 'center' }}>
-                    <FastImage source={doctorProfilePic && doctorProfilePic !== '' && doctorProfilePic !== null ? {
-                        uri: storageImageUrl(health_careImages, doctorProfilePic)
-                    } : demo_doctor_pic}
-                        style={{ height: (screenWidth * 0.48), width: (screenWidth * 0.36), resizeMode: 'cover', }}
-                        resizeMode={FastImage.resizeMode.contain}
-                    />
-                </View>
+                <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
+                    <View style={{ height: screenWidth / 2, width: screenWidth, backgroundColor: 'white', alignItems: 'center', overflow: 'hidden', justifyContent: 'center' }}>
+                        <FastImage source={doctorProfilePic && doctorProfilePic !== '' && doctorProfilePic !== null ? {
+                            uri: storageImageUrl(health_careImages, doctorProfilePic)
+                        } : demo_doctor_pic}
+                            style={{ height: (screenWidth * 0.48), width: (screenWidth * 0.36), resizeMode: 'cover', }}
+                            resizeMode={FastImage.resizeMode.contain}
+                        />
+                    </View>
 
-                {(!isAddedToFavouriteList(infoDoctor?.doctorInfo?._id, merchantType) && infoDoctor?.consultationCenterInfo?.is_paid) &&
-                    <View style={{
-                        position: 'absolute',
-                        right: screenWidth / 30,
-                        top: screenWidth / 2.65,
-                    }}>
-                        <TouchableOpacity onPress={() => {
-                            checkIsLoggedinAndProcess(infoDoctor?.doctorInfo);
+                    {(!isAddedToFavouriteList(infoDoctor?.doctorInfo?._id, merchantType) && infoDoctor?.consultationCenterInfo?.is_paid) &&
+                        <View style={{
+                            position: 'absolute',
+                            right: screenWidth / 30,
+                            top: screenWidth / 2.65,
                         }}>
-                            <Image style={{ width: 120, height: 40, }}
+                            <TouchableOpacity onPress={() => {
+                                checkIsLoggedinAndProcess(infoDoctor?.doctorInfo);
+                            }}>
+                                <Image style={{ width: 120, height: 40, }}
+                                    resizeMode={'contain'}
+                                    source={require('../../assets/icon/add_favourite.png')} />
+                            </TouchableOpacity>
+                        </View>
+
+                    }
+
+                    {(isAddedToFavouriteList(infoDoctor?.doctorInfo?._id, merchantType) && infoDoctor?.consultationCenterInfo?.is_paid) &&
+                        <View style={{
+                            position: 'absolute',
+                            right: screenWidth / 20,
+                            top: screenWidth / 2.65,
+                        }}>
+                            <Image style={{ width: 30, height: 30, tintColor: 'red' }}
                                 resizeMode={'contain'}
-                                source={require('../../assets/icon/add_favourite.png')} />
-                        </TouchableOpacity>
-                    </View>
-
-                }
-
-                {(isAddedToFavouriteList(infoDoctor?.doctorInfo?._id, merchantType) && infoDoctor?.consultationCenterInfo?.is_paid) &&
-                    <View style={{
-                        position: 'absolute',
-                        right: screenWidth / 20,
-                        top: screenWidth / 2.65,
-                    }}>
-                        <Image style={{ width: 30, height: 30, tintColor: 'red' }}
-                            resizeMode={'contain'}
-                            source={require('../../assets/icon/ic_love_red.png')} />
-                    </View>
-                }
-
-                <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                    <View style={{
-                        width: screenWidth,
-                        flexDirection: 'row',
-                        backgroundColor: 'white',
-                        borderTopWidth: 0.5,
-                        borderTopColor: '#e0e0e0',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
-
-                        <View style={{ flex: 1, padding: 10 }}>
-
-                            <Text style={{ fontSize: 18, color: '#263238', fontWeight: 'bold' }}>{doctorName}</Text>
-                            <Text style={{ fontSize: 16, color: '#263238' }}>{doctorQualification}</Text>
-
+                                source={require('../../assets/icon/ic_love_red.png')} />
+                        </View>
+                    }
+                    <View style={{ flex: 1, width: screenWidth * 0.95, backgroundColor: 'white', alignItems: 'center' }}>
+                        <View style={{ backgroundColor: 'white', width: screenWidth * 0.95, }}>
                             <View style={{
-                                marginTop: 2,
+                                marginBottom: 10,
+                            }}>
+                                <Text style={{ fontSize: 18, color: '#263238', fontWeight: 'bold', lineHeight: 30 }}>{doctorName}</Text>
+                                <Text style={{ fontSize: 16, color: '#263238', lineHeight: 22,paddingTop:5 }}>{doctorQualification}</Text>
+                            </View>
+                            <View style={{
+
                                 marginBottom: 3,
                                 paddingLeft: 5,
                                 backgroundColor: '#ccb7f7',
@@ -157,7 +149,7 @@ export default function ProfileOfDoctor({ route }) {
                                 <ChamberDetails index={index} data={data} cardWidth={cardWidth} cardMargin={cardMargin} bookAppoinment={bookAppoinment} />
                             ))}
                         </View>
-                    </View >
+                    </View>
                 </View>
             </ScrollView>
         </View>
@@ -187,10 +179,11 @@ const CallButton = ({ onPress, cardWidth, cardMargin, contact_number }) => {
 }
 
 const ChamberDetails = ({ index, data, cardWidth, cardMargin, bookAppoinment }) => {
-    console.log('data', data?.book_an_appointment);
-    console.log('data/is_chamber_off', data?.is_chamber_off);
-    console.log('data/notice', data?.notice);
-
+    //console.log('data?.book_an_appointment', data?.book_an_appointment);
+    //console.log('data/is_chamber_off', data?.is_chamber_off);
+    //console.log('data/notice', data?.notice);
+    //data?.book_an_appointment && !data?.is_chamber_off
+    //console.log('All data', data);
     let appoinmentData = {
         doctorId: data?.doctorInfo?._id,
         doctor_name: data?.doctorInfo?.doctor_name,
@@ -215,6 +208,7 @@ const ChamberDetails = ({ index, data, cardWidth, cardMargin, bookAppoinment }) 
             <View style={{
                 marginBottom: 3,
                 paddingLeft: 5,
+                paddingRight: 3,
                 // backgroundColor: '#0943d6',
             }}>
                 <Text style={{ fontSize: 17, color: '#0943d6', padding: 5, paddingLeft: 5, fontWeight: 'bold' }} numberOfLines={1} ellipsizeMode="tail">পরামর্শ কেন্দ্র :</Text>

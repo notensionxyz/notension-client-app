@@ -8,6 +8,8 @@ import stateReducer from './reducers/stateReducer';
 import cartReducer from './reducers/cartReducer';
 import userChoiceReducer from './reducers/userChoiceReducer';
 import doctorReducer from './reducers/health-care/doctorReducer';
+import allCareReducer from './reducers/all-care-service/allCareReducer';
+
 const rootReducer = combineReducers({
     dashboard: dashboardReducer,
     user: userReducer,
@@ -15,7 +17,8 @@ const rootReducer = combineReducers({
     itemsByStoreReducer: itemsByStoreReducer,
     cartItems: cartReducer,
     appState: stateReducer,
-    doctorInfo: doctorReducer
+    doctorInfo: doctorReducer,
+    allCare: allCareReducer
 });
 
 const persistConfig = {

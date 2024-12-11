@@ -1,8 +1,9 @@
 import React from 'react';
-import { Dimensions, ScrollView, View, Pressable } from "react-native";
+import { Dimensions, View, Pressable } from "react-native";
 import FastImage from 'react-native-fast-image'
 import { useNavigation } from '@react-navigation/native';
 import FavouriteStore from './FavouriteStore';
+import { ScrollView } from 'react-native-virtualized-view';
 
 const screenWidth = Dimensions.get('window').width;
 let cardMargin = 4;
@@ -10,7 +11,7 @@ let cardWidth = screenWidth - (cardMargin * 4.5);
 
 function FindStore({ resetUserLocation, getNearestStoreInfo, setNearestInfo, merchantType, setIsFindPress }) {
     const navigation = useNavigation();
-
+    //console.log('merchantType : ', merchantType);
     return (
         <ScrollView>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', }}>
@@ -45,7 +46,5 @@ function FindStore({ resetUserLocation, getNearestStoreInfo, setNearestInfo, mer
         </ScrollView>
     );
 }
-
-
 
 export default FindStore;

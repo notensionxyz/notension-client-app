@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, FlatList, Pressable, View } from "react-native";
+import { Alert, Dimensions, FlatList, Pressable, View } from "react-native";
 import FastImage from 'react-native-fast-image';
 import { storageImageUrl } from '../../../helpers/imageUrl';
 import NotificationSuccess from '../../../components/popup-notification/NotificationSuccess';
@@ -39,13 +39,24 @@ function MedicalServices({ data }) {
                 navigation.navigate('CenterInformation', { options });
 
             } else if (data?.id === "4") {
-                navigation.navigate('ExploreMedicalService');
-                //setShowSuccessMessage(true);
+                //alert('Eye Care Centre Info');
+                const options = {
+                    centerType: 'Eye Care Centre',
+                    Title: 'Eye Care Centre Info',
+                };
+                navigation.navigate('CenterInformation', { options });
             } else if (data?.id === "5") {
-                //console.log(data?.id);
-                setShowSuccessMessage(true);
+                //alert('Dental Care Centre Info');
+                const options = {
+                    centerType: 'Deltal Care Centre',
+                    Title: 'Dental Care Centre Info',
+                };
+                navigation.navigate('CenterInformation', { options });
             } else if (data?.id === "6") {
-                setShowSuccessMessage(true);
+                navigation.navigate('FindAmbulance');
+            }
+            else if (data?.id === "7") {
+                navigation.navigate('ExploreMedicalService');
             }
         } else {
             dispatch(
@@ -61,7 +72,7 @@ function MedicalServices({ data }) {
     return (
         <>
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', marginBottom: 5, marginTop: 5, backgroundColor: '#f1f5f7' }}>
                     <Pressable onPress={() => { navigateTo(data[0]) }}>
                         <View style={{ height: (screenWidth / 3) - 7, width: ((screenWidth / 3) * 2) - 8, padding: 5, borderRadius: 10 }}>
                             <View style={{
@@ -77,8 +88,8 @@ function MedicalServices({ data }) {
                                     source={{ uri: storageImageUrl('app-dashboard', data[0]?.file_name) }}
                                     resizeMode={FastImage.resizeMode.contain}
                                     style={{
-                                        height: (screenWidth / 3) - 9,
-                                        width: ((screenWidth / 3) * 2) - 18,
+                                        height: (screenWidth / 3) - 12,
+                                        width: ((screenWidth / 3) * 2) - 20,
                                         justifyContent: 'flex-end',
                                         //padding: 10,
                                         borderRadius: 10,
@@ -87,7 +98,6 @@ function MedicalServices({ data }) {
                                         shadowOpacity: 0.3,
                                         overflow: 'hidden'
                                     }} />
-
                             </View>
                         </View>
                     </Pressable>
@@ -106,8 +116,8 @@ function MedicalServices({ data }) {
                                     source={{ uri: storageImageUrl('app-dashboard', data[1]?.file_name) }}
                                     resizeMode={FastImage.resizeMode.contain}
                                     style={{
-                                        height: (screenWidth / 3) - 9,
-                                        width: (screenWidth / 3) - 9,
+                                        height: (screenWidth / 3) - 12,
+                                        width: (screenWidth / 3) - 12,
                                         justifyContent: 'flex-end',
                                         //padding: 10,
                                         borderRadius: 10,
@@ -130,35 +140,97 @@ function MedicalServices({ data }) {
                     keyExtractor={(item, index) => index.toString()}
                 //keyExtractor={item => item._id}
                 />
-            </View>
-            <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', marginTop: -6 }}>
-                <View style={{ height: ((screenWidth / 8) * 3.06), width: screenWidth - 8, padding: 5, borderRadius: 10 }}>
-                    <View style={{
-                        justifyContent: 'space-between',
-                        borderRadius: 10,
-                        shadowRadius: 10,
-                        elevation: 3,
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowOpacity: 0.3,
-                        backgroundColor: 'white'
-                    }}>
-                        <FastImage
-                            source={{ uri: storageImageUrl('app-dashboard', registration_banner) }}
-                            resizeMode={FastImage.resizeMode.contain}
-                            style={{
-                                height: '100%',
-                                width: '100%',
-                                justifyContent: 'flex-end',
-                                //padding: 10,
+                <View style={{ flexDirection: 'row', marginBottom: 9, marginTop: 1, backgroundColor: '#f1f5f7' }}>
+                    <Pressable onPress={() => { navigateTo(data[5]) }}>
+                        <View style={{ height: (screenWidth / 3) - 8, width: (screenWidth / 3) - 2, padding: 5, borderRadius: 10 }}>
+                            <View style={{
+                                justifyContent: 'space-between',
                                 borderRadius: 10,
                                 shadowRadius: 10,
+                                elevation: 3,
                                 shadowOffset: { width: 0, height: 2 },
                                 shadowOpacity: 0.3,
-                                overflow: 'hidden'
-                            }} />
+                                backgroundColor: 'white'
+                            }}>
+                                <FastImage
+                                    source={{ uri: storageImageUrl('app-dashboard', data[5]?.file_name) }}
+                                    resizeMode={FastImage.resizeMode.contain}
+                                    style={{
+                                        height: (screenWidth / 3) - 12,
+                                        width: (screenWidth / 3) - 12,
+                                        justifyContent: 'flex-end',
+                                        //padding: 10,
+                                        borderRadius: 10,
+                                        shadowRadius: 10,
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.3,
+                                        overflow: 'hidden'
+                                    }} />
 
-                    </View>
+                            </View>
+                        </View>
+                    </Pressable>
+                    <Pressable onPress={() => { navigateTo(data[6]) }}>
+                        <View style={{ height: (screenWidth / 3) - 8, width: ((screenWidth / 3) * 2) - 8, padding: 5, borderRadius: 10 }}>
+                            <View style={{
+                                justifyContent: 'space-between',
+                                borderRadius: 10,
+                                shadowRadius: 10,
+                                elevation: 3,
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.3,
+                                backgroundColor: 'white'
+                            }}>
+                                <FastImage
+                                    source={{ uri: storageImageUrl('app-dashboard', data[6]?.file_name) }}
+                                    resizeMode={FastImage.resizeMode.contain}
+                                    style={{
+                                        height: (screenWidth / 3) - 12,
+                                        width: ((screenWidth / 3) * 2) - 20,
+                                        justifyContent: 'flex-end',
+                                        //padding: 10,
+                                        borderRadius: 10,
+                                        shadowRadius: 10,
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.3,
+                                        overflow: 'hidden'
+                                    }} />
+                            </View>
+                        </View>
+                    </Pressable>
                 </View>
+            </View>
+
+            <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
+                <Pressable onPress={() => { navigation.navigate('ExploreAllService'); }}>
+                    <View style={{ height: ((screenWidth / 8) * 3.06), width: screenWidth - 8, padding: 5, borderRadius: 10 }}>
+                        <View style={{
+                            justifyContent: 'space-between',
+                            borderRadius: 10,
+                            shadowRadius: 10,
+                            elevation: 3,
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.3,
+                            backgroundColor: 'white'
+                        }}>
+                            <FastImage
+                                source={{ uri: storageImageUrl('app-dashboard', registration_banner) }}
+                                resizeMode={FastImage.resizeMode.contain}
+                                style={{
+                                    height: '100%',
+                                    width: '100%',
+                                    justifyContent: 'flex-end',
+                                    //padding: 10,
+                                    borderRadius: 10,
+                                    shadowRadius: 10,
+                                    shadowOffset: { width: 0, height: 2 },
+                                    shadowOpacity: 0.3,
+                                    overflow: 'hidden'
+                                }} />
+
+                        </View>
+                    </View>
+                </Pressable>
             </View>
             <NotificationSuccess visible={showSuccessMessage} setVisible={setShowSuccessMessage} message={message} />
         </>

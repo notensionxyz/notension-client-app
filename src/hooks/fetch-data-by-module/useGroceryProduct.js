@@ -121,7 +121,7 @@ export const useGroceryProduct = () => {
             resetLoadingStatus();
         }
 
-        //console.log('parameter', parameter);
+        console.log('parameter', parameter);
 
         Axios
             .get(dataURL,

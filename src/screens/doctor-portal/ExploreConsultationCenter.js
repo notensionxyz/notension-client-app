@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Dimensions, Text, Image, SafeAreaView, Pressable, FlatList, BackHandler } from "react-native";
+import { View, Dimensions, Text, Image, SafeAreaView, Pressable, FlatList, BackHandler, TouchableOpacity } from "react-native";
 import { useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
@@ -7,7 +7,7 @@ import { ScrollView } from 'react-native-virtualized-view';
 import HeaderFoodModule from '../../components/header/HeaderFoodModule';
 import { useCenter } from '../../hooks/fetch-data-by-module/health-care/useCenter';
 import ManageListView from '../../components/screens-components/HealthCare/DeptInfoByCenter/ManageListView';
-import { storageImageUrl } from '../../helpers/imageUrl';
+import { makeCall, storageImageUrl } from '../../helpers/imageUrl';
 import { health_careImages } from '../../helpers/Constants';
 import { useFavouriteList } from '../../hooks/user/favorite-list';
 import HeaderCommon from '../../components/header/HeaderCommon';
@@ -94,7 +94,41 @@ function ExploreConsultationCenter({ route }) {
                                     style={{ width: 25, height: 25, tintColor: 'blue', resizeMode: 'contain' }} />
                                 <Text style={{ fontSize: 16, color: '#006400', marginLeft: 3, marginRight: 13 }}>{centerInfo?.address}</Text>
                             </View>
+
+                            {centerInfo?.apointment_contact_1 &&
+                                <>
+                                    <TouchableOpacity style={{ alignItems: 'flex-start', marginTop: 15 }} onPress={() => makeCall(centerInfo?.apointment_contact_1)}>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Image source={require('../../assets/banner/call_us.png')}
+                                                style={{ width: 110, height: 28, alignItems: 'flex-start', resizeMode: 'contain' }} />
+                                            <Text style={{ fontSize: 18, color: '#003300', marginLeft: 8, fontWeight: 500 }}>{centerInfo?.apointment_contact_1}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+
+                                    {centerInfo?.apointment_contact_2 &&
+                                        <TouchableOpacity style={{ alignItems: 'flex-start', marginTop: 7 }} onPress={() => makeCall(centerInfo?.apointment_contact_2)}>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Image source={require('../../assets/banner/call_us.png')}
+                                                    style={{ width: 110, height: 28, alignItems: 'flex-start', resizeMode: 'contain' }} />
+                                                <Text style={{ fontSize: 18, color: '#003300', marginLeft: 8, fontWeight: 500 }}>{centerInfo?.apointment_contact_2}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    }
+
+                                    {centerInfo?.apointment_contact_3 &&
+                                        <TouchableOpacity style={{ alignItems: 'flex-start', marginTop: 7 }} onPress={() => makeCall(centerInfo?.apointment_contact_3)}>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Image source={require('../../assets/banner/call_us.png')}
+                                                    style={{ width: 110, height: 28, alignItems: 'flex-start', resizeMode: 'contain' }} />
+                                                <Text style={{ fontSize: 18, color: '#003300', marginLeft: 8, fontWeight: 500 }}>{centerInfo?.apointment_contact_3}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    }
+                                </>
+                            }
+
                         </View>
+
                         {(!isAddedToFavouriteList(centerInfo?._id, merchantType) && centerInfo?.is_paid) &&
                             <View
                                 style={{

@@ -32,28 +32,25 @@ function FindAmbulance() {
         setShowSuccessMessage,
         getAmbulanceServiceProvider,
         progressing } = useAmbulanceService();
-        
+
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
 
     useEffect(() => {
         getAmbulanceServiceProvider();
     }, []);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            const onBackPress = () => {
-                navigation.goBack();
-                return true;
-            };
+    useEffect(() => {
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
 
-            const subscription = BackHandler.addEventListener(
-                'hardwareBackPress',
-                onBackPress
-            );
-
-            return () => subscription.remove();
-        }, [navigation])
-    );
+        return () => backHandler.remove();
+    }, []);
 
     // const checkIsLoggedinAndProcess = (action) => {
     //     if (isLoggedin) {
@@ -74,6 +71,14 @@ function FindAmbulance() {
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                 <HeaderCommon title={'Ambulance Information'} />
                 <ProgressStyle2 visible={progressing} />
+                
+                {!progressing &&
+                    <View style={{ backgroundColor: '#f1f5f7', alignItems: 'center' }}>
+                        < View style={{ alignItems: 'center', width: screenWidth, justifyContent: 'center' }}>
+                            <Image source={require('../../assets/banner/no-result-found.png')} style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }} />
+                        </View>
+                    </View >
+                }
 
                 {/* <ScrollView>
                     <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>

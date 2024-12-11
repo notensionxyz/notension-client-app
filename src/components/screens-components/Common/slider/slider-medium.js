@@ -38,7 +38,6 @@ const CustomPagination = (props: JSX.IntrinsicAttributes & PaginationProps) => {
 };
 
 const SliderMedium = ({ data, folder_name }) => {
-
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', margin: 5, marginBottom: 5 }}>
             <SwiperFlatList

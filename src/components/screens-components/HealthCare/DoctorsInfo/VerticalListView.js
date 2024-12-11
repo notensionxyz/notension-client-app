@@ -48,7 +48,7 @@ function VerticalListView({ data, showDept, showCenter }) {
 
                             <View style={{ paddingLeft: 15, flex: 1 }}>
                                 <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#ad3257' }}>{data?.doctorInfo?.doctor_name}</Text>
-                                <Text style={{ fontSize: 15, marginTop: 4, color: '#616161' }} numberOfLines={4} ellipsizeMode="tail">{data?.doctorInfo?.qualifications}</Text>
+                                <Text style={{ fontSize: 15, paddingTop: 5, color: '#616161', lineHeight: 17 }} numberOfLines={4} ellipsizeMode="tail">{data?.doctorInfo?.qualifications}</Text>
                             </View>
                         </View>
                         {showDept &&

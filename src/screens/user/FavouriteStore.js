@@ -133,7 +133,8 @@ function ListItem({ data, removeFromfavoriteList, merchantType, shopBannerFolder
                 })
             );
         } else {
-            navigation.navigate('FoodShopNavigation');
+            //navigation.navigate('FoodShopNavigation');
+            navigation.navigate('ExploreFoodShop');
             dispatch(
                 handleDashboardReducer({
                     type: 'VISITED_FOOD_STORE',

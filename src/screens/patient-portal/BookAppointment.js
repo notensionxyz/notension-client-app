@@ -257,6 +257,8 @@ export default function BookAppointment({ route }) {
 
     const saveInformation = (bookAppoinmentData) => {
         if (connectionStatus && isReachable) {
+            //setProgressing(false);
+            //console.log(bookAppoinmentData);
             bookAppointment(bookAppoinmentData);
         } else {
             setProgressing(false);

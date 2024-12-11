@@ -1,5 +1,5 @@
 package com.bitsnotension
-import android.os.Bundle;
+
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -12,14 +12,7 @@ class MainActivity : ReactActivity() {
    * rendering of the component.
    */
   override fun getMainComponentName(): String = "bitsNoTension"
-
-  /**
-   *react-native-screens package requires one additional configuration step to properly work on Android devices
-   */
   
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(null)
-  }
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
    * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]

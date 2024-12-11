@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, Text, BackHandler, View, Pressable, ImageBackground } from "react-native";
 import { Linking } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { Camera } from 'react-native-vision-camera';
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
@@ -23,6 +24,7 @@ const screenWidth = Dimensions.get('window').width;
 const cardMargin = 4;
 const cardWidth = screenWidth - (cardMargin * 4.5);
 const merchantType = 0;
+let join_us_banner = require('../../assets/banner/join-us-seller.jpg');
 
 function NearestGroceryShop(props) {
     const cameraPermission = Camera.getCameraPermissionStatus();
@@ -92,6 +94,46 @@ function NearestGroceryShop(props) {
             <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center', }}>
                 <HeaderCommon title="Grocery Store Info" toggleDrawer={props.navigation} />
                 <LocationInfo />
+
+                <Pressable
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }} onPress={() => { null }}>
+                    <View style={{
+                        height: ((screenWidth * 0.96) / 4.5),
+                        width: screenWidth * 0.96,
+                        borderRadius: 8,
+                        justifyContent: 'center',
+                        marginTop: 10,
+                        marginBottom: 5,
+                    }}>
+                        <View style={{
+                            borderRadius: 8,
+                            shadowRadius: 8,
+                            elevation: 3,
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.3,
+                            backgroundColor: 'white',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            <FastImage
+                                source={join_us_banner}
+                                resizeMode={FastImage.resizeMode.contain}
+                                style={{
+                                    height: '100%',
+                                    width: '100%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    padding: 10,
+                                    borderRadius: 8,
+                                    overflow: 'hidden'
+                                }} />
+                        </View>
+                    </View>
+                </Pressable>
+
                 <View style={{
                     backgroundColor: '#FFF',
                     paddingHorizontal: 15,

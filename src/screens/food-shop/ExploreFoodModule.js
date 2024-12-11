@@ -14,6 +14,7 @@ import HeaderFoodModule from '../../components/header/HeaderFoodModule';
 import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 
 const screenWidth = Dimensions.get('window').width;
+let join_us_banner = require('../../assets/banner/join-us-seller.jpg');
 
 export default function ExploreFoodModule() {
     const navigation = useNavigation();
@@ -43,6 +44,44 @@ export default function ExploreFoodModule() {
                 <ScrollView>
                     <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
                         <LocationInfo />
+                        <Pressable
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }} onPress={() => { null }}>
+                            <View style={{
+                                height: ((screenWidth * 0.98) / 4.5),
+                                width: screenWidth * 0.98,
+                                borderRadius: 8,
+                                justifyContent: 'center',
+                                marginTop: 10,
+                                marginBottom: 5,
+                            }}>
+                                <View style={{
+                                    borderRadius: 8,
+                                    shadowRadius: 8,
+                                    elevation: 3,
+                                    shadowOffset: { width: 0, height: 2 },
+                                    shadowOpacity: 0.3,
+                                    backgroundColor: 'white',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                    <FastImage
+                                        source={join_us_banner}
+                                        resizeMode={FastImage.resizeMode.contain}
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            padding: 10,
+                                            borderRadius: 8,
+                                            overflow: 'hidden'
+                                        }} />
+                                </View>
+                            </View>
+                        </Pressable>
                         <SliderMedium data={DashboardSlider[0]?.first_slider} folder_name={food_sliderTypeSubtypeImagesFolderName} />
                         <View style={{ flexDirection: 'row' }}>
                             <Pressable onPress={() => { navigation.navigate('NearestFoodShop', { data: shopCategory[0] }) }}>

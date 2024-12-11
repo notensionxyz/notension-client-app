@@ -25,6 +25,7 @@ export default function HeaderForLocation({ updateState }) {
                     backgroundColor: 'white',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    zIndex:4
                 }}>
                 <Image source={require('../../assets/icon/ic_arrow_back.png')}
                     style={{ height: 25, width: 25, resizeMode: 'contain', tintColor: logoColor_2 }} />

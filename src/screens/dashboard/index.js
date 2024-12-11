@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, ScrollView, View, BackHandler, Alert, Image, Text, TouchableOpacity } from "react-native";
+import { Dimensions, View, BackHandler, Alert, Image, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import NetInfo from "@react-native-community/netinfo";
 import { useDispatch, useSelector } from "react-redux"
+import { ScrollView } from 'react-native-virtualized-view';
 import HeaderDashboard from "./dashboard-components/HeaderDashboard";
 import SplashScreen from './SplashScreen';
 import MyFavourite from "./dashboard-components/MyFavourite";
@@ -162,11 +163,12 @@ function Dashboard() {
                                 :
                                 <> */}
                             {!defaultUserLocation?.userLatitude || defaultUserLocation?.userLatitude === '00' ?
+                            
                                 <ConfirmLocation />
                                 :
                                 <>
                                     <HeaderDashboard toggleDrawer={navigation} connectionStatus={connectionStatus} isReachable={isReachable} />
-                                    <ScrollView>
+                                    <ScrollView showsVerticalScrollIndicator={false}>
                                         <LocationInfo />
                                         <FreeServicesSlider data={starting_slider} />
                                         <MyFavourite title='My Favourite' data={favourite_banner} height={100} />
@@ -174,8 +176,8 @@ function Dashboard() {
                                         <AddSlider data={ad_slider_by_district?.first_slider} />
                                         <MedicalServices data={medical_services_banner} />
                                         <AddSlider data={ad_slider_by_district?.second_slider} />
-                                        {/* <FreeServicesSlider data={free_services_slider} /> */}
-                                        {/* <FreeServices /> */}
+                                        {/* <FreeServicesSlider data={free_services_slider} />
+                                        <FreeServices /> */}
                                     </ScrollView>
                                 </>
                             }
