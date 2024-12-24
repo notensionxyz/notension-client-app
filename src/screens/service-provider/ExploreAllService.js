@@ -2,11 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Dimensions, Text, Image, SafeAreaView, Pressable, FlatList, BackHandler } from "react-native";
 import { useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { ScrollView } from 'react-native-virtualized-view';
 import HeaderCommon from '../../components/header/HeaderCommon';
-import SliderMedium from '../../components/screens-components/Common/slider/slider-medium';
+
 import LocationInfo from '../../components/screens-components/Common/LocationInfo';
 import ManageListView from '../../components/screens-components/AllCare/FilterOptionByServiceType/ManageListView';
 import { useAllCareService } from '../../hooks/fetch-data-by-module/service-provider/useAllCareService';
@@ -20,9 +20,7 @@ function ExploreAllService() {
     const { careSlider, allServicesInfo } = useSelector((state) => state.allCare);
     const { exploreAllCareService, progressing } = useAllCareService();
     const isLoggedin = useSelector((state) => state.user.isLoggedin);
-    //const [slider, setSlider] = useState(findDoctorBanner?.slice(0, (findDoctorBanner.length - 2)) || []);
-    const [nearestBanner, setNearestBanner] = useState('');
-    const [centerBanner, setCenterBanner] = useState('');
+
 
     useEffect(() => {
         exploreAllCareService();
@@ -35,25 +33,32 @@ function ExploreAllService() {
             backAction
         );
         return () => backHandler.remove();
-
     }, []);
 
     const findServiceProvider = (selected) => {
         //console.log(selected);
-        const output = selected?.sliderInfo?.service_slider.map((fileName, index) => {
-            return {
-                file_name: fileName,
-                id: (index + 1).toString()
+        if (isLoggedin) {
+            const output = selected?.sliderInfo?.service_slider.map((fileName, index) => {
+                return {
+                    file_name: fileName,
+                    id: (index + 1).toString()
+                };
+            });
+            const options = {
+                serviceId: selected?._id,
+                sliderInfo: output,
+                Title: selected?.service_name_eng,
             };
-        });
-        const options = {
-            serviceId: selected?._id,
-            sliderInfo: output,
-            Title: selected?.service_name_eng,
-        };
-        //console.log('output',output);
-        navigation.navigate('ExploreServideProvider', { options });
+            //console.log('output',output);
+            navigation.navigate('ExploreServideProvider', { options });
+        } else {
+            navigation.navigate('Login');
+        }
     };
+
+    const checkIsLoggedinAndProcess = () => {
+        navigation.navigate('RequestForRegistration');
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f9f9f9', alignItems: 'center' }}>
@@ -62,7 +67,6 @@ function ExploreAllService() {
                 <LocationInfo />
                 <ProgressStyle2 visible={progressing} />
                 <ScrollView>
-                    {/* <SliderMedium data={slider} folder_name={health_careImages} /> */}
                     {allServicesInfo.length > 0 &&
                         <>
                             <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
@@ -70,7 +74,7 @@ function ExploreAllService() {
                                     style={{
                                         justifyContent: 'center',
                                         alignItems: 'center',
-                                    }} onPress={() => { navigation.navigate('AllCareServiceReg'); }}>
+                                    }} onPress={() => { checkIsLoggedinAndProcess(); }}>
                                     <View style={{
                                         height: ((screenWidth * 0.96) / 4.5),
                                         width: screenWidth * 0.96,

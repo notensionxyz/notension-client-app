@@ -22,16 +22,8 @@ function ManageListView({ allServicesInfo, careSlider, findServiceProvider }) {
     const [services25To33, setServices25To33] = useState(allServicesInfo?.slice(24, 33) || []);
     const [services34To39, setServices34To45] = useState(allServicesInfo?.slice(33, 39) || []);
     const [services40To45, setServices40To45] = useState(allServicesInfo?.slice(39, 45) || []);
-
-    useEffect(() => {
-        // setFirstFive(allServiceInfo?.slice(0, 5) || []);
-        // setDoctors6To10(allServiceInfo?.slice(5, 10) || []);
-        // setDoctors11To15(popularDoctors?.slice(10, 15) || []);
-        // setDoctors16To20(popularDoctors?.slice(15, 20) || []);
-        // setDoctors21To25(popularDoctors?.slice(20, 25) || []);
-    }, [allServicesInfo]);
-
-    console.log('careSlider : ', careSlider[0]?.fifth_slider);
+    
+    ///console.log('careSlider : ', careSlider[0]?.fifth_slider);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>

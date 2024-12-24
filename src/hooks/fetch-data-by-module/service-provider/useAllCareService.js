@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import { EXPLORE_ALL_CARE_SERVICE, EXPLORE_CARE_PROVIDER } from '../../../helpers/Constants';
 import { handleAllCareReducer } from '../../../store/reducers/all-care-service/allCareReducer';
+import { handleDashboardReducer } from '../../../store/reducers/dashboardReducer';
 
 axios.defaults.withCredentials = true;
 
@@ -40,8 +41,17 @@ export const useAllCareService = () => {
         },
     });
 
-    const exploreAllCareService = () => {
+    const setCurrentModule = () => {
+        dispatch(
+            handleDashboardReducer({
+                type: 'SET_CURRENT_MODULE',
+                data: 'dashboard',
+            })
+        );
+    };
 
+    const exploreAllCareService = () => {
+        setCurrentModule();
         setProgressing(true);
         Axios
             .get(EXPLORE_ALL_CARE_SERVICE,
@@ -67,22 +77,29 @@ export const useAllCareService = () => {
             });
     };
 
-    const exploreCareProvider = (serviceId, setCenterInfo) => {
+    const exploreCareProvider = (serviceId, setPopularInfo, setNearestInfo, pageNo) => {
 
         setProgressing(true);
         const props = {
             longitude: userLongitude,
             latitude: userLatitude,
             district_id: districtId,
-            service_id: serviceId
+            service_id: serviceId,
+            page: pageNo,
         };
 
         Axios
             .post(EXPLORE_CARE_PROVIDER, props)
             .then(response => {
-                console.log(response.data.result?.sliderByDistrict);
-                setBanner(response.data.result?.sliderByDistrict[0]?.service_slider);
-                //setProgressing(false);
+                //console.log(response.data);
+                if (response?.data?.result?.nearestCareProvider) {
+                    setPopularInfo(response?.data?.result?.careProviderByDistrict);
+                }
+
+                if (response?.data?.result?.nearestCareProvider) {
+                    setNearestInfo(response?.data?.result?.nearestCareProvider);
+                }
+                setProgressing(false);
             })
             .catch(error => {
                 console.log('Error : ', error.response.data)

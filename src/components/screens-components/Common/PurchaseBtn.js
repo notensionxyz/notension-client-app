@@ -1,6 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { Dimensions, Animated, Image, Text, Alert, View, StyleSheet, Pressable } from "react-native";
+import { Dimensions, Image, Text, Alert, View, StyleSheet, Pressable } from "react-native";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Animated, {
+    useSharedValue,
+    useAnimatedStyle,
+    withDelay,
+    withTiming,
+} from 'react-native-reanimated';
 
 const screenWidth = Dimensions.get('window').width;
 const buttonWidth = (screenWidth / 2) - 40;
@@ -8,7 +14,10 @@ const textWidth = (screenWidth / 2) - 110;// 30+30+20  +, _, Trash width =30 and
 
 function PurchaseBtn({ data, addToBagPress, incresePress, deccresePress, removePress, qtyIncart, isOutOfStock }) {
     const timerRef = useRef(null);
-    const animationValue = useRef(new Animated.Value(36)).current;
+    const offset = useSharedValue(36);
+
+    //const animationValue = useRef(new Animated.Value(36)).current;
+
     let [viewState, setViewState] = useState(true);
     let [boxColor, setBoxColor] = useState('#FFFFFF');
 
@@ -21,61 +30,48 @@ function PurchaseBtn({ data, addToBagPress, incresePress, deccresePress, removeP
         isInStock = 0;
     }
 
-    if (quantity > 0 && viewState == true) {
+    if (quantity > 0 && viewState === true) {
         boxColor = '#006400';
     } else {
         if (quantity < 1) {
             viewState = false;
             boxColor = '#FFFFFF';
-            Animated.timing(animationValue, {
-                toValue: 36,
-                timing: 100,
-                useNativeDriver: false,
-            }).start();
+            offset.value = withTiming(36, { duration: 1000 });
         }
     }
 
     const autoAnimate = () => {
+        //setViewState(false);
 
-        setViewState(false);
         if (timerRef.current) {
             clearTimeout(timerRef.current);
         }
+        setViewState(false);
 
         timerRef.current = setTimeout(() => {
-            Animated.timing(animationValue, {
-                toValue: 36,
-                timing: 100,
-                useNativeDriver: false,
-            }).start();
             setViewState(true);
             setBoxColor('#006400');
+            offset.value = withTiming(36, { duration: 1000 });
         }, 4000);
     }
 
     const toggleAnimation = () => {
-        autoAnimate();
-        Animated.timing(animationValue, {
-            toValue: buttonWidth,
-            timing: 30,
-            useNativeDriver: false,
-        }).start(() => {
-            setViewState(false);
-        });
         setBoxColor('#FFFFFF');
+        autoAnimate();
+        offset.value = withTiming(buttonWidth, { duration: 400 });
     }
 
-    const animatedStyle = {
-        width: animationValue,
+    const animatedStyles = useAnimatedStyle(() => ({
+        width: offset.value,
         backgroundColor: boxColor
-    }
+    }));
 
     return (
         <View style={{ flexDirection: 'row' }}>
             <View style={{ width: "100%", alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Animated.View style={[styles.animatedBox, animatedStyle]} >
+                <Animated.View style={[styles.animatedBox, animatedStyles]} >
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                        {quantity > 0 && viewState == false && (
+                        {quantity > 0 && viewState === false && (
                             <>
                                 {quantity > 1 ?
                                     <>
@@ -100,11 +96,7 @@ function PurchaseBtn({ data, addToBagPress, incresePress, deccresePress, removeP
                                             onPress={() => {
                                                 setQuantity(quantity - 1);
                                                 removePress(data?._id);
-                                                Animated.timing(animationValue, {
-                                                    toValue: 36,
-                                                    timing: 100,
-                                                    useNativeDriver: false,
-                                                }).start();
+                                                offset.value = withTiming(36, { duration: 1000 });
                                             }}
                                         >
                                             <Image style={{ width: 30, height: 22, tintColor: 'red', alignItems: 'flex-start', justifyContent: 'center' }}
@@ -124,16 +116,11 @@ function PurchaseBtn({ data, addToBagPress, incresePress, deccresePress, removeP
                                 {isInStock > 0 ?
                                     <Pressable onPress={() => {
                                         setBoxColor('#FFFFFF');
+                                        offset.value = withTiming(buttonWidth, { duration: 400 });
                                         setViewState(false);
-                                        addToBagPress(data);
-                                        Animated.timing(animationValue, {
-                                            toValue: buttonWidth,
-                                            timing: 30,
-                                            useNativeDriver: false,
-                                        }).start(() => {
-                                            setQuantity(quantity + 1);
-                                        });
                                         autoAnimate();
+                                        setQuantity(quantity + 1);
+                                        addToBagPress(data);
                                     }}>
                                         <Image style={{ width: 36, height: 36, tintColor: '#E50293', alignItems: 'flex-end', justifyContent: 'center' }}
                                             resizeMode={'contain'}
@@ -160,7 +147,7 @@ function PurchaseBtn({ data, addToBagPress, incresePress, deccresePress, removeP
                             </>
                             :
                             <>
-                                {viewState == false ?
+                                {viewState === false ?
                                     <>
                                         {data?.max_allowed < 1 || data?.max_allowed > quantity ?
                                             <Pressable onPress={() => {
@@ -212,6 +199,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         width: 36,
         height: 36,
+        backgroundColor: '#FFFFFF',
         //borderRadius: 5,
         borderRadius: 36 / 2,
         elevation: 3,

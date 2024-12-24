@@ -15,7 +15,7 @@ const Axios = axios.create({
 });
 
 const AxiosWithFormData = axios.create({
-    baseURL: BASE_ADMIN_URL_LOCAL,
+    baseURL: BASE_ADMIN_URL,
     headers: {
         'Accept': '*/*',
         'Content-Type': 'multipart/form-data',

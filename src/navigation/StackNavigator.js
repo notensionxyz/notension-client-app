@@ -52,7 +52,17 @@ import BankingOutlet from "../screens/service-provider/BankingOutlet";
 import BankingOutletDetails from "../screens/service-provider/BankingOutletDetails";
 import ExploreAllService from "../screens/service-provider/ExploreAllService";
 import ExploreServideProvider from "../screens/service-provider/ExploreServideProvider";
+import ServiceProviderDetails from "../screens/service-provider/ServiceProviderDetails";
+
+import RequestForRegistration from "../screens/request-for-registration";
 import AllCareServiceReg from "../screens/request-for-registration/AllCareServiceReg";
+import MedicineShopReg from "../screens/request-for-registration/MedicineShopReg";
+import GroceryShopReg from "../screens/request-for-registration/GroceryShopReg";
+import FoodShopReg from "../screens/request-for-registration/FoodShopReg";
+import ConsultationCenterReg from "../screens/request-for-registration/ConsultationCenterReg";
+import AmbulanceServiceProviderReg from "../screens/request-for-registration/AmbulanceServiceProviderReg";
+import MedicalServicesProviderReg from "../screens/request-for-registration/MedicalServicesProviderReg";
+import BankingOutletReg from "../screens/request-for-registration/BankingOutletReg";
 
 const Stack = createStackNavigator();
 //const Stack = createNativeStackNavigator();
@@ -466,8 +476,80 @@ const MainStackNavigator = () => {
                 }}
             />
             <Stack.Screen
+                name="ServiceProviderDetails"
+                component={ServiceProviderDetails}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="RequestForRegistration"
+                component={RequestForRegistration}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
                 name="AllCareServiceReg"
                 component={AllCareServiceReg}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="MedicineShopReg"
+                component={MedicineShopReg}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="GroceryShopReg"
+                component={GroceryShopReg}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="FoodShopReg"
+                component={FoodShopReg}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="ConsultationCenterReg"
+                component={ConsultationCenterReg}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="AmbulanceServiceProviderReg"
+                component={AmbulanceServiceProviderReg}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="MedicalServicesProviderReg"
+                component={MedicalServicesProviderReg}
+                options={{
+                    ...TransitionPresets.RevealFromBottomAndroid,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="BankingOutletReg"
+                component={BankingOutletReg}
                 options={{
                     ...TransitionPresets.RevealFromBottomAndroid,
                     headerShown: false

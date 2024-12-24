@@ -18,8 +18,9 @@ let join_us_banner = require('../../assets/banner/join-us-seller.jpg');
 
 export default function ExploreFoodModule() {
     const navigation = useNavigation();
+    const isLoggedin = useSelector((state) => state.user.isLoggedin);
     const { shopCategory, DashboardSlider } = useSelector((state) => state.dashboard);
-    const { exploreFoodModule, progressing, resetReducer } = useFood();
+    const { exploreFoodModule, progressing, resetReducer, setCurrentModule } = useFood();
 
     useEffect(() => {
         resetReducer();
@@ -35,6 +36,10 @@ export default function ExploreFoodModule() {
         return () => backHandler.remove();
     }, []);
 
+    const checkIsLoggedinAndProcess = () => {
+        navigation.navigate('RequestForRegistration');
+    }
+
     return (
         <>
             <ProgressStyle2 visible={progressing} />
@@ -48,7 +53,7 @@ export default function ExploreFoodModule() {
                             style={{
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                            }} onPress={() => { null }}>
+                            }} onPress={() => { checkIsLoggedinAndProcess(); }}>
                             <View style={{
                                 height: ((screenWidth * 0.98) / 4.5),
                                 width: screenWidth * 0.98,

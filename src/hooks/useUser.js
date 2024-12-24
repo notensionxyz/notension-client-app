@@ -330,6 +330,8 @@ export const useUser = () => {
             navigation.navigate('ExploreFoodShop');
         } else if (currentModule === 'Medicine') {
             navigation.navigate('ExploreMedicineShop');
+        } else if (currentModule === 'CareService') {
+            navigation.navigate('ExploreAllService');
         } else {
             navigation.navigate('Dashboard');
         }

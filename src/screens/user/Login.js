@@ -1,14 +1,22 @@
+
 import React, { useState } from 'react';
 import { Dimensions, TextInput, Text, TouchableOpacity, View, Alert, BackHandler } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { useNavigation } from '@react-navigation/native';
 import HeaderCommon from '../../components/header/HeaderCommon';
 
+import Animated, {
+    runOnUI,
+    setNativeProps,
+    useAnimatedRef,
+} from 'react-native-reanimated';
+
 
 export default function Login() {
-
+    const inputRef = React.useRef();
     const navigation = useNavigation();
     const [contact, setContact] = useState('');
+    const animatedRef = useAnimatedRef();
 
     const verifyAndGetOTP = () => {
         if (contact.length !== 11) {
@@ -36,6 +44,10 @@ export default function Login() {
         }
     }
 
+    const handleDataChange = (text) => {
+        setContact(text);
+    };
+
     return (
         <View style={{ flex: 1, backgroundColor: '#f1f5f7', alignItems: 'center' }}>
             <HeaderCommon title="Login" toggleDrawer={null} />
@@ -50,11 +62,15 @@ export default function Login() {
                             >
                                 <Text style={{ fontSize: 18, textAlign: 'center' }}>+88</Text>
                             </TouchableOpacity>
-                            {/* <MaterialInput margin={0} bgColor='transparent' placeholder='01.......' type='phone-pad' /> */}
+                           
                             <TextInput placeholder='01.......' keyboardType='numeric' secureTextEntry={false}
                                 placeholderTextColor='gray'
                                 autoFocus={true}
-                                onChangeText={(text) => setContact(text.replace(/[^0-9]/g, ''))} value={contact}
+                                //onChangeText={(text) => { handleDataChange(text.replace(/[^0-9]/g, '')) }}
+                                onChangeText={(text) => { handleDataChange(text) }}
+                                ref={animatedRef}
+                                value={contact}
+                                maxLength={11}
                                 style={{
                                     fontSize: 18,
                                     height: 44,

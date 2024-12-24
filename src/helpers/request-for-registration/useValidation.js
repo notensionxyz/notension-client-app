@@ -6,12 +6,12 @@ const useValidation = () => {
 
         if (information?.shop_name.length < 3 || information?.shop_name.length > 120) {
             isInputValid = false
-            errors.shop_name = 'Shop Name must be at least 3 characters long and at most 120 characters long.';
+            errors.shop_name = 'দোকানের নাম কমপক্ষে 3টি অক্ষর এবং সর্বাধিক 120টি অক্ষর দীর্ঘ হবে ৷';
         }
 
         if (information?.shop_address.length < 3 || information?.shop_address.length > 120) {
             isInputValid = false
-            errors.shop_address = 'Address must be at least 3 characters long and at most 300 characters long.';
+            errors.shop_address = 'ঠিকানা কমপক্ষে 3 অক্ষর এবং সর্বাধিক 300 অক্ষর দীর্ঘ হবে';
         }
 
         if (information?.shop_latitude.length < 1) {
@@ -26,22 +26,22 @@ const useValidation = () => {
 
         if (information?.contact_person.length < 3 || information?.contact_person.length > 100) {
             isInputValid = false
-            errors.contact_person = 'Contact  Person name must be at least 3 characters long and at most 100 characters long.';
+            errors.contact_person = 'যোগাযোগের ব্যক্তির নাম কমপক্ষে 3 অক্ষর এবং সর্বাধিক 100 অক্ষর দীর্ঘ হবে।';
         }
 
         if (information?.contact_no.length !== 11 && information?.contact_no.length !== 16) {
             isInputValid = false
-            errors.contact_no = 'Contact No. must be 11 digits long!';
+            errors.contact_no = 'মোবাইল নম্বর 11 সংখ্যার হতে হবে!!';
         }
 
         if (information?.alternative_contact_no.length !== 11) {
             isInputValid = false
-            errors.alternative_contact_no = 'Alterrnative Contact must be 11 digits long!!';
+            errors.alternative_contact_no = 'বিকল্প মোবাইল নম্বর 11 সংখ্যার হতে হবে!!';
         }
 
         if (information?.shop_pic.length < 2 || information?.shop_pic.length > 4) {
             isInputValid = false
-            errors.shop_pic = 'At least 2 image required and not more than 4';
+            errors.shop_pic = 'কমপক্ষে 2টি ছবি প্রয়োজন এবং 4টির বেশি নয়৷';
         }
 
         if (information?.ref_contact.length !== 11 && information?.ref_contact.length !== 16) {

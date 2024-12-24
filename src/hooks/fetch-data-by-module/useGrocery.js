@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GROCERY_ADMIN_URL } from "@env"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { EXPLORE_GROCERY_STORE, GROCERY_ITEMS_BY_CUSTOMTYPE, GROCERY_ITEMS_BY_SUBTYPE, GROCERY_ITEM_DETAILS, NEAREST_GROCERY_STORE, SEARCH_GROCERY_ITEMS, SEARCH_GROCERY_STORE } from '../../helpers/Constants';
+import { EXPLORE_GROCERY_STORE, NEAREST_GROCERY_STORE, SEARCH_GROCERY_STORE } from '../../helpers/Constants';
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { Alert } from 'react-native';
@@ -25,7 +25,7 @@ export const useGrocery = () => {
     const { userLatitude, userLongitude, districtId } = useSelector((state) => state.user);
     //const { merchantId, customstore_id } = useSelector((state) => state.itemsByStoreReducer);
     //const { specialOfferItem, dealOfTheDay } = useSelector((state) => state.itemsByStoreReducer);
-    
+
     //console.log('GROCERY_ADMIN_URL', GROCERY_ADMIN_URL);
 
     const Axios = axios.create({

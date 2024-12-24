@@ -4,13 +4,15 @@ import {
   DrawerContentScrollView,
   useDrawerStatus
 } from '@react-navigation/drawer';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import { handleUserReducer } from '../store/reducers/userReducer';
 import { PRIVACY_URL } from '../helpers/Constants';
 import { openUrl } from '../helpers/imageUrl';
 import { useUser } from '../hooks/useUser';
 
-export default function DrawerContent({ navigation }) {
+export default function DrawerContent() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const { isLoggedin, userInfo } = useSelector((state) => state.user);
   const currentModule = useSelector((state) => state.dashboard.currentModule);
@@ -100,24 +102,6 @@ export default function DrawerContent({ navigation }) {
             paddingVertical: 10,
             paddingHorizontal: 20,
             backgroundColor: 'transparent'
-          }} onPress={() => { navigation.navigate('ChangeDefaultLocation') }}>
-          <Image source={require('../assets/bottom/Offer-Icon.png')}
-            style={{ height: 32, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-          <Text style={{
-            fontSize: 18,
-            color: '#212121',
-            fontWeight: 'bold',
-            marginLeft: 11
-          }}>Special Offer</Text>
-        </TouchableOpacity> */}
-
-        {/* <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            backgroundColor: 'transparent'
           }} onPress={() => { navigation.navigate('PopularItem') }}>
           <Image source={require('../assets/bottom/Popular-ICon.png')}
             style={{ height: 30, width: 30, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
@@ -128,62 +112,7 @@ export default function DrawerContent({ navigation }) {
             marginLeft: 15
           }}>Popular Items</Text>
         </TouchableOpacity> */}
-        {currentModule !== 'dashboard' &&
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingVertical: 10,
-              paddingHorizontal: 20,
-              backgroundColor: 'transparent'
-            }} onPress={() => { navogateTo('OrderInfoScreen'); }}>
-            <Image source={require('../assets/icon/My-Order.png')}
-              style={{ height: 34, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-            <Text style={{
-              fontWeight: 'bold',
-              fontSize: 18,
-              color: '#212121',
-              fontWeight: 'bold',
-              marginLeft: 11
-            }}>My Order</Text>
-          </TouchableOpacity>
-        }
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            backgroundColor: 'transparent'
-          }} onPress={() => { navigation.navigate('BookedAppointmentInfo'); }}>
-          <Image source={require('../assets/icon/logo_menu.png')}
-            style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-          <Text style={{
-            fontWeight: 'bold',
-            fontSize: 18,
-            color: '#212121',
-            fontWeight: 'bold',
-            marginLeft: 17
-          }}>Booked Appoinment</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            backgroundColor: 'transparent'
-          }} onPress={() => { openUrl(PRIVACY_URL); }}>
-          <Image source={require('../assets/icon/eye.png')}
-            style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-          <Text style={{
-            fontWeight: 'bold',
-            fontSize: 18,
-            color: '#212121',
-            fontWeight: 'bold',
-            marginLeft: 17
-          }}>Privacy Policy</Text>
-        </TouchableOpacity>
+
         {/* <TouchableOpacity
           style={{
             flexDirection: 'row',
@@ -201,26 +130,66 @@ export default function DrawerContent({ navigation }) {
             marginLeft: 11
           }}>Change Location</Text>
         </TouchableOpacity> */}
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            backgroundColor: 'transparent'
-          }} onPress={() => { navogateTo('location'); }}>
-          <Image source={require('../assets/icon/ic_place_blue.png')}
-            style={{ height: 32, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
-          <Text style={{
-            fontSize: 18,
-            color: '#212121',
-            fontWeight: 'bold',
-            marginLeft: 11
-          }}>Update Address</Text>
-        </TouchableOpacity>
+
+
+
         {isLoggedin ?
           <>
-
+            {currentModule !== 'dashboard' &&
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                  backgroundColor: 'transparent'
+                }} onPress={() => { navogateTo('OrderInfoScreen'); }}>
+                <Image source={require('../assets/icon/My-Order.png')}
+                  style={{ height: 34, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                  color: '#212121',
+                  fontWeight: 'bold',
+                  marginLeft: 11
+                }}>My Order</Text>
+              </TouchableOpacity>
+            }
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                backgroundColor: 'transparent'
+              }} onPress={() => { navigation.navigate('BookedAppointmentInfo'); }}>
+              <Image source={require('../assets/icon/logo_menu.png')}
+                style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 18,
+                color: '#212121',
+                fontWeight: 'bold',
+                marginLeft: 17
+              }}>Booked Appoinment</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                backgroundColor: 'transparent'
+              }} onPress={() => { navogateTo('location'); }}>
+              <Image source={require('../assets/icon/ic_place_blue.png')}
+                style={{ height: 32, width: 34, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+              <Text style={{
+                fontSize: 18,
+                color: '#212121',
+                fontWeight: 'bold',
+                marginLeft: 11
+              }}>Update Address</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -276,8 +245,42 @@ export default function DrawerContent({ navigation }) {
               marginLeft: 15
             }}>Login</Text>
           </TouchableOpacity>
-
         }
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            backgroundColor: 'transparent'
+          }} onPress={() => { navigation.navigate('RequestForRegistration') }}>
+          <Image source={require('../assets/icon/join_us.png')}
+            style={{ height: 32, width: 33, resizeMode: 'contain', tintColor: '#111d5e',marginLeft:-2 }} />
+          <Text style={{
+            fontSize: 18,
+            color: '#212121',
+            fontWeight: 'bold',
+            marginLeft: 11
+          }}>Join Us</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            backgroundColor: 'transparent'
+          }} onPress={() => { openUrl(PRIVACY_URL); }}>
+          <Image source={require('../assets/icon/eye.png')}
+            style={{ height: 28, width: 28, resizeMode: 'contain', tintColor: selected === 'bag' ? '#48d7ff' : '#111d5e' }} />
+          <Text style={{
+            fontWeight: 'bold',
+            fontSize: 18,
+            color: '#212121',
+            fontWeight: 'bold',
+            marginLeft: 17
+          }}>Privacy Policy</Text>
+        </TouchableOpacity>
       </DrawerContentScrollView>
     </View >
   );

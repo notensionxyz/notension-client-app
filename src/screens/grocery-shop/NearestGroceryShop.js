@@ -29,6 +29,7 @@ let join_us_banner = require('../../assets/banner/join-us-seller.jpg');
 function NearestGroceryShop(props) {
     const cameraPermission = Camera.getCameraPermissionStatus();
     const navigation = useNavigation();
+    const isLoggedin = useSelector((state) => state.user.isLoggedin);
     const [cameraPermissionStatus, setCameraPermissionStatus] = useState('not-determined')
     const [isPress, setIsPress] = useState(false);
     const [isFindPress, setIsFindPress] = useState(false);
@@ -37,6 +38,7 @@ function NearestGroceryShop(props) {
     const [searchText, setSearchText] = useState('');
     const { getNearestGroceryStoreInfo, progressing, handleSearchStore, setCurrentModule } = useGrocery();
     const { resetUserCurrentLocation } = useUser();
+    const currentModule = useSelector((state) => state.dashboard.currentModule);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -77,7 +79,7 @@ function NearestGroceryShop(props) {
         console.log(`Camera permission status: ${permission}`)
 
         if (permission === 'denied') await Linking.openSettings();
-        setCameraPermissionStatus(permission)
+        setCameraPermissionStatus(permission);
     }, []);
 
     const searchStore = (contact) => {
@@ -86,7 +88,9 @@ function NearestGroceryShop(props) {
         setIsPress(true);
     }
 
-    //console.log('cameraPermissionStatus', cameraPermissionStatus);
+    const checkIsLoggedinAndProcess = () => {
+        navigation.navigate('RequestForRegistration');
+    }
 
     return (
         <>
@@ -99,7 +103,7 @@ function NearestGroceryShop(props) {
                     style={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                    }} onPress={() => { null }}>
+                    }} onPress={() => { checkIsLoggedinAndProcess(); }}>
                     <View style={{
                         height: ((screenWidth * 0.96) / 4.5),
                         width: screenWidth * 0.96,

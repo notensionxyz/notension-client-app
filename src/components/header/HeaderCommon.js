@@ -28,6 +28,7 @@ export default function HeaderCommon(props) {
             <TouchableOpacity style={{ paddingLeft: 8, marginTop: 0 }}
                 onPress={() => {
                     if (props.title === 'অ্যাপয়েন্টমেন্টের তালিকা') {
+                        //console.log('All Care Services');
                         navigation.navigate('Dashboard');
                     } else {
                         navigation.goBack();

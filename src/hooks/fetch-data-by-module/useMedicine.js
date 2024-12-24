@@ -7,7 +7,6 @@ import { EXPLORE_MEDICINE_STORE, MEDICINE_ITEMS_BY_CUSTOMTYPE, MEDICINE_ITEMS_BY
 import { handleItemsByStoreReducer } from '../../store/reducers/items-by-shop';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { Alert } from 'react-native';
-import { handleCartReducer } from '../../store/reducers/cartReducer';
 
 axios.defaults.withCredentials = true;
 

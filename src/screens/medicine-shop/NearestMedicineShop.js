@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 import ProgressStyle2 from '../../components/progress-animation/ProgressStyle2';
 import { storageImageUrl } from '../../helpers/imageUrl';
 import HeaderCommon from '../../components/header/HeaderCommon';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useMedicine } from '../../hooks/fetch-data-by-module/useMedicine';
 import { handleDashboardReducer } from '../../store/reducers/dashboardReducer';
 import { useUser } from '../../hooks/useUser';
@@ -28,6 +28,7 @@ let join_us_banner = require('../../assets/banner/join-us-seller.jpg');
 function NearestMedicineShop(props) {
     const navigation = useNavigation();
     const cameraPermission = Camera.getCameraPermissionStatus();
+    const isLoggedin = useSelector((state) => state.user.isLoggedin);
     const [cameraPermissionStatus, setCameraPermissionStatus] = useState('not-determined');
     const [scanQRcode, setScanQRcode] = useState(false);
     const [isPress, setIsPress] = useState(false);
@@ -38,6 +39,7 @@ function NearestMedicineShop(props) {
     const { resetUserCurrentLocation } = useUser();
 
     useEffect(() => {
+        setCurrentModule();
         if (cameraPermission !== 'granted') {
             requestCameraPermission();
         } else {
@@ -79,6 +81,10 @@ function NearestMedicineShop(props) {
         setIsPress(true);
     }
 
+    const checkIsLoggedinAndProcess = () => {
+        navigation.navigate('RequestForRegistration');
+    }
+
     return (
         <>
             <ProgressStyle2 visible={progressing} />
@@ -89,7 +95,7 @@ function NearestMedicineShop(props) {
                     style={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                    }} onPress={() => { null }}>
+                    }} onPress={() => { checkIsLoggedinAndProcess(); }}>
                     <View style={{
                         height: ((screenWidth * 0.96) / 4.5),
                         width: screenWidth * 0.96,

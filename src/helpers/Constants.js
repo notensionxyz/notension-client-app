@@ -1,7 +1,6 @@
 import { Dimensions, Platform } from 'react-native';
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets'
 
-
 export const PRIVACY_URL = 'https://www.notension.com.bd/privacy'
 export const STORAGE_URL = 'https://we-care-base.sgp1.cdn.digitaloceanspaces.com';
 export const ACCESS_KEY = 'ba8dd74c-5844-4d83-8523b4a5f50d-a128-4190';
@@ -101,13 +100,16 @@ export const MyFavouriteData = [
     { id: '4', image: require('../assets/gallery/favorite-4.jpg') },
 ];
 
-export const AddSliderData = [
-    { id: '1', image: require('../assets/gallery/add-slide/Add-Slide_1.jpg') },
-    { id: '2', image: require('../assets/gallery/add-slide/Add-Slide_2.jpg') },
-    { id: '3', image: require('../assets/gallery/add-slide/Add-Slide_3.jpg') },
-    { id: '4', image: require('../assets/gallery/add-slide/Add-Slide_4.jpg') },
-    { id: '5', image: require('../assets/gallery/add-slide/Add-Slide_5.jpg') },
-    { id: '6', image: require('../assets/gallery/add-slide/Add-Slide_6.jpg') },
+export const RegBannerData = [
+    { id: '1', image: require('../assets/banner/grocery-store.jpg') },
+    { id: '2', image: require('../assets/banner/medicine-store.jpg') },
+    { id: '3', image: require('../assets/banner/food-shop.jpg') },
+    { id: '4', image: require('../assets/banner/consultation-center.jpg') },
+    { id: '5', image: require('../assets/banner/ambulance-service.jpg') },
+    { id: '6', image: require('../assets/banner/medical-service-provider.jpg') },
+    { id: '7', image: require('../assets/banner/banking-service.jpg') },
+    { id: '8', image: require('../assets/banner/all-care-service.jpg') },
+    { id: '9', image: require('../assets/banner/contact-us.jpg') },
 ];
 
 export const MedicalServicesData = [
